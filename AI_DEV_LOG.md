@@ -209,3 +209,9 @@
   - Updated draft/publish submit handler to read dates, location, coordinates, video URL, and multi-selected taxonomy term IDs, and send them in the AJAX request payload.
 - **assets/css/admin-style.css**:
   - Enqueued aesthetic visual styling for the `.agenda-only-fields` card section with a light primary tint background, dashed borders, modern input shadows, and responsive media query columns.
+
+## 2026-06-10 - 20:05 - Created gitignore and completed initial repository push
+
+### Summary of Changes
+- **.gitignore**: Created a `.gitignore` file in the plugin root to ignore OS metadata and IDE configuration files.
+- **Git Repository**: Added all existing plugin files and performed the initial commit and push to the remote GitHub repository.
