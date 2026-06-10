@@ -1,0 +1,982 @@
+/**
+ * WP Facebook Curator — Admin Panel Styles
+ *
+ * Provides a modern, card-based layout for the curation dashboard
+ * and clean form styling for the settings page.
+ *
+ * @package WP_Facebook_Curator
+ */
+
+/* ==========================================================================
+   CSS Custom Properties (Design Tokens)
+   ========================================================================== */
+:root {
+    --cc-primary: #1877f2;
+    --cc-primary-hover: #166fe5;
+    --cc-primary-light: rgba(24, 119, 242, 0.08);
+    --cc-success: #2e7d32;
+    --cc-success-hover: #256427;
+    --cc-success-light: rgba(46, 125, 50, 0.08);
+    --cc-warning: #e65100;
+    --cc-warning-hover: #bf4400;
+    --cc-warning-light: rgba(230, 81, 0, 0.08);
+    --cc-danger: #c62828;
+    --cc-bg-card: #ffffff;
+    --cc-bg-surface: #f6f7f7;
+    --cc-bg-muted: #f0f0f1;
+    --cc-border: #dcdcde;
+    --cc-border-light: #e5e5e5;
+    --cc-text-primary: #1d2327;
+    --cc-text-secondary: #50575e;
+    --cc-text-muted: #787c82;
+    --cc-radius: 8px;
+    --cc-radius-sm: 4px;
+    --cc-shadow: 0 1px 3px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.06);
+    --cc-shadow-hover: 0 4px 12px rgba(0, 0, 0, 0.12), 0 2px 4px rgba(0, 0, 0, 0.08);
+    --cc-transition: 0.2s ease;
+    --cc-gap: 20px;
+}
+
+/* ==========================================================================
+   Main Container
+   ========================================================================== */
+.content-curator-wrap {
+    max-width: 1400px;
+    margin: 20px 20px 20px 0;
+}
+
+.content-curator-wrap h1 {
+    display: flex;
+    align-items: center;
+    font-size: 23px;
+    font-weight: 400;
+    color: var(--cc-text-primary);
+    margin-bottom: 20px;
+}
+
+/* ==========================================================================
+   Premium Dashboard Header Banner
+   ========================================================================== */
+.content-curator-dashboard-banner {
+    position: relative;
+    background-image: url('../images/banner.png');
+    background-size: cover;
+    background-position: center;
+    border-radius: var(--cc-radius);
+    padding: 35px 30px;
+    margin-bottom: 25px;
+    overflow: hidden;
+    color: #ffffff;
+    box-shadow: var(--cc-shadow);
+}
+
+.content-curator-dashboard-banner .banner-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(24, 119, 242, 0.9) 0%, rgba(20, 20, 35, 0.95) 100%);
+    z-index: 1;
+}
+
+.content-curator-dashboard-banner .banner-content {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+}
+
+.content-curator-banner-icon {
+    width: 54px;
+    height: 54px;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(8px);
+    border-radius: 10px;
+    padding: 6px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+.content-curator-dashboard-banner h1 {
+    font-size: 26px !important;
+    font-weight: 700 !important;
+    color: #ffffff !important;
+    margin: 5px 0 0 0 !important;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    display: block !important;
+}
+
+.content-curator-dashboard-banner .banner-desc {
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.85);
+    margin: 0;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+/* ==========================================================================
+   Toolbar (Filter Bar)
+   ========================================================================== */
+.content-curator-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+    background: var(--cc-bg-card);
+    border: 1px solid var(--cc-border);
+    border-radius: var(--cc-radius);
+    padding: 14px 20px;
+    margin-bottom: var(--cc-gap);
+    box-shadow: var(--cc-shadow);
+}
+
+.content-curator-toolbar-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.content-curator-toolbar-left label {
+    font-weight: 600;
+    color: var(--cc-text-secondary);
+    white-space: nowrap;
+}
+
+.content-curator-toolbar-left select {
+    min-width: 180px;
+    padding: 6px 12px;
+    border: 1px solid var(--cc-border);
+    border-radius: var(--cc-radius-sm);
+    background: var(--cc-bg-surface);
+    color: var(--cc-text-primary);
+    font-size: 13px;
+    cursor: pointer;
+    transition: border-color var(--cc-transition);
+}
+
+.content-curator-toolbar-left select:focus {
+    border-color: var(--cc-primary);
+    outline: none;
+    box-shadow: 0 0 0 1px var(--cc-primary);
+}
+
+.content-curator-count {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--cc-text-muted);
+    background: var(--cc-bg-muted);
+    padding: 4px 12px;
+    border-radius: 20px;
+}
+
+/* ==========================================================================
+   Notification Banner
+   ========================================================================== */
+.content-curator-notices {
+    margin-bottom: var(--cc-gap);
+}
+
+.content-curator-notice {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 18px;
+    border-radius: var(--cc-radius-sm);
+    font-size: 13px;
+    line-height: 1.5;
+    animation: fbcSlideDown 0.3s ease;
+    margin-bottom: 8px;
+}
+
+.content-curator-notice.notice-success {
+    background: var(--cc-success-light);
+    border-left: 4px solid var(--cc-success);
+    color: var(--cc-success);
+}
+
+.content-curator-notice.notice-error {
+    background: rgba(198, 40, 40, 0.08);
+    border-left: 4px solid var(--cc-danger);
+    color: var(--cc-danger);
+}
+
+.content-curator-notice .dashicons {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+}
+
+@keyframes fbcSlideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ==========================================================================
+   Empty State
+   ========================================================================== */
+.content-curator-empty {
+    text-align: center;
+    padding: 60px 20px;
+    background: var(--cc-bg-card);
+    border: 1px solid var(--cc-border);
+    border-radius: var(--cc-radius);
+    box-shadow: var(--cc-shadow);
+}
+
+.content-curator-empty h2 {
+    color: var(--cc-text-secondary);
+    font-weight: 400;
+    margin-top: 16px;
+}
+
+.content-curator-empty p {
+    color: var(--cc-text-muted);
+    margin-top: 6px;
+}
+
+/* ==========================================================================
+   Card Grid Layout
+   ========================================================================== */
+.content-curator-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--cc-gap);
+}
+
+@media (max-width: 1200px) {
+    .content-curator-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ==========================================================================
+   Individual Card
+   ========================================================================== */
+.content-curator-card {
+    position: relative;
+    background: var(--cc-bg-card);
+    border: 1px solid var(--cc-border);
+    border-radius: var(--cc-radius);
+    box-shadow: var(--cc-shadow);
+    overflow: hidden;
+    transition: box-shadow var(--cc-transition), transform var(--cc-transition), opacity 0.4s ease;
+}
+
+.content-curator-card:hover {
+    box-shadow: var(--cc-shadow-hover);
+}
+
+.content-curator-card.is-fading {
+    opacity: 0;
+    transform: scale(0.96);
+    pointer-events: none;
+}
+
+/* --- Card Header --- */
+.card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 12px 16px;
+    background: var(--cc-primary-light);
+    border-bottom: 1px solid var(--cc-border-light);
+}
+
+.card-source {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-weight: 600;
+    font-size: 13px;
+    color: var(--cc-primary);
+}
+
+.card-source .dashicons {
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+}
+
+.card-date {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 12px;
+    color: var(--cc-text-muted);
+}
+
+.card-date .dashicons {
+    font-size: 14px;
+    width: 14px;
+    height: 14px;
+}
+
+/* --- Card Body --- */
+.card-body {
+    padding: 16px;
+}
+
+/* --- Card Image --- */
+.card-image {
+    margin-bottom: 14px;
+    border-radius: var(--cc-radius-sm);
+    overflow: hidden;
+    max-height: 240px;
+}
+
+.card-image img {
+    width: 100%;
+    height: 100%;
+    max-height: 240px;
+    object-fit: cover;
+    display: block;
+}
+
+/* --- Card Content --- */
+.card-content {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.card-content h4 {
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--cc-text-muted);
+    margin: 0 0 6px 0;
+}
+
+/* --- Original Text (read-only) --- */
+.card-original {
+    padding: 12px 14px;
+    background: var(--cc-bg-muted);
+    border-radius: var(--cc-radius-sm);
+    border: 1px solid var(--cc-border-light);
+}
+
+.card-original-text {
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--cc-text-secondary);
+    max-height: 120px;
+    overflow-y: auto;
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
+/* --- Editor Textarea & Tabs --- */
+.card-editor {
+    /* No extra wrapper styles needed */
+}
+
+.editor-tabs {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 10px;
+    border-bottom: 1px solid var(--cc-border-light);
+    padding-bottom: 2px;
+}
+
+.editor-tab-btn {
+    background: none;
+    border: none;
+    border-bottom: 2px solid transparent;
+    padding: 6px 12px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--cc-text-secondary);
+    cursor: pointer;
+    transition: all var(--cc-transition);
+}
+
+.editor-tab-btn:hover {
+    color: var(--cc-primary);
+    background: var(--cc-primary-light);
+    border-radius: var(--cc-radius-sm) var(--cc-radius-sm) 0 0;
+}
+
+.editor-tab-btn.active {
+    border-bottom-color: var(--cc-primary);
+    color: var(--cc-primary);
+    background: var(--cc-primary-light);
+    border-radius: var(--cc-radius-sm) var(--cc-radius-sm) 0 0;
+}
+
+.content-curator-textarea {
+    width: 100%;
+    min-height: 140px;
+    padding: 12px 14px;
+    border: 1px solid var(--cc-border);
+    border-radius: var(--cc-radius-sm);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--cc-text-primary);
+    background: var(--cc-bg-card);
+    resize: vertical;
+    transition: border-color var(--cc-transition), box-shadow var(--cc-transition);
+    box-sizing: border-box;
+}
+
+.content-curator-textarea:focus {
+    border-color: var(--cc-primary);
+    outline: none;
+    box-shadow: 0 0 0 1px var(--cc-primary);
+}
+
+/* --- Card Actions (Button Row) --- */
+.card-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 12px 16px;
+    border-top: 1px solid var(--cc-border-light);
+    background: var(--cc-bg-surface);
+}
+
+.card-actions .button {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 6px 14px;
+    border-radius: var(--cc-radius-sm);
+    cursor: pointer;
+    transition: all var(--cc-transition);
+    text-decoration: none;
+    line-height: 1.4;
+    border: none;
+}
+
+.card-actions .button .dashicons {
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+}
+
+/* AI Button */
+.btn-ai {
+    background: linear-gradient(135deg, var(--cc-primary) 0%, #4a90d9 100%);
+    color: #000000 !important;
+    box-shadow: 0 2px 4px rgba(24, 119, 242, 0.3);
+}
+
+.btn-ai:hover,
+.btn-ai:focus {
+    background: linear-gradient(135deg, var(--cc-primary-hover) 0%, #3d7ec5 100%);
+    box-shadow: 0 4px 8px rgba(24, 119, 242, 0.4);
+    transform: translateY(-1px);
+    color: #000000 !important;
+}
+
+/* Draft Button */
+.btn-draft {
+    background: var(--cc-warning);
+    color: #000000 !important;
+    box-shadow: 0 2px 4px rgba(230, 81, 0, 0.25);
+}
+
+.btn-draft:hover,
+.btn-draft:focus {
+    background: var(--cc-warning-hover);
+    box-shadow: 0 4px 8px rgba(230, 81, 0, 0.35);
+    transform: translateY(-1px);
+    color: #000000 !important;
+}
+
+/* Publish Button */
+.btn-publish {
+    background: var(--cc-success);
+    color: #000000 !important;
+    box-shadow: 0 2px 4px rgba(46, 125, 50, 0.25);
+}
+
+.btn-publish:hover,
+.btn-publish:focus {
+    background: var(--cc-success-hover);
+    box-shadow: 0 4px 8px rgba(46, 125, 50, 0.35);
+    transform: translateY(-1px);
+    color: #000000 !important;
+}
+
+/* Delete Button */
+.btn-delete {
+    background: var(--cc-danger);
+    color: #000000 !important;
+    box-shadow: 0 2px 4px rgba(198, 40, 40, 0.25);
+}
+
+.btn-delete:hover,
+.btn-delete:focus {
+    background: #b71c1c;
+    box-shadow: 0 4px 8px rgba(198, 40, 40, 0.35);
+    transform: translateY(-1px);
+    color: #000000 !important;
+}
+
+/* Delete All Button */
+.btn-delete-all {
+    background: var(--cc-danger);
+    color: #000000 !important;
+    box-shadow: 0 2px 4px rgba(198, 40, 40, 0.25);
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 13px !important;
+    font-weight: 600 !important;
+    padding: 6px 14px !important;
+    border-radius: var(--cc-radius-sm) !important;
+    cursor: pointer;
+    transition: all var(--cc-transition);
+    border: none !important;
+}
+
+.btn-delete-all:hover,
+.btn-delete-all:focus {
+    background: #b71c1c;
+    box-shadow: 0 4px 8px rgba(198, 40, 40, 0.35);
+    transform: translateY(-1px);
+    color: #000000 !important;
+}
+
+/* ==========================================================================
+   Card Loading Overlay
+   ========================================================================== */
+.card-loading {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.88);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    z-index: 10;
+    border-radius: var(--cc-radius);
+    backdrop-filter: blur(2px);
+}
+
+.card-spinner {
+    width: 36px;
+    height: 36px;
+    border: 3px solid var(--cc-border);
+    border-top-color: var(--cc-primary);
+    border-radius: 50%;
+    animation: fbcSpin 0.8s linear infinite;
+}
+
+.card-loading-text {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--cc-text-secondary);
+}
+
+@keyframes fbcSpin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* ==========================================================================
+   Settings Page Enhancements
+   ========================================================================== */
+.content-curator-wrap .form-table th {
+    font-weight: 600;
+    color: var(--cc-text-primary);
+}
+
+.content-curator-wrap .form-table .description {
+    color: var(--cc-text-muted);
+    font-style: normal;
+    margin-top: 4px;
+}
+
+#content-curator-fetch-now {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.content-curator-inline-status {
+    display: inline-block;
+    margin-left: 12px;
+    font-size: 13px;
+    font-weight: 600;
+    vertical-align: middle;
+}
+
+.content-curator-inline-status.status-success {
+    color: var(--cc-success);
+}
+
+.content-curator-inline-status.status-error {
+    color: var(--cc-danger);
+}
+
+.content-curator-inline-status.status-loading {
+    color: var(--cc-primary);
+}
+
+/* ==========================================================================
+   Responsive Adjustments
+   ========================================================================== */
+@media (max-width: 782px) {
+    .content-curator-wrap {
+        margin: 10px;
+    }
+
+    .content-curator-toolbar {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .content-curator-toolbar-right {
+        text-align: right;
+    }
+
+    .card-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .card-actions {
+        flex-direction: column;
+    }
+
+    .card-actions .button {
+        justify-content: center;
+        width: 100%;
+    }
+}
+
+/* ==========================================================================
+   Pagination & Date Filter Styles
+   ========================================================================== */
+.content-curator-toolbar-form {
+    margin: 0;
+}
+
+.content-curator-toolbar-left {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.toolbar-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.toolbar-item label {
+    font-weight: 600;
+    color: var(--cc-text-secondary);
+    font-size: 13px;
+    white-space: nowrap;
+}
+
+.toolbar-item input[type="date"] {
+    padding: 5px 10px;
+    border: 1px solid var(--cc-border);
+    border-radius: var(--cc-radius-sm);
+    background: var(--cc-bg-surface);
+    color: var(--cc-text-primary);
+    font-size: 13px;
+    outline: none;
+    transition: border-color var(--cc-transition);
+}
+
+.toolbar-item input[type="date"]:focus {
+    border-color: var(--cc-primary);
+    box-shadow: 0 0 0 1px var(--cc-primary);
+}
+
+.clear-filters-btn {
+    font-size: 12px !important;
+    padding: 3px 10px !important;
+    min-height: 28px !important;
+    line-height: 20px !important;
+}
+
+.content-curator-pagination {
+    margin-top: 30px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
+.content-curator-pagination a,
+.content-curator-pagination span {
+    display: inline-block;
+    padding: 8px 14px;
+    border: 1px solid var(--cc-border);
+    border-radius: var(--cc-radius-sm);
+    background: var(--cc-bg-card);
+    color: var(--cc-text-secondary);
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all var(--cc-transition);
+    box-shadow: var(--cc-shadow);
+}
+
+.content-curator-pagination a:hover {
+    background: var(--cc-bg-muted);
+    border-color: var(--cc-text-muted);
+    color: var(--cc-text-primary);
+}
+
+.content-curator-pagination .current {
+    background: var(--cc-primary);
+    border-color: var(--cc-primary);
+    color: #ffffff;
+    box-shadow: 0 2px 4px rgba(24, 119, 242, 0.3);
+}
+
+.content-curator-pagination .dots {
+    border: none;
+    background: transparent;
+    box-shadow: none;
+    padding: 8px 4px;
+}
+
+/* ==========================================================================
+   Image Slideshow Gallery Styles
+   ========================================================================== */
+.card-image-gallery-container {
+    position: relative;
+    margin-bottom: 14px;
+    border-radius: var(--cc-radius-sm);
+    overflow: hidden;
+    background: var(--cc-bg-muted);
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.05);
+}
+
+.card-image-gallery {
+    position: relative;
+    height: 240px;
+    display: flex;
+    overflow: hidden;
+}
+
+.card-gallery-image {
+    display: none;
+    width: 100%;
+    height: 100%;
+    flex-shrink: 0;
+    animation: fbcFadeIn 0.25s ease;
+}
+
+.card-gallery-image.active {
+    display: block;
+}
+
+.card-gallery-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.gallery-controls {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(4px);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px 14px;
+    z-index: 5;
+    color: #ffffff;
+    font-size: 11px;
+    font-weight: 600;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.gallery-controls button {
+    background: none !important;
+    border: none !important;
+    color: #ffffff !important;
+    font-size: 22px !important;
+    line-height: 1 !important;
+    cursor: pointer !important;
+    padding: 0 4px !important;
+    transition: transform 0.15s ease !important;
+    box-shadow: none !important;
+}
+
+.gallery-controls button:hover {
+    transform: scale(1.3);
+}
+
+.gallery-counter {
+    user-select: none;
+    letter-spacing: 0.5px;
+}
+
+@keyframes fbcFadeIn {
+    from {
+        opacity: 0.4;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/* ==========================================================================
+   Curation Card Meta Selects
+   ========================================================================== */
+.card-meta-selects {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px dashed var(--cc-border-light);
+}
+
+.meta-select-item {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.meta-select-item label {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--cc-text-secondary);
+}
+
+.meta-select-item select {
+    width: 100%;
+    padding: 6px 10px;
+    border: 1px solid var(--cc-border);
+    border-radius: var(--cc-radius-sm);
+    background: var(--cc-bg-surface);
+    color: var(--cc-text-primary);
+    font-size: 12px;
+    outline: none;
+    cursor: pointer;
+    transition: border-color var(--cc-transition), box-shadow var(--cc-transition);
+}
+
+.meta-select-item select:focus {
+    border-color: var(--cc-primary);
+    box-shadow: 0 0 0 1px var(--cc-primary);
+}
+
+/* Toolbar Language Selector Styling */
+.content-curator-lang-switcher {
+    min-width: 120px !important;
+    padding: 5px 10px !important;
+    border: 1px solid var(--cc-border) !important;
+    border-radius: var(--cc-radius-sm) !important;
+    background: var(--cc-bg-surface) !important;
+    color: var(--cc-text-primary) !important;
+    font-size: 13px !important;
+    cursor: pointer !important;
+}
+
+.content-curator-lang-switcher:focus {
+    border-color: var(--cc-primary) !important;
+    box-shadow: 0 0 0 1px var(--cc-primary) !important;
+}
+
+@media (max-width: 782px) {
+    .card-meta-selects {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ==========================================================================
+   CPT Agenda Event Fields Styling
+   ========================================================================== */
+.agenda-only-fields {
+    background: rgba(24, 119, 242, 0.02);
+    border-radius: var(--cc-radius-sm);
+    padding: 15px;
+    margin-top: 15px;
+    border: 1px dashed rgba(24, 119, 242, 0.15) !important;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.02);
+    animation: fbcFadeIn 0.2s ease-out;
+}
+
+.agenda-only-fields h4 {
+    margin-top: 0;
+    color: var(--cc-primary);
+    border-bottom: 1px solid rgba(24, 119, 242, 0.1);
+    padding-bottom: 6px;
+    font-size: 13px !important;
+}
+
+.meta-field-item input[type="text"],
+.meta-field-item input[type="datetime-local"],
+.meta-field-item select {
+    width: 100%;
+    padding: 7px 10px !important;
+    border: 1px solid var(--cc-border) !important;
+    border-radius: var(--cc-radius-sm) !important;
+    background: var(--cc-bg-card) !important;
+    color: var(--cc-text-primary) !important;
+    font-size: 13px !important;
+    outline: none !important;
+    transition: border-color var(--cc-transition), box-shadow var(--cc-transition) !important;
+    box-sizing: border-box !important;
+}
+
+.meta-field-item input[type="text"]:focus,
+.meta-field-item input[type="datetime-local"]:focus,
+.meta-field-item select:focus {
+    border-color: var(--cc-primary) !important;
+    box-shadow: 0 0 0 2px rgba(24, 119, 242, 0.15) !important;
+}
+
+.meta-field-item select[multiple] {
+    height: 100px !important;
+    padding: 5px !important;
+}
+
+.meta-field-item select[multiple] option {
+    padding: 4px 8px;
+    border-radius: 2px;
+    margin-bottom: 1px;
+}
+
+.meta-field-item select[multiple] option:checked {
+    background: var(--cc-primary-light) linear-gradient(0deg, var(--cc-primary-light) 0%, var(--cc-primary-light) 100%) !important;
+    color: var(--cc-primary);
+}
+
+@media (max-width: 782px) {
+    .agenda-only-fields .meta-fields-grid {
+        grid-template-columns: 1fr !important;
+        gap: 12px !important;
+    }
+}
