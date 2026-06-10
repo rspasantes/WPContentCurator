@@ -226,3 +226,9 @@
 - **includes/class-content-curator-admin.php**: Relocated the "Optimize with AI" (`btn-ai`) button from the card bottom actions container (`card-actions`) to right underneath the tabbed editor textareas (`card-editor-actions` within `card-editor`).
 - **assets/css/admin-style.css**: Extended the custom premium button styling selectors to target `.card-editor-actions .button` and its nested dashicons to match the existing look.
 - **assets/js/admin-script.js**: Updated the card loading functions (`showCardLoading`, `hideCardLoading`) to select and disable/enable the newly relocated AI button.
+
+## 2026-06-10 - 20:14 - Bumped plugin version to 1.2.1 and updated changelog
+
+### Summary of Changes
+- **wp-content-curator.php**: Bumped version to `1.2.1` in the plugin headers and constants.
+- **README.md**: Updated changelog to document version `1.2.1`.

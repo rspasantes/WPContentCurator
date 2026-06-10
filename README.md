@@ -118,6 +118,10 @@ wp-content-curator/
 
 ## Changelog
 
+### 1.2.1
+- Relocated the "Optimize with AI" button directly below the tabbed post editor textareas inside the curation card for improved user workflow.
+- Updated styling for the newly relocated button to maintain premium gradients, icons, and hover effects.
+
 ### 1.2.0
 - Added multi-image support: the plugin now extracts all unique valid image URLs from Facebook posts, stores them as a JSON array, and renders a slide-show gallery inside dashboard cards.
 - Multi-image publishing: when saving or publishing posts with multiple images, the plugin downloads and attaches all images, setting the first as the Featured Image and appending a native Gutenberg gallery block to the content.
