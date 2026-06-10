@@ -1322,6 +1322,16 @@ class content_curator_Admin {
                                                 ><?php echo esc_textarea( $post->original_text ); ?></textarea>
                                             <?php $first = false; endforeach; ?>
                                         </div>
+
+                                        <div class="card-editor-actions" style="margin-top: 10px;">
+                                            <button type="button"
+                                                class="button btn-ai"
+                                                data-post-id="<?php echo esc_attr( $post->id ); ?>"
+                                                title="<?php echo esc_attr( $d['optimize_ai'] ); ?>">
+                                                <span class="dashicons dashicons-superhero-alt"></span>
+                                                <?php echo esc_html( $d['optimize_ai'] ); ?>
+                                            </button>
+                                        </div>
                                     </div>
 
                                     <!-- Meta selectors: Post Type, Taxonomy Tag -->
@@ -1413,14 +1423,6 @@ class content_curator_Admin {
 
                             <!-- Card Actions -->
                             <div class="card-actions">
-                                <button type="button"
-                                    class="button btn-ai"
-                                    data-post-id="<?php echo esc_attr( $post->id ); ?>"
-                                    title="<?php echo esc_attr( $d['optimize_ai'] ); ?>">
-                                    <span class="dashicons dashicons-superhero-alt"></span>
-                                    <?php echo esc_html( $d['optimize_ai'] ); ?>
-                                </button>
-
                                 <button type="button"
                                     class="button btn-draft"
                                     data-post-id="<?php echo esc_attr( $post->id ); ?>"

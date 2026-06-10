@@ -61,7 +61,7 @@
     function showCardLoading($card, loadingText) {
         $card.find('.card-loading-text').text(loadingText);
         $card.find('.card-loading').fadeIn(150);
-        $card.find('.card-actions .button').prop('disabled', true);
+        $card.find('.card-actions .button, .card-editor-actions .button').prop('disabled', true);
     }
 
     /**
@@ -71,7 +71,7 @@
      */
     function hideCardLoading($card) {
         $card.find('.card-loading').fadeOut(150);
-        $card.find('.card-actions .button').prop('disabled', false);
+        $card.find('.card-actions .button, .card-editor-actions .button').prop('disabled', false);
     }
 
     /**

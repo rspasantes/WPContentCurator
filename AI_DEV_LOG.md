@@ -218,5 +218,11 @@
 
 ## 2026-06-10 - 20:07 - Documented external dependencies in AGENTS.md
 
-### Summary of Changes
 - **AGENTS.md**: Added a new section "External Dependencies & Integrations" listing external API / AI providers (Apify, OpenAI, Anthropic, Gemini, WordPress 7 Native AI) and third-party WordPress plugin integrations (WPML, Crocoblock/JetEngine custom fields and taxonomies).
+
+## 2026-06-10 - 20:10 - Relocated Optimize with AI button below text editor
+
+### Summary of Changes
+- **includes/class-content-curator-admin.php**: Relocated the "Optimize with AI" (`btn-ai`) button from the card bottom actions container (`card-actions`) to right underneath the tabbed editor textareas (`card-editor-actions` within `card-editor`).
+- **assets/css/admin-style.css**: Extended the custom premium button styling selectors to target `.card-editor-actions .button` and its nested dashicons to match the existing look.
+- **assets/js/admin-script.js**: Updated the card loading functions (`showCardLoading`, `hideCardLoading`) to select and disable/enable the newly relocated AI button.
