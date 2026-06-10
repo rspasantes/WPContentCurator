@@ -511,4 +511,48 @@
         });
     });
 
+    // =========================================================================
+    // EVENT: SETTINGS TABS SWITCHER
+    // =========================================================================
+    $(document).on('click', '.content-curator-settings-tabs a', function (e) {
+        e.preventDefault();
+        var $tab = $(this);
+        var targetId = $tab.attr('href');
+
+        // Toggle active tab link
+        $('.content-curator-settings-tabs a').removeClass('nav-tab-active');
+        $tab.addClass('nav-tab-active');
+
+        // Show target tab content, hide others
+        $('.settings-tab-content').hide();
+        $(targetId).show();
+
+        // Update URL hash
+        if (history.pushState) {
+            history.pushState(null, null, targetId);
+        } else {
+            location.hash = targetId;
+        }
+    });
+
+    // Update referer with the active tab hash before form submission
+    $(document).on('submit', '.content-curator-wrap form', function () {
+        var $form = $(this);
+        var activeTab = $('.content-curator-settings-tabs a.nav-tab-active').attr('href');
+        var $referer = $form.find('input[name="_wp_http_referer"]');
+        if ($referer.length && activeTab) {
+            var val = $referer.val();
+            val = val.split('#')[0];
+            $referer.val(val + activeTab);
+        }
+    });
+
+    // On page load, check URL hash and open correct settings tab
+    $(function () {
+        var hash = window.location.hash;
+        if (hash && $('.content-curator-settings-tabs a[href="' + hash + '"]').length) {
+            $('.content-curator-settings-tabs a[href="' + hash + '"]').trigger('click');
+        }
+    });
+
 })(jQuery);

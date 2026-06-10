@@ -232,3 +232,15 @@
 ### Summary of Changes
 - **wp-content-curator.php**: Bumped version to `1.2.1` in the plugin headers and constants.
 - **README.md**: Updated changelog to document version `1.2.1`.
+
+## 2026-06-10 - 20:17 - Restructured settings page into tabbed layout
+
+### Summary of Changes
+- **includes/class-content-curator-admin.php**:
+  - Restructured the settings page layout into a tabbed menu using standard WordPress `.nav-tab-wrapper` tabs.
+  - Divided settings fields into three separate tabs matching basic, AI, and CRON sections respectively.
+  - Updated translation dictionary (`get_dictionary`) with custom translations for basic, AI, and CRON tab titles in English, Spanish, and French.
+- **assets/js/admin-script.js**:
+  - Added click event handler for settings tabs to toggle active class and display corresponding settings section.
+  - Implemented automatic redirection hash recovery by updating the hidden `_wp_http_referer` form field before submission to stay on the active tab post-save.
+  - Added on-load hash check to automatically activate the tab matching the URL hash.

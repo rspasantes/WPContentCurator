@@ -84,6 +84,9 @@ class content_curator_Admin {
                 'manual_fetch_desc'    => 'Trigger a manual fetch without waiting for the next scheduled cron run.',
                 'next_sched'           => 'Next scheduled fetch:',
                 // Settings headers
+                'tab_basic'            => 'Apify & Page Configuration (Basic Config)',
+                'tab_ai'               => 'AI Rewriting Configuration (AI Config)',
+                'tab_cron'             => 'External CRON Configuration (CRON)',
                 'apify_section_title'  => 'Apify & Page Configuration',
                 'apify_section_desc'   => 'Enter your Apify API credentials and the Facebook Page URLs/names to monitor.',
                 'apify_token_label'    => 'Apify API Token',
@@ -181,6 +184,9 @@ class content_curator_Admin {
                 'manual_fetch_desc'    => 'Activa una importación manual sin esperar a la próxima ejecución programada del cron.',
                 'next_sched'           => 'Siguiente importación programada:',
                 // Settings headers
+                'tab_basic'            => 'Configuración de Apify y Páginas (Configuración Básica)',
+                'tab_ai'               => 'Configuración de Reescritura por IA (Configuración IA)',
+                'tab_cron'             => 'Configuración de CRON Externo (CRON)',
                 'apify_section_title'  => 'Configuración de Apify y Páginas',
                 'apify_section_desc'   => 'Introduce tus credenciales de Apify y las URLs/nombres de las páginas de Facebook a monitorizar.',
                 'apify_token_label'    => 'Token de API de Apify',
@@ -278,6 +284,9 @@ class content_curator_Admin {
                 'manual_fetch_desc'    => 'Déclencher une récupération manuelle sans attendre la prochaine exécution planifiée du cron.',
                 'next_sched'           => 'Prochaine récupération planifiée:',
                 // Settings headers
+                'tab_basic'            => 'Configuration d\'Apify et des Pages (Configuration de Base)',
+                'tab_ai'               => 'Configuration de Réécriture d\'IA (Configuration d\'IA)',
+                'tab_cron'             => 'Configuration du CRON Externe (CRON)',
                 'apify_section_title'  => 'Configuration d\'Apify et des Pages',
                 'apify_section_desc'   => 'Entrez vos identifiants API Apify et les URLs/noms de pages Facebook à surveiller.',
                 'apify_token_label'    => 'Jeton API Apify',
@@ -995,27 +1004,52 @@ class content_curator_Admin {
 
     // =========================================================================
     // SETTINGS PAGE RENDER
-    // =========================================================================
-
-    /**
-     * Render the Settings admin page.
-     *
-     * @return void
-     */
-    public function render_settings_page() {
+    // =====================    public function render_settings_page() {
         if ( ! current_user_can( 'manage_options' ) ) {
             wp_die( esc_html__( 'You do not have sufficient permissions to access this page.', 'wp-content-curator' ) );
         }
+        $plugin_lang = get_option( 'content_curator_plugin_language', 'en' );
+        $d = self::get_dictionary( $plugin_lang );
         ?>
         <div class="wrap content-curator-wrap">
             <h1><?php echo esc_html( get_admin_page_title() ); ?></h1>
 
             <form method="post" action="options.php">
-                <?php
-                settings_fields( 'content_curator_settings_group' );
-                do_settings_sections( 'content-curator-settings' );
-                submit_button( __( 'Save Settings', 'wp-content-curator' ) );
-                ?>
+                <?php settings_fields( 'content_curator_settings_group' ); ?>
+                
+                <h2 class="nav-tab-wrapper content-curator-settings-tabs" style="margin-bottom: 20px;">
+                    <a href="#tab-basic" class="nav-tab nav-tab-active" data-tab="basic"><?php echo esc_html( $d['tab_basic'] ); ?></a>
+                    <a href="#tab-ai" class="nav-tab" data-tab="ai"><?php echo esc_html( $d['tab_ai'] ); ?></a>
+                    <a href="#tab-cron" class="nav-tab" data-tab="cron"><?php echo esc_html( $d['tab_cron'] ); ?></a>
+                </h2>
+
+                <div class="content-curator-tab-contents">
+                    <!-- Tab 1: Basic Configuration -->
+                    <div id="tab-basic" class="settings-tab-content">
+                        <p class="description" style="margin-bottom: 15px; font-size: 13px;"><?php echo esc_html( $d['apify_section_desc'] ); ?></p>
+                        <table class="form-table" role="presentation">
+                            <?php do_settings_fields( 'content-curator-settings', 'content_curator_fb_section' ); ?>
+                        </table>
+                    </div>
+
+                    <!-- Tab 2: AI Configuration -->
+                    <div id="tab-ai" class="settings-tab-content" style="display: none;">
+                        <p class="description" style="margin-bottom: 15px; font-size: 13px;"><?php echo esc_html( $d['ai_section_desc'] ); ?></p>
+                        <table class="form-table" role="presentation">
+                            <?php do_settings_fields( 'content-curator-settings', 'content_curator_ai_section' ); ?>
+                        </table>
+                    </div>
+
+                    <!-- Tab 3: CRON Configuration -->
+                    <div id="tab-cron" class="settings-tab-content" style="display: none;">
+                        <p class="description" style="margin-bottom: 15px; font-size: 13px;"><?php echo esc_html( $d['cron_section_desc'] ); ?></p>
+                        <table class="form-table" role="presentation">
+                            <?php do_settings_fields( 'content-curator-settings', 'content_curator_cron_section' ); ?>
+                        </table>
+                    </div>
+                </div>
+
+                <?php submit_button( __( 'Save Settings', 'wp-content-curator' ) ); ?>
             </form>
 
             <hr />
