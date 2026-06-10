@@ -247,5 +247,13 @@
 
 ## 2026-06-10 - 20:18 - Switched AI rewrite errors to browser alert popups
 
-### Summary of Changes
 - **assets/js/admin-script.js**: Replaced standard top-of-page notification banners (`showNotice`) with browser-level modal alert dialogs (`alert()`) for any errors occurring during the "Optimize with AI" process.
+
+## 2026-06-10 - 20:20 - Implemented custom success modal with post link on publish/draft save
+
+### Summary of Changes
+- **includes/class-content-curator-admin.php**: Modified the `ajax_publish()` success response payload to return the post's permalink (`post_url`).
+- **assets/js/admin-script.js**:
+  - Implemented `showPublishSuccessModal(message, url, isDraft)` to render a premium glassmorphic modal with a checkmark icon, success message, and a button link pointing to the newly created post (view URL for published posts, edit URL for draft posts).
+  - Wired the modal popup trigger inside the AJAX success callback of the publish/draft button handler.
+  - Replaced publish/draft saving error banners with browser alert popups.

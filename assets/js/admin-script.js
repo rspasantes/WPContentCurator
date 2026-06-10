@@ -109,6 +109,62 @@
         }
     }
 
+    /**
+     * Show a premium success modal with a link to view/edit the created post.
+     *
+     * @param {string}  message The success message.
+     * @param {string}  url     The link to the post.
+     * @param {boolean} isDraft Whether the post is saved as a draft.
+     */
+    function showPublishSuccessModal(message, url, isDraft) {
+        $('#cc-publish-modal').remove();
+
+        var btnText = isDraft ? 'Editar Borrador' : 'Ver Publicación';
+        var btnIcon = isDraft ? 'dashicons-edit' : 'dashicons-visibility';
+        var bodyDesc = isDraft 
+            ? 'El borrador se ha guardado con éxito. Puedes editarlo haciendo clic en el siguiente enlace.'
+            : 'La publicación se ha completado con éxito. Puedes ver el post publicado haciendo clic en el siguiente enlace.';
+
+        var modalHtml = 
+            '<div id="cc-publish-modal" style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(4px); display: flex; align-items: center; justify-content: center; z-index: 99999; animation: ccModalFadeIn 0.3s ease;">' +
+            '  <div style="background: #ffffff; padding: 30px; border-radius: 12px; max-width: 450px; width: 90%; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.2); animation: ccModalSlideUp 0.3s cubic-bezier(0.18, 0.89, 0.32, 1.28); font-family: -apple-system, BlinkMacSystemFont, \'Segoe UI\', Roboto, Oxygen-Sans, Ubuntu, Cantarell, \'Helvetica Neue\', sans-serif;">' +
+            '    <div style="width: 60px; height: 60px; background: #e8f5e9; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px auto; color: #2e7d32;">' +
+            '      <span class="dashicons dashicons-yes-alt" style="font-size: 36px; width: 36px; height: 36px;"></span>' +
+            '    </div>' +
+            '    <h3 style="margin: 0 0 10px 0; color: #1d2327; font-size: 20px; font-weight: 700;">' + message + '</h3>' +
+            '    <p style="color: #50575e; font-size: 14px; margin-bottom: 24px; line-height: 1.5;">' + bodyDesc + '</p>' +
+            '    <div style="display: flex; gap: 10px; justify-content: center;">' +
+            '      <a href="' + url + '" target="_blank" class="button button-primary" style="background: #2e7d32; border-color: #2e7d32; color: #ffffff; text-decoration: none; padding: 8px 18px; border-radius: 6px; font-weight: 600; display: inline-flex; align-items: center; gap: 6px; font-size: 14px; height: auto; line-height: 1.4; box-shadow: 0 2px 4px rgba(46,125,50,0.3); transition: all 0.2s ease;">' +
+            '        <span class="dashicons ' + btnIcon + '" style="font-size: 18px; width: 18px; height: 18px; margin-top: 1px;"></span> ' + btnText +
+            '      </a>' +
+            '      <button id="cc-close-modal-btn" class="button button-secondary" style="padding: 8px 18px; border-radius: 6px; font-weight: 600; font-size: 14px; height: auto; line-height: 1.4;">Cerrar</button>' +
+            '    </div>' +
+            '  </div>' +
+            '</div>';
+
+        $('body').append(modalHtml);
+
+        // CSS animations
+        if (!$('#cc-modal-styles').length) {
+            $('head').append(
+                '<style id="cc-modal-styles">' +
+                '  @keyframes ccModalFadeIn { from { opacity: 0; } to { opacity: 1; } }' +
+                '  @keyframes ccModalSlideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }' +
+                '  #cc-publish-modal a.button-primary:hover { background: #256427 !important; border-color: #256427 !important; transform: translateY(-1px); box-shadow: 0 4px 8px rgba(46,125,50,0.4) !important; }' +
+                '</style>'
+            );
+        }
+    }
+
+    // Close settings / publish modal
+    $(document).on('click', '#cc-close-modal-btn, #cc-publish-modal', function (e) {
+        if (e.target === this || e.target.id === 'cc-close-modal-btn') {
+            $('#cc-publish-modal').fadeOut(200, function () {
+                $(this).remove();
+            });
+        }
+    });
+
     // =========================================================================
     // EVENT: TABS FOR MULTI-LANGUAGE EDITOR
     // =========================================================================
@@ -300,16 +356,17 @@
 
                 if (response.success) {
                     var msg = response.data.message || (publishStatus === 'publish' ? strings.success_publish : strings.success_draft);
-                    showNotice(msg, 'success');
+                    var linkUrl = publishStatus === 'publish' ? response.data.post_url : response.data.edit_url;
+                    showPublishSuccessModal(msg, linkUrl, (publishStatus === 'draft'));
                     removeCard($card);
                 } else {
                     var errMsg = (response.data && response.data.message) ? response.data.message : strings.error_generic;
-                    showNotice(errMsg, 'error');
+                    alert(errMsg);
                 }
             },
             error: function () {
                 hideCardLoading($card);
-                showNotice(strings.error_generic, 'error');
+                alert(strings.error_generic);
             }
         });
     });

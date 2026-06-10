@@ -1882,6 +1882,7 @@ class content_curator_Admin {
                 ? __( 'Post published successfully!', 'wp-content-curator' )
                 : __( 'Post saved as draft!', 'wp-content-curator' ),
             'post_id'  => $new_post_id,
+            'post_url' => get_permalink( $new_post_id ),
             'edit_url' => get_edit_post_link( $new_post_id, 'raw' ),
         ) );
     }
