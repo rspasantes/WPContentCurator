@@ -215,3 +215,8 @@
 ### Summary of Changes
 - **.gitignore**: Created a `.gitignore` file in the plugin root to ignore OS metadata and IDE configuration files.
 - **Git Repository**: Added all existing plugin files and performed the initial commit and push to the remote GitHub repository.
+
+## 2026-06-10 - 20:07 - Documented external dependencies in AGENTS.md
+
+### Summary of Changes
+- **AGENTS.md**: Added a new section "External Dependencies & Integrations" listing external API / AI providers (Apify, OpenAI, Anthropic, Gemini, WordPress 7 Native AI) and third-party WordPress plugin integrations (WPML, Crocoblock/JetEngine custom fields and taxonomies).

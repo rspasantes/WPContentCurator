@@ -16,6 +16,23 @@ During publication, the plugin automatically sideloads all post images to the Me
 - **External CRON Trigger**: A configurable URL endpoint protected by a secret token that automatically processes pending database posts, translates the content into each active WPML language using the configured AI provider, inserts the master and translated posts, and links them programmatically.
 - **Default Post Type & Tag Settings**: General options in settings to configure a default Custom Post Type and default taxonomy Tag for curation card selectors, pre-selecting them automatically upon loading the dashboard.
 
+## 🔗 External Dependencies & Integrations
+
+The plugin relies on or integrates with the following external APIs and third-party WordPress plugins:
+
+### 1. External APIs & AI Providers
+- **Apify API (Facebook Posts Scraper)**: Utilized to scrape posts from public Facebook Pages synchronously. Requires an Apify API Token (`content_curator_apify_token`).
+- **OpenAI API**: Used for AI rewriting using `gpt-4o-mini` (requires API Key).
+- **Anthropic API**: Used for AI rewriting using `claude-3-haiku` (requires API Key).
+- **Google Gemini API**: Used for AI rewriting using `gemini-1.5-flash` (requires API Key).
+- **WordPress 7.0 Native AI**: Uses the built-in `wp_ai_client_prompt()` function (requires a WordPress 7.0+ core environment with AI client configured).
+
+### 2. Third-Party Plugin Integrations
+- **WPML (WordPress Multilingual CMS)**: Optional but highly integrated. Enables the tabbed multilingual curation editor, dynamic AI translations, automatic cloning of published posts for all active languages, and programmatic translation linkage via WPML hooks (`wpml_active_languages`, `wpml_set_element_language_details`).
+- **Crocoblock / JetEngine (Agenda Custom Post Type)**: Used for the custom post type `agenda`. The plugin reads and saves the following custom metadata fields and taxonomies:
+  - **Meta fields**: `fecha-de-inicio` (UNIX timestamp), `fecha-de-fin` (UNIX timestamp), `Lugar` (string), `coordenadas` (string), `video-del-evento` (URL), and `galeria-del-evento` (comma-separated attachment IDs).
+  - **Taxonomies**: `categorias-agenda` (hierarchical taxonomy) and `concellos-eventos` (non-hierarchical taxonomy).
+
 ## 🔌 WordPress Active Plugins List
 The target WordPress environment has the following active plugins:
 
