@@ -166,7 +166,7 @@
         var text = $activeTextarea.val();
 
         if (!text || !text.trim()) {
-            showNotice(strings.error_generic, 'error');
+            alert(strings.error_generic);
             return;
         }
 
@@ -210,12 +210,12 @@
                     showNotice(strings.success_rewrite, 'success');
                 } else {
                     var msg = (response.data && response.data.message) ? response.data.message : strings.error_generic;
-                    showNotice(msg, 'error');
+                    alert(msg);
                 }
             },
             error: function () {
                 hideCardLoading($card);
-                showNotice(strings.error_generic, 'error');
+                alert(strings.error_generic);
             }
         });
     });

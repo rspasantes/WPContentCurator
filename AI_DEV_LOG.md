@@ -244,3 +244,8 @@
   - Added click event handler for settings tabs to toggle active class and display corresponding settings section.
   - Implemented automatic redirection hash recovery by updating the hidden `_wp_http_referer` form field before submission to stay on the active tab post-save.
   - Added on-load hash check to automatically activate the tab matching the URL hash.
+
+## 2026-06-10 - 20:18 - Switched AI rewrite errors to browser alert popups
+
+### Summary of Changes
+- **assets/js/admin-script.js**: Replaced standard top-of-page notification banners (`showNotice`) with browser-level modal alert dialogs (`alert()`) for any errors occurring during the "Optimize with AI" process.
