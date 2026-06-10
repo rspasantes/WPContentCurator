@@ -257,3 +257,10 @@
   - Implemented `showPublishSuccessModal(message, url, isDraft)` to render a premium glassmorphic modal with a checkmark icon, success message, and a button link pointing to the newly created post (view URL for published posts, edit URL for draft posts).
   - Wired the modal popup trigger inside the AJAX success callback of the publish/draft button handler.
   - Replaced publish/draft saving error banners with browser alert popups.
+
+## 2026-06-11 - 00:18 - Fixed PHP syntax parse error in settings page method definition
+
+### Summary of Changes
+- **includes/class-content-curator-admin.php**: Fixed syntax parse error on settings page render method where a trailing comment block commented out the function definition.
+- **wp-content-curator.php**: Bumped plugin version to `1.2.2`.
+- **README.md**: Updated changelog.

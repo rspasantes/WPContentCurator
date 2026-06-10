@@ -118,6 +118,9 @@ wp-content-curator/
 
 ## Changelog
 
+### 1.2.2
+- Fixed a syntax parse error in the settings page render method where a trailing comment block commented out the function definition.
+
 ### 1.2.1
 - Relocated the "Optimize with AI" button directly below the tabbed post editor textareas inside the curation card for improved user workflow.
 - Updated styling for the newly relocated button to maintain premium gradients, icons, and hover effects.
