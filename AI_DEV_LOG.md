@@ -264,3 +264,53 @@
 - **includes/class-content-curator-admin.php**: Fixed syntax parse error on settings page render method where a trailing comment block commented out the function definition.
 - **wp-content-curator.php**: Bumped plugin version to `1.2.2`.
 - **README.md**: Updated changelog.
+
+## 2026-06-11 - 00:26 - Fixed 'Lugar' event field metadata saving key casing
+
+### Summary of Changes
+- **includes/class-content-curator-admin.php**: Updated the `'Lugar'` metadata key inside the CPT agenda publication block to `'lugar'` (lowercase) in both master post and translated post update sections, matching the actual JetEngine field key identifier.
+- **wp-content-curator.php**: Bumped plugin version to `1.2.3`.
+- **README.md**: Updated changelog.
+- **AGENTS.md**: Corrected occurrences of `'Lugar'` to `'lugar'` in meta fields specification.
+
+## 2026-06-11 - 00:30 - Added CPT Agenda Default Values configuration and pre-filling
+
+### Summary of Changes
+- **includes/class-content-curator-admin.php**:
+  - Registered `content_curator_agenda_defaults` array option and added its section and field.
+  - Implemented `sanitize_agenda_defaults($value)` to clean inputs from the dynamic defaults table.
+  - Implemented `render_field_agenda_defaults()` to draw the dynamic configuration table.
+  - Added a 4th tab in settings layout to hold the Agenda Defaults table.
+  - Queried matching default values inside the curation card grid loop, pre-filling start/end times (concatenated with the post's publish date), location, and coordinates if configured.
+  - Added new UI dictionary translations in English, Spanish, and French.
+- **assets/js/admin-script.js**: Added jQuery handlers to add and remove default agenda rows, re-indexing inputs to ensure sequential submission array indexes.
+- **wp-content-curator.php**: Bumped plugin version to `1.3.0`.
+- **README.md**: Documented version `1.3.0` changes.
+- **AGENTS.md**: Documented new Agenda Defaults config capability.
+
+## 2026-06-11 - 00:48 - Reordered settings tabs, updated titles, and styled defaults table
+
+### Summary of Changes
+- **includes/class-content-curator-admin.php**:
+  - Reordered and restructured settings tab rendering to fix a broken HTML container nesting and a PHP syntax error.
+  - Rendered the event configuration defaults table directly inside the tab container (bypassing the form-table column constraints) to allow full-width sizing and prevent layout squeezing.
+  - Removed inline widths from the table inputs.
+- **assets/css/admin-style.css**: Added premium custom styling rules for the event defaults configuration table (`#cc-agenda-defaults-table`) to ensure comfortable layout spacing and high-end visual appearance.
+
+## 2026-06-11 - 01:00 - Simplified event fields, changed times to date-only format, added today checkbox option, and bumped version to 1.4.0
+
+### Summary of Changes
+- **includes/class-content-curator-admin.php**:
+  - Simplified CPT Agenda event fields on curation cards: removed coordinates and video fields from the card editor layout, leaving only start date, end date, place (lugar), categories, and concellos.
+  - Switched event start/end inputs on curation cards and default configurations from `datetime-local`/`time` inputs to standard date-only `date` inputs.
+  - Added a checkbox option (`use_today`) to the event default settings table allowing page defaults to automatically fallback to the current day's date.
+  - Removed coordinates and video fields saving in the master and translated posts creation routines.
+  - Updated translation dictionaries in English, Spanish, and French for the updated settings headers and checkbox options.
+- **assets/js/admin-script.js**:
+  - Replaced the defaults row creation template, converting start/end time fields to date fields and adding the `use_today` checkbox markup.
+  - Added a change handler for the `use_today` checkbox to automatically toggle the disabled property of the row's date inputs.
+  - Added a document-ready function to initialize the disabled state of date inputs based on checked options on load.
+- **assets/css/admin-style.css**: Included `input[type="date"]` selector in the default configuration table CSS rules to ensure dates have matching styled inputs.
+- **wp-content-curator.php**: Bumped plugin version constant and header metadata to `1.4.0`.
+- **README.md**: Updated version references and changelog history for the `1.4.0` release.
+- **AGENTS.md**: Updated CPT Agenda integration and default values specifications to align with simplified metadata fields.

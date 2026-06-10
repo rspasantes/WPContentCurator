@@ -3,7 +3,7 @@
  * Plugin Name: WP Content Curator
  * Plugin URI:  https://github.com/your-repo/wp-content-curator
  * Description: A content curation panel that fetches Facebook Page posts, allows AI-powered rewriting, and publishes them as native WordPress entries.
- * Version:     1.2.2
+ * Version:     1.4.0
  * Author:      Roberto Suárez
  * Author URI:  https://your-site.com
  * License:     GPL-2.0-or-later
@@ -22,7 +22,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Plugin constants.
  */
-define( 'WP_CONTENT_CURATOR_VERSION', '1.2.2' );
+define( 'WP_CONTENT_CURATOR_VERSION', '1.4.0' );
 define( 'WP_CONTENT_CURATOR_DIR', plugin_dir_path( __FILE__ ) );
 define( 'WP_CONTENT_CURATOR_URL', plugin_dir_url( __FILE__ ) );
 define( 'WP_CONTENT_CURATOR_BASENAME', plugin_basename( __FILE__ ) );

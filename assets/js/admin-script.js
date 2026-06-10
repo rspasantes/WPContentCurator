@@ -612,4 +612,82 @@
         }
     });
 
+    // =========================================================================
+    // EVENT: AGENDA DEFAULTS DYNAMIC TABLE
+    // =========================================================================
+    $(document).on('click', '#cc-add-agenda-row-btn', function (e) {
+        e.preventDefault();
+        var $tbody = $('#cc-agenda-defaults-table tbody');
+        
+        // Remove empty placeholder row if it exists
+        $tbody.find('.cc-no-defaults-row').remove();
+        
+        var index = $tbody.find('tr').length;
+        
+        var rowHtml = '<tr>' +
+            '  <td><input type="text" name="content_curator_agenda_defaults[' + index + '][page_id]" placeholder="e.g. concellodecamarinas" required /></td>' +
+            '  <td style="text-align: center; vertical-align: middle;"><input type="checkbox" name="content_curator_agenda_defaults[' + index + '][use_today]" value="1" class="cc-use-today-checkbox" /></td>' +
+            '  <td><input type="date" name="content_curator_agenda_defaults[' + index + '][start_date]" /></td>' +
+            '  <td><input type="date" name="content_curator_agenda_defaults[' + index + '][end_date]" /></td>' +
+            '  <td><input type="text" name="content_curator_agenda_defaults[' + index + '][location]" placeholder="e.g. Salón de Plenos" /></td>' +
+            '  <td>' +
+            '    <button type="button" class="button button-link-delete cc-remove-agenda-row-btn" title="Eliminar">' +
+            '      <span class="dashicons dashicons-trash" style="color: #b32d2e; vertical-align: middle;"></span>' +
+            '    </button>' +
+            '  </td>' +
+            '</tr>';
+            
+        $tbody.append(rowHtml);
+    });
+
+    $(document).on('click', '.cc-remove-agenda-row-btn', function (e) {
+        e.preventDefault();
+        var $row = $(this).closest('tr');
+        var $tbody = $row.closest('tbody');
+        $row.remove();
+        
+        // Re-index all remaining rows so POST indexes are sequential
+        $tbody.find('tr').each(function (index) {
+            var $tr = $(this);
+            if ($tr.hasClass('cc-no-defaults-row')) {
+                return;
+            }
+            $tr.find('input').each(function () {
+                var $input = $(this);
+                var name = $input.attr('name');
+                if (name) {
+                    var newName = name.replace(/content_curator_agenda_defaults\[\d+\]/, 'content_curator_agenda_defaults[' + index + ']');
+                    $input.attr('name', newName);
+                }
+            });
+        });
+        
+        // Add empty placeholder row if no rows left
+        if ($tbody.find('tr').length === 0) {
+            $tbody.append('<tr class="cc-no-defaults-row"><td colspan="6" style="text-align: center; color: var(--cc-text-muted); padding: 15px;">No default configurations added yet.</td></tr>');
+        }
+    });
+
+    // Toggle today checkbox handles date inputs disabling
+    $(document).on('change', '.cc-use-today-checkbox', function () {
+        var $cb = $(this);
+        var $row = $cb.closest('tr');
+        var isChecked = $cb.is(':checked');
+        $row.find('input[type="date"]').prop('disabled', isChecked);
+        if (isChecked) {
+            $row.find('input[type="date"]').val('');
+        }
+    });
+
+    // Initialize state on load
+    $(function () {
+        $('.cc-use-today-checkbox').each(function () {
+            var $cb = $(this);
+            var $row = $cb.closest('tr');
+            if ($cb.is(':checked')) {
+                $row.find('input[type="date"]').prop('disabled', true);
+            }
+        });
+    });
+
 })(jQuery);

@@ -118,6 +118,20 @@ wp-content-curator/
 
 ## Changelog
 
+### 1.4.0
+- Reordered settings page tabs to follow: Basic Configuration, AI Configuration, Event Configuration, and CRON.
+- Simplified curation dashboard event fields: removed coordinates and video fields from event card editor, keeping only Start Date, End Date, Location, Categories, and Concellos.
+- Simplified settings defaults: replaced start/end hours with date picker fields, added a checkbox option to use the current day's date as default start and end dates.
+- Cleaned up settings page HTML nesting structure and fixed a PHP syntax parser error.
+- Styled settings defaults table with wide, responsive borders and input fields for premium appearance.
+
+### 1.3.0
+- Added Agenda Defaults Configuration settings: a new 4th settings tab displaying a dynamic table where administrators can map specific Facebook Page URLs/usernames to default event start/end times, default venue place (lugar), and default coordinates (coordenadas).
+- Dashboard Prefilling: Curation Dashboard event forms now scan for configured default values matching the post's source page, automatically pre-filling event start/end dates (combining post date with default hours), venue location, and coordinates.
+
+### 1.2.3
+- Fixed custom post type `agenda` location field integration by saving to the lowercase meta key `'lugar'` instead of `'Lugar'`, aligning it with JetEngine and preventing the field from saving blank.
+
 ### 1.2.2
 - Fixed a syntax parse error in the settings page render method where a trailing comment block commented out the function definition.
 

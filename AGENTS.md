@@ -10,11 +10,12 @@ During publication, the plugin automatically sideloads all post images to the Me
 ### Key Additional Capabilities
 - **UI Languages**: Multi-language control system with built-in translations for **English**, **Spanish**, and **French** UI texts, buttons, and alert notices. A settings field and dynamic switcher in the toolbar allow instant translation of the interface.
 - **Custom Post Types**: Allows selecting which Post Type (e.g., standard post, page, or dynamic Custom Post Types) to create the draft or published post as.
-- **CPT Agenda Integration**: Specifically integrates and supports the custom post type `agenda` (Agenda). When selected, it displays dynamic fields for event dates (`fecha-de-inicio` and `fecha-de-fin` stored as UNIX timestamps), Location (`Lugar`), Coordinates (`coordenadas`), Video URL (`video-del-evento`), Event Description (`descripcion-del-evento`), and Event Gallery (`galeria-del-evento` stored as comma-separated sideloaded attachment IDs). It also queries and renders selectors for `categorias-agenda` (hierarchical) and `concellos-eventos` taxonomies and associates them.
+- **CPT Agenda Integration**: Specifically integrates and supports the custom post type `agenda` (Agenda). When selected, it displays dynamic fields for event dates (`fecha-de-inicio` and `fecha-de-fin` stored as UNIX timestamps of the dates), Location (`lugar`), Event Description (`descripcion-del-evento`), and Event Gallery (`galeria-del-evento` stored as comma-separated sideloaded attachment IDs). It also queries and renders selectors for `categorias-agenda` (hierarchical) and `concellos-eventos` taxonomies and associates them.
 - **Taxonomy Tag Selection**: Automatically queries all active non-hierarchical taxonomies (tags) in the system, lists them grouped by taxonomy in a card dropdown, and assigns the selected tag dynamically to the created post.
 - **WPML Integration & Tabbed Curation Editor**: Fully integrated with WPML programmatically. Instead of a single post language selector, each curation card displays a tabbed content editor representing each curated language (from settings). This allows concurrent preview and edits of translations. Upon publication or draft creation, individual posts are programmatically created for each language tab and linked together as translations in WPML.
 - **External CRON Trigger**: A configurable URL endpoint protected by a secret token that automatically processes pending database posts, translates the content into each active WPML language using the configured AI provider, inserts the master and translated posts, and links them programmatically.
 - **Default Post Type & Tag Settings**: General options in settings to configure a default Custom Post Type and default taxonomy Tag for curation card selectors, pre-selecting them automatically upon loading the dashboard.
+- **CPT Agenda Defaults**: Configurable default event start/end dates (or option to use the current date), and location place on a per-Facebook-Page basis in settings. Prefills the corresponding curation card fields in the dashboard when the post originates from that page.
 
 ## 🔗 External Dependencies & Integrations
 
@@ -30,7 +31,7 @@ The plugin relies on or integrates with the following external APIs and third-pa
 ### 2. Third-Party Plugin Integrations
 - **WPML (WordPress Multilingual CMS)**: Optional but highly integrated. Enables the tabbed multilingual curation editor, dynamic AI translations, automatic cloning of published posts for all active languages, and programmatic translation linkage via WPML hooks (`wpml_active_languages`, `wpml_set_element_language_details`).
 - **Crocoblock / JetEngine (Agenda Custom Post Type)**: Used for the custom post type `agenda`. The plugin reads and saves the following custom metadata fields and taxonomies:
-  - **Meta fields**: `fecha-de-inicio` (UNIX timestamp), `fecha-de-fin` (UNIX timestamp), `Lugar` (string), `coordenadas` (string), `video-del-evento` (URL), and `galeria-del-evento` (comma-separated attachment IDs).
+  - **Meta fields**: `fecha-de-inicio` (UNIX timestamp), `fecha-de-fin` (UNIX timestamp), `lugar` (string), and `galeria-del-evento` (comma-separated attachment IDs).
   - **Taxonomies**: `categorias-agenda` (hierarchical taxonomy) and `concellos-eventos` (non-hierarchical taxonomy).
 
 ## 🔌 WordPress Active Plugins List

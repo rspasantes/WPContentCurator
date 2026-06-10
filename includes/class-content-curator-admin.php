@@ -84,9 +84,9 @@ class content_curator_Admin {
                 'manual_fetch_desc'    => 'Trigger a manual fetch without waiting for the next scheduled cron run.',
                 'next_sched'           => 'Next scheduled fetch:',
                 // Settings headers
-                'tab_basic'            => 'Apify & Page Configuration (Basic Config)',
-                'tab_ai'               => 'AI Rewriting Configuration (AI Config)',
-                'tab_cron'             => 'External CRON Configuration (CRON)',
+                'tab_basic'            => 'Basic Configuration',
+                'tab_ai'               => 'AI Configuration',
+                'tab_cron'             => 'CRON',
                 'apify_section_title'  => 'Apify & Page Configuration',
                 'apify_section_desc'   => 'Enter your Apify API credentials and the Facebook Page URLs/names to monitor.',
                 'apify_token_label'    => 'Apify API Token',
@@ -110,18 +110,23 @@ class content_curator_Admin {
                 'cron_status_label'    => 'Default Status',
                 'cron_url_label'       => 'CRON URL Trigger',
                 'cron_url_desc'        => 'This is the URL that your server or external service should call to trigger the automatic curation process.',
-                // Event custom CPT agenda fields
-                'event_fields_title'   => 'Event Fields (Crocoblock)',
-                'event_start_label'    => 'Start Date & Time',
-                'event_end_label'      => 'End Date & Time',
+                'event_start_label'    => 'Start Date',
+                'event_end_label'      => 'End Date',
                 'event_location_label' => 'Location (Lugar)',
                 'event_location_placeholder' => 'Enter location or venue name',
-                'event_coords_label'   => 'Coordinates (Coordenadas)',
-                'event_coords_placeholder' => 'e.g. 43.123,-8.456',
-                'event_video_label'    => 'Event Video URL',
                 'categorias_agenda_label' => 'Agenda Categories:',
                 'concellos_eventos_label' => 'Concellos (Events):',
                 'multiselect_help'     => 'Hold Ctrl (Cmd on Mac) to select multiple options.',
+                'tab_agenda'            => 'Event Configuration',
+                'agenda_defaults_title' => 'Event Configuration Defaults by Facebook Page',
+                'agenda_defaults_desc' => 'Configure default event start and end dates, and location place for each Facebook Page. When posts from these pages are loaded on the curation dashboard, their agenda fields will be pre-filled automatically.',
+                'col_fb_page'           => 'Facebook Page URL/Username',
+                'col_use_today'         => 'Today',
+                'col_start_date'        => 'Default Start Date',
+                'col_end_date'          => 'Default End Date',
+                'col_location'          => 'Default Place (Lugar)',
+                'btn_add_row'           => 'Add Default Config',
+                'btn_remove_row'        => 'Remove',
             ),
             'es' => array(
                 'dashboard_title'      => 'Panel de Curación de Contenidos',
@@ -184,9 +189,9 @@ class content_curator_Admin {
                 'manual_fetch_desc'    => 'Activa una importación manual sin esperar a la próxima ejecución programada del cron.',
                 'next_sched'           => 'Siguiente importación programada:',
                 // Settings headers
-                'tab_basic'            => 'Configuración de Apify y Páginas (Configuración Básica)',
-                'tab_ai'               => 'Configuración de Reescritura por IA (Configuración IA)',
-                'tab_cron'             => 'Configuración de CRON Externo (CRON)',
+                'tab_basic'            => 'Configuración Básica',
+                'tab_ai'               => 'Configuración IA',
+                'tab_cron'             => 'CRON',
                 'apify_section_title'  => 'Configuración de Apify y Páginas',
                 'apify_section_desc'   => 'Introduce tus credenciales de Apify y las URLs/nombres de las páginas de Facebook a monitorizar.',
                 'apify_token_label'    => 'Token de API de Apify',
@@ -210,18 +215,23 @@ class content_curator_Admin {
                 'cron_status_label'    => 'Estado por Defecto',
                 'cron_url_label'       => 'URL de Activación de CRON',
                 'cron_url_desc'        => 'Esta es la URL que tu servidor o servicio externo debe llamar para activar el proceso de curación automática.',
-                // Event custom CPT agenda fields
-                'event_fields_title'   => 'Campos del Evento (Crocoblock)',
                 'event_start_label'    => 'Fecha de inicio',
                 'event_end_label'      => 'Fecha de fin',
                 'event_location_label' => 'Lugar',
                 'event_location_placeholder' => 'Introduce el lugar o dirección',
-                'event_coords_label'   => 'Coordenadas',
-                'event_coords_placeholder' => 'ej. 43.123,-8.456',
-                'event_video_label'    => 'Video del evento',
                 'categorias_agenda_label' => 'Categorías agenda:',
                 'concellos_eventos_label' => 'Concellos eventos:',
                 'multiselect_help'     => 'Mantén presionado Ctrl (Cmd en Mac) para seleccionar varios.',
+                'tab_agenda'            => 'Configuración Eventos',
+                'agenda_defaults_title' => 'Configuración de Eventos por Página de Facebook',
+                'agenda_defaults_desc' => 'Configura la fecha de inicio/fin y el lugar por defecto para cada página de Facebook. Cuando se carguen las publicaciones de estas páginas en el panel de curación, sus campos de agenda se rellenarán automáticamente.',
+                'col_fb_page'           => 'URL/Usuario de Página de Facebook',
+                'col_use_today'         => 'Hoy',
+                'col_start_date'        => 'Fecha de Inicio por Defecto',
+                'col_end_date'          => 'Fecha de Fin por Defecto',
+                'col_location'          => 'Lugar por Defecto',
+                'btn_add_row'           => 'Añadir Configuración por Defecto',
+                'btn_remove_row'        => 'Eliminar',
             ),
             'fr' => array(
                 'dashboard_title'      => 'Tableau de Curation de Contenu',
@@ -284,9 +294,9 @@ class content_curator_Admin {
                 'manual_fetch_desc'    => 'Déclencher une récupération manuelle sans attendre la prochaine exécution planifiée du cron.',
                 'next_sched'           => 'Prochaine récupération planifiée:',
                 // Settings headers
-                'tab_basic'            => 'Configuration d\'Apify et des Pages (Configuration de Base)',
-                'tab_ai'               => 'Configuration de Réécriture d\'IA (Configuration d\'IA)',
-                'tab_cron'             => 'Configuration du CRON Externe (CRON)',
+                'tab_basic'            => 'Configuration de Base',
+                'tab_ai'               => 'Configuration d\'IA',
+                'tab_cron'             => 'CRON',
                 'apify_section_title'  => 'Configuration d\'Apify et des Pages',
                 'apify_section_desc'   => 'Entrez vos identifiants API Apify et les URLs/noms de pages Facebook à surveiller.',
                 'apify_token_label'    => 'Jeton API Apify',
@@ -310,18 +320,23 @@ class content_curator_Admin {
                 'cron_status_label'    => 'Statut par Défaut',
                 'cron_url_label'       => 'URL de Déclenchement du CRON',
                 'cron_url_desc'        => 'C\'est l\'URL que votre serveur ou service externe doit appeler pour déclencher le processus de curation automatique.',
-                // Event custom CPT agenda fields
-                'event_fields_title'   => 'Champs de l\'événement (Crocoblock)',
-                'event_start_label'    => 'Date et heure de début',
-                'event_end_label'      => 'Date et heure de fin',
+                'event_start_label'    => 'Date de début',
+                'event_end_label'      => 'Date de fin',
                 'event_location_label' => 'Lieu (Lugar)',
                 'event_location_placeholder' => 'Entrez le lieu ou l\'adresse',
-                'event_coords_label'   => 'Coordonnées (Coordenadas)',
-                'event_coords_placeholder' => 'ex. 43.123,-8.456',
-                'event_video_label'    => 'Vidéo de l\'événement',
                 'categorias_agenda_label' => 'Catégories d\'agenda:',
                 'concellos_eventos_label' => 'Concellos (Événements):',
                 'multiselect_help'     => 'Maintenez Ctrl (Cmd sur Mac) pour en sélectionner plusieurs.',
+                'tab_agenda'            => 'Configuration des Événements',
+                'agenda_defaults_title' => 'Configuration des Événements par Page Facebook',
+                'agenda_defaults_desc' => 'Configurez la date de début/fin et le lieu par défaut pour chaque page Facebook. Lorsque les publications de ces pages sont chargées sur le tableau de curation, leurs champs d\'agenda seront pré-remplis automatiquement.',
+                'col_fb_page'           => 'URL/Nom d\'utilisateur de Page Facebook',
+                'col_use_today'         => 'Aujourd\'hui',
+                'col_start_date'        => 'Date de Début par Défaut',
+                'col_end_date'          => 'Date de Fin par Défaut',
+                'col_location'          => 'Lieu par Défaut',
+                'btn_add_row'           => 'Ajouter Configuration par Défaut',
+                'btn_remove_row'        => 'Supprimer',
             ),
         );
         $lang = strtolower( $lang );
@@ -610,6 +625,12 @@ class content_curator_Admin {
             'default'           => 'draft',
         ) );
 
+        register_setting( 'content_curator_settings_group', 'content_curator_agenda_defaults', array(
+            'type'              => 'array',
+            'sanitize_callback' => array( $this, 'sanitize_agenda_defaults' ),
+            'default'           => array(),
+        ) );
+
         // Section: CRON Configuration.
         add_settings_section(
             'content_curator_cron_section',
@@ -688,6 +709,96 @@ class content_curator_Admin {
             return array();
         }
         return array_map( 'sanitize_text_field', $value );
+    }
+
+    /**
+     * Sanitize the agenda default values array.
+     */
+    public function sanitize_agenda_defaults( $value ) {
+        if ( ! is_array( $value ) ) {
+            return array();
+        }
+        $sanitized = array();
+        foreach ( $value as $item ) {
+            $page_id = isset( $item['page_id'] ) ? sanitize_text_field( wp_unslash( $item['page_id'] ) ) : '';
+            if ( empty( $page_id ) ) {
+                continue;
+            }
+            $sanitized[] = array(
+                'page_id'    => $page_id,
+                'use_today'  => isset( $item['use_today'] ) ? 1 : 0,
+                'start_date' => isset( $item['start_date'] ) ? sanitize_text_field( wp_unslash( $item['start_date'] ) ) : '',
+                'end_date'   => isset( $item['end_date'] ) ? sanitize_text_field( wp_unslash( $item['end_date'] ) ) : '',
+                'location'   => isset( $item['location'] ) ? sanitize_text_field( wp_unslash( $item['location'] ) ) : '',
+            );
+        }
+        return $sanitized;
+    }
+
+    /**
+     * Render the Agenda Defaults dynamic table field.
+     */
+    public function render_field_agenda_defaults() {
+        $value = get_option( 'content_curator_agenda_defaults', array() );
+        if ( ! is_array( $value ) ) {
+            $value = array();
+        }
+        $plugin_lang = get_option( 'content_curator_plugin_language', 'en' );
+        $d = self::get_dictionary( $plugin_lang );
+        ?>
+        <div class="cc-agenda-defaults-table-container">
+            <table class="wp-list-table widefat fixed striped table-view-list" id="cc-agenda-defaults-table" style="max-width: 900px; margin-bottom: 15px;">
+                <thead>
+                    <tr>
+                        <th style="width: 25%;"><?php echo esc_html( $d['col_fb_page'] ); ?></th>
+                        <th style="width: 10%; text-align: center;"><?php echo esc_html( $d['col_use_today'] ); ?></th>
+                        <th style="width: 20%;"><?php echo esc_html( $d['col_start_date'] ); ?></th>
+                        <th style="width: 20%;"><?php echo esc_html( $d['col_end_date'] ); ?></th>
+                        <th style="width: 20%;"><?php echo esc_html( $d['col_location'] ); ?></th>
+                        <th style="width: 5%;"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php if ( empty( $value ) ) : ?>
+                        <tr class="cc-no-defaults-row">
+                            <td colspan="6" style="text-align: center; color: var(--cc-text-muted); padding: 15px;">
+                                <?php esc_html_e( 'No default configurations added yet.', 'wp-content-curator' ); ?>
+                            </td>
+                        </tr>
+                    <?php else : ?>
+                        <?php foreach ( $value as $index => $item ) : ?>
+                            <tr>
+                                <td>
+                                    <input type="text" name="content_curator_agenda_defaults[<?php echo $index; ?>][page_id]" value="<?php echo esc_attr( $item['page_id'] ); ?>" placeholder="e.g. concellodecamarinas" required />
+                                </td>
+                                <td style="text-align: center; vertical-align: middle;">
+                                    <input type="checkbox" name="content_curator_agenda_defaults[<?php echo $index; ?>][use_today]" value="1" <?php checked( ! empty( $item['use_today'] ) ); ?> class="cc-use-today-checkbox" />
+                                </td>
+                                <td>
+                                    <input type="date" name="content_curator_agenda_defaults[<?php echo $index; ?>][start_date]" value="<?php echo esc_attr( $item['start_date'] ?? '' ); ?>" <?php disabled( ! empty( $item['use_today'] ) ); ?> />
+                                </td>
+                                <td>
+                                    <input type="date" name="content_curator_agenda_defaults[<?php echo $index; ?>][end_date]" value="<?php echo esc_attr( $item['end_date'] ?? '' ); ?>" <?php disabled( ! empty( $item['use_today'] ) ); ?> />
+                                </td>
+                                <td>
+                                    <input type="text" name="content_curator_agenda_defaults[<?php echo $index; ?>][location]" value="<?php echo esc_attr( $item['location'] ?? '' ); ?>" placeholder="e.g. Salón de Plenos" />
+                                </td>
+                                <td>
+                                    <button type="button" class="button button-link-delete cc-remove-agenda-row-btn" title="<?php echo esc_attr( $d['btn_remove_row'] ); ?>">
+                                        <span class="dashicons dashicons-trash" style="color: #b32d2e; vertical-align: middle;"></span>
+                                    </button>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
+                </tbody>
+            </table>
+            <button type="button" class="button button-secondary" id="cc-add-agenda-row-btn">
+                <span class="dashicons dashicons-plus" style="vertical-align: middle; margin-right: 4px;"></span>
+                <?php echo esc_html( $d['btn_add_row'] ); ?>
+            </button>
+        </div>
+        <?php
     }
 
     /**
@@ -1021,6 +1132,7 @@ class content_curator_Admin {
                 <h2 class="nav-tab-wrapper content-curator-settings-tabs" style="margin-bottom: 20px;">
                     <a href="#tab-basic" class="nav-tab nav-tab-active" data-tab="basic"><?php echo esc_html( $d['tab_basic'] ); ?></a>
                     <a href="#tab-ai" class="nav-tab" data-tab="ai"><?php echo esc_html( $d['tab_ai'] ); ?></a>
+                    <a href="#tab-agenda" class="nav-tab" data-tab="agenda"><?php echo esc_html( $d['tab_agenda'] ); ?></a>
                     <a href="#tab-cron" class="nav-tab" data-tab="cron"><?php echo esc_html( $d['tab_cron'] ); ?></a>
                 </h2>
 
@@ -1041,7 +1153,13 @@ class content_curator_Admin {
                         </table>
                     </div>
 
-                    <!-- Tab 3: CRON Configuration -->
+                    <!-- Tab 3: Event Configuration -->
+                    <div id="tab-agenda" class="settings-tab-content" style="display: none;">
+                        <p class="description" style="margin-bottom: 15px; font-size: 13px;"><?php echo esc_html( $d['agenda_defaults_desc'] ); ?></p>
+                        <?php $this->render_field_agenda_defaults(); ?>
+                    </div>
+
+                    <!-- Tab 4: CRON Configuration -->
                     <div id="tab-cron" class="settings-tab-content" style="display: none;">
                         <p class="description" style="margin-bottom: 15px; font-size: 13px;"><?php echo esc_html( $d['cron_section_desc'] ); ?></p>
                         <table class="form-table" role="presentation">
@@ -1272,7 +1390,47 @@ class content_curator_Admin {
             <?php else : ?>
                 <!-- Card Grid -->
                 <div class="content-curator-grid">
-                    <?php foreach ( $posts as $post ) : ?>
+                    <?php 
+                    $agenda_defaults = get_option( 'content_curator_agenda_defaults', array() );
+                    foreach ( $posts as $post ) : 
+                        $card_defaults = array(
+                            'use_today'  => 0,
+                            'start_date' => '',
+                            'end_date'   => '',
+                            'location'   => '',
+                        );
+                        if ( is_array( $agenda_defaults ) ) {
+                            foreach ( $agenda_defaults as $def ) {
+                                $def_page = trim( strtolower( $def['page_id'] ?? '' ) );
+                                $curr_page = trim( strtolower( $post->page_name ) );
+                                if ( $def_page === $curr_page || strpos( $curr_page, $def_page ) !== false || strpos( $def_page, $curr_page ) !== false ) {
+                                    $card_defaults = array(
+                                        'use_today'  => ! empty( $def['use_today'] ) ? 1 : 0,
+                                        'start_date' => $def['start_date'] ?? '',
+                                        'end_date'   => $def['end_date'] ?? '',
+                                        'location'   => $def['location'] ?? '',
+                                    );
+                                    break;
+                                }
+                            }
+                        }
+
+                        $start_val = '';
+                        $end_val = '';
+                        if ( $card_defaults['use_today'] ) {
+                            $start_val = wp_date( 'Y-m-d' );
+                            $end_val   = wp_date( 'Y-m-d' );
+                        } else {
+                            if ( ! empty( $card_defaults['start_date'] ) ) {
+                                $start_val = $card_defaults['start_date'];
+                            }
+                            if ( ! empty( $card_defaults['end_date'] ) ) {
+                                $end_val = $card_defaults['end_date'];
+                            }
+                        }
+                        
+                        $location_val = $card_defaults['location'];
+                    ?>
                         <div class="content-curator-card" data-post-id="<?php echo esc_attr( $post->id ); ?>" id="card-<?php echo esc_attr( $post->id ); ?>">
 
                             <!-- Loading overlay -->
@@ -1401,34 +1559,23 @@ class content_curator_Admin {
                                     <div class="agenda-only-fields" style="display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed var(--cc-border);">
                                         <h4 style="margin-bottom: 12px; display: flex; align-items: center; gap: 6px; color: var(--cc-primary); font-size: 13px; font-weight: 600; text-transform: uppercase;">
                                             <span class="dashicons dashicons-calendar-alt"></span>
-                                            <?php echo esc_html( $d['event_fields_title'] ); ?>
+                                            <?php echo esc_html( $d['event_start_label'] ) . ' & ' . esc_html( $d['event_end_label'] ); ?>
                                         </h4>
                                         
                                         <div class="meta-fields-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px;">
                                             <div class="meta-field-item">
                                                 <label style="font-size: 11px; font-weight: 600; color: var(--cc-text-secondary); margin-bottom: 4px; display: block;"><?php echo esc_html( $d['event_start_label'] ); ?></label>
-                                                <input type="datetime-local" class="event-start-date" style="width: 100%; padding: 6px; border: 1px solid var(--cc-border); border-radius: var(--cc-radius-sm);" />
+                                                <input type="date" class="event-start-date" value="<?php echo esc_attr( $start_val ); ?>" style="width: 100%; padding: 6px; border: 1px solid var(--cc-border); border-radius: var(--cc-radius-sm);" />
                                             </div>
                                             <div class="meta-field-item">
                                                 <label style="font-size: 11px; font-weight: 600; color: var(--cc-text-secondary); margin-bottom: 4px; display: block;"><?php echo esc_html( $d['event_end_label'] ); ?></label>
-                                                <input type="datetime-local" class="event-end-date" style="width: 100%; padding: 6px; border: 1px solid var(--cc-border); border-radius: var(--cc-radius-sm);" />
+                                                <input type="date" class="event-end-date" value="<?php echo esc_attr( $end_val ); ?>" style="width: 100%; padding: 6px; border: 1px solid var(--cc-border); border-radius: var(--cc-radius-sm);" />
                                             </div>
                                         </div>
                                         
-                                        <div class="meta-fields-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px;">
-                                            <div class="meta-field-item">
-                                                <label style="font-size: 11px; font-weight: 600; color: var(--cc-text-secondary); margin-bottom: 4px; display: block;"><?php echo esc_html( $d['event_location_label'] ); ?></label>
-                                                <input type="text" class="event-location" placeholder="<?php echo esc_attr( $d['event_location_placeholder'] ); ?>" style="width: 100%; padding: 6px; border: 1px solid var(--cc-border); border-radius: var(--cc-radius-sm);" />
-                                            </div>
-                                            <div class="meta-field-item">
-                                                <label style="font-size: 11px; font-weight: 600; color: var(--cc-text-secondary); margin-bottom: 4px; display: block;"><?php echo esc_html( $d['event_coords_label'] ); ?></label>
-                                                <input type="text" class="event-coords" placeholder="<?php echo esc_attr( $d['event_coords_placeholder'] ); ?>" style="width: 100%; padding: 6px; border: 1px solid var(--cc-border); border-radius: var(--cc-radius-sm);" />
-                                            </div>
-                                        </div>
-
                                         <div class="meta-field-item" style="margin-bottom: 12px;">
-                                            <label style="font-size: 11px; font-weight: 600; color: var(--cc-text-secondary); margin-bottom: 4px; display: block;"><?php echo esc_html( $d['event_video_label'] ); ?></label>
-                                            <input type="text" class="event-video" placeholder="https://..." style="width: 100%; padding: 6px; border: 1px solid var(--cc-border); border-radius: var(--cc-radius-sm);" />
+                                            <label style="font-size: 11px; font-weight: 600; color: var(--cc-text-secondary); margin-bottom: 4px; display: block;"><?php echo esc_html( $d['event_location_label'] ); ?></label>
+                                            <input type="text" class="event-location" value="<?php echo esc_attr( $location_val ); ?>" placeholder="<?php echo esc_attr( $d['event_location_placeholder'] ); ?>" style="width: 100%; padding: 6px; border: 1px solid var(--cc-border); border-radius: var(--cc-radius-sm);" />
                                         </div>
 
                                         <!-- Event Taxonomies -->
@@ -1691,9 +1838,7 @@ class content_curator_Admin {
                     update_post_meta( $new_post_id, 'fecha-de-fin', $end_ts );
                 }
             }
-            update_post_meta( $new_post_id, 'Lugar', $event_location );
-            update_post_meta( $new_post_id, 'coordenadas', $event_coords );
-            update_post_meta( $new_post_id, 'video-del-evento', $event_video );
+            update_post_meta( $new_post_id, 'lugar', $event_location );
             update_post_meta( $new_post_id, 'descripcion-del-evento', $master_text );
         }
 
@@ -1848,9 +1993,7 @@ class content_curator_Admin {
                             update_post_meta( $translated_post_id, 'fecha-de-fin', $end_ts );
                         }
                     }
-                    update_post_meta( $translated_post_id, 'Lugar', $event_location );
-                    update_post_meta( $translated_post_id, 'coordenadas', $event_coords );
-                    update_post_meta( $translated_post_id, 'video-del-evento', $event_video );
+                    update_post_meta( $translated_post_id, 'lugar', $event_location );
                     update_post_meta( $translated_post_id, 'descripcion-del-evento', $lang_text );
                     if ( ! empty( $attachment_ids ) ) {
                         update_post_meta( $translated_post_id, 'galeria-del-evento', implode( ',', $attachment_ids ) );
