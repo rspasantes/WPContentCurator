@@ -90,7 +90,7 @@ class content_curator_Admin {
                 'tab_ai'               => 'AI Configuration',
                 'tab_cron'             => 'CRON',
                 'apify_section_title'  => 'Apify & Page Configuration',
-                'apify_section_desc'   => 'Enter your Apify API credentials and the Facebook Page URLs/names to monitor.',
+                'apify_section_desc'   => 'Enter your Apify API credentials to fetch public Facebook Page posts.',
                 'apify_token_label'    => 'Apify API Token',
                 'apify_token_desc'     => 'Your Apify API Token. You can find it in your Apify Console under Settings -> Integrations -> API Tokens.',
                 'fb_pages_label'       => 'Facebook Page URLs / Usernames',
@@ -119,9 +119,9 @@ class content_curator_Admin {
                 'categorias_agenda_label' => 'Agenda Categories:',
                 'concellos_eventos_label' => 'Concellos (Events):',
                 'multiselect_help'     => 'Hold Ctrl (Cmd on Mac) to select multiple options.',
-                'tab_agenda'            => 'Event Configuration',
+                'tab_agenda'            => 'Pages & Events',
                 'agenda_defaults_title' => 'Event Configuration Defaults by Facebook Page',
-                'agenda_defaults_desc' => 'Configure default event start and end dates, and location place for each Facebook Page. When posts from these pages are loaded on the curation dashboard, their agenda fields will be pre-filled automatically.',
+                'agenda_defaults_desc' => 'Configure monitored Facebook pages along with optional default event start/end dates and location. When posts from these pages are loaded, their agenda fields will be pre-filled automatically.',
                 'col_fb_page'           => 'Facebook Page URL/Username',
                 'col_use_today'         => 'Today',
                 'col_start_date'        => 'Default Start Date',
@@ -217,7 +217,7 @@ class content_curator_Admin {
                 'tab_ai'               => 'Configuración IA',
                 'tab_cron'             => 'CRON',
                 'apify_section_title'  => 'Configuración de Apify y Páginas',
-                'apify_section_desc'   => 'Introduce tus credenciales de Apify y las URLs/nombres de las páginas de Facebook a monitorizar.',
+                'apify_section_desc'   => 'Introduce tus credenciales de Apify para la extracción de publicaciones de páginas públicas de Facebook.',
                 'apify_token_label'    => 'Token de API de Apify',
                 'apify_token_desc'     => 'Tu Token de API de Apify. Puedes encontrarlo en tu Consola de Apify bajo Settings -> Integrations -> API Tokens.',
                 'fb_pages_label'       => 'URLs / Nombres de usuario de Páginas de Facebook',
@@ -246,9 +246,9 @@ class content_curator_Admin {
                 'categorias_agenda_label' => 'Categorías agenda:',
                 'concellos_eventos_label' => 'Concellos eventos:',
                 'multiselect_help'     => 'Mantén presionado Ctrl (Cmd en Mac) para seleccionar varios.',
-                'tab_agenda'            => 'Configuración Eventos',
+                'tab_agenda'            => 'Páginas y Eventos',
                 'agenda_defaults_title' => 'Configuración de Eventos por Página de Facebook',
-                'agenda_defaults_desc' => 'Configura la fecha de inicio/fin y el lugar por defecto para cada página de Facebook. Cuando se carguen las publicaciones de estas páginas en el panel de curación, sus campos de agenda se rellenarán automáticamente.',
+                'agenda_defaults_desc' => 'Configura las páginas de Facebook a monitorear junto con las fechas de inicio/fin y lugar por defecto (opcional). Cuando se carguen las publicaciones de estas páginas, sus campos de agenda se rellenarán automáticamente.',
                 'col_fb_page'           => 'URL/Usuario de Página de Facebook',
                 'col_use_today'         => 'Hoy',
                 'col_start_date'        => 'Fecha de Inicio por Defecto',
@@ -344,7 +344,7 @@ class content_curator_Admin {
                 'tab_ai'               => 'Configuration d\'IA',
                 'tab_cron'             => 'CRON',
                 'apify_section_title'  => 'Configuration d\'Apify et des Pages',
-                'apify_section_desc'   => 'Entrez vos identifiants API Apify et les URLs/noms de pages Facebook à surveiller.',
+                'apify_section_desc'   => 'Entrez vos identifiants API Apify pour récupérer les publications des pages Facebook publiques.',
                 'apify_token_label'    => 'Jeton API Apify',
                 'apify_token_desc'     => 'Votre jeton API Apify. Vous pouvez le trouver dans votre console Apify sous Settings -> Integrations -> API Tokens.',
                 'fb_pages_label'       => 'URLs / Noms d\'utilisateur de pages Facebook',
@@ -372,10 +372,10 @@ class content_curator_Admin {
                 'event_location_placeholder' => 'Entrez le lieu ou l\'adresse',
                 'categorias_agenda_label' => 'Catégories d\'agenda:',
                 'concellos_eventos_label' => 'Concellos (Événements):',
-                'multiselect_help'     => 'Maintenez Ctrl (Cmd sur Mac) pour en sélectionner plusieurs.',
-                'tab_agenda'            => 'Configuration des Événements',
+                'multiselect_help'     => 'Maintenez Ctrl (Cmd sur Mac) pour en en sélectionner plusieurs.',
+                'tab_agenda'            => 'Pages & Événements',
                 'agenda_defaults_title' => 'Configuration des Événements par Page Facebook',
-                'agenda_defaults_desc' => 'Configurez la date de début/fin et le lieu par défaut pour chaque page Facebook. Lorsque les publications de ces pages sont chargées sur le tableau de curation, leurs champs d\'agenda seront pré-remplis automatiquement.',
+                'agenda_defaults_desc' => 'Configurez les pages Facebook à surveiller ainsi que la date de début/fin et le lieu par défaut (facultatif). Lorsque les publications de ces pages sont chargées, leurs champs d\'agenda seront pré-remplis automatiquement.',
                 'col_fb_page'           => 'URL/Nom d\'utilisateur de Page Facebook',
                 'col_use_today'         => 'Aujourd\'hui',
                 'col_start_date'        => 'Date de Début par Défaut',
@@ -451,7 +451,6 @@ class content_curator_Admin {
         add_action( 'wp_ajax_content_curator_fetch_now', array( $this, 'ajax_fetch_now' ) );
         add_action( 'wp_ajax_content_curator_delete', array( $this, 'ajax_delete' ) );
         add_action( 'wp_ajax_content_curator_delete_all', array( $this, 'ajax_delete_all' ) );
-        add_action( 'wp_ajax_content_curator_change_plugin_lang', array( $this, 'ajax_change_plugin_lang' ) );
         add_action( 'wp_ajax_content_curator_test_ai', array( $this, 'ajax_test_ai' ) );
         add_action( 'wp_ajax_content_curator_get_pages_to_fetch', array( $this, 'ajax_get_pages_to_fetch' ) );
         add_action( 'wp_ajax_content_curator_fetch_single_page', array( $this, 'ajax_fetch_single_page' ) );
@@ -553,12 +552,6 @@ class content_curator_Admin {
             'default'           => '',
         ) );
 
-        register_setting( 'content_curator_settings_group', 'content_curator_page_ids', array(
-            'type'              => 'string',
-            'sanitize_callback' => 'sanitize_text_field',
-            'default'           => '',
-        ) );
-
         register_setting( 'content_curator_settings_group', 'content_curator_ai_provider', array(
             'type'              => 'string',
             'sanitize_callback' => 'sanitize_text_field',
@@ -641,14 +634,6 @@ class content_curator_Admin {
             'content_curator_apify_token',
             $d['apify_token_label'],
             array( $this, 'render_field_apify_token' ),
-            'content-curator-settings',
-            'content_curator_fb_section'
-        );
-
-        add_settings_field(
-            'content_curator_page_ids',
-            $d['fb_pages_label'],
-            array( $this, 'render_field_page_ids' ),
             'content-curator-settings',
             'content_curator_fb_section'
         );
@@ -1014,19 +999,6 @@ class content_curator_Admin {
     }
 
     /**
-     * Render the Page IDs/URLs field.
-     */
-    public function render_field_page_ids() {
-        $value = get_option( 'content_curator_page_ids', '' );
-        printf(
-            '<input type="text" id="content_curator_page_ids" name="content_curator_page_ids" value="%s" class="large-text" placeholder="https://www.facebook.com/nike, techcrunch" />
-            <p class="description">%s</p>',
-            esc_attr( $value ),
-            esc_html__( 'Comma-separated list of Facebook Page URLs or usernames (e.g. "https://www.facebook.com/nike" or simply "nike").', 'wp-content-curator' )
-        );
-    }
-
-    /**
      * Render the AI Provider select field.
      */
     public function render_field_ai_provider() {
@@ -1339,33 +1311,22 @@ class content_curator_Admin {
                         <table class="form-table" role="presentation">
                             <?php do_settings_fields( 'content-curator-settings', 'content_curator_cron_section' ); ?>
                         </table>
+                        <?php
+                        // Show next scheduled run.
+                        $next = wp_next_scheduled( content_curator_Cron::CRON_HOOK );
+                        if ( $next ) {
+                            printf(
+                                '<p class="description" style="margin-top: 15px; font-size: 13px;">%s <strong>%s</strong></p>',
+                                esc_html__( 'Next scheduled fetch:', 'wp-content-curator' ),
+                                esc_html( wp_date( 'Y-m-d H:i:s', $next ) )
+                            );
+                        }
+                        ?>
                     </div>
                 </div>
 
                 <?php submit_button( __( 'Save Settings', 'wp-content-curator' ) ); ?>
             </form>
-
-            <hr />
-
-            <h2><?php esc_html_e( 'Manual Actions', 'wp-content-curator' ); ?></h2>
-            <p class="description"><?php esc_html_e( 'Trigger a manual fetch without waiting for the next scheduled cron run.', 'wp-content-curator' ); ?></p>
-            <button type="button" id="content-curator-fetch-now" class="button button-secondary">
-                <span class="dashicons dashicons-download" style="vertical-align: middle; margin-right: 4px;"></span>
-                <?php esc_html_e( 'Fetch Now', 'wp-content-curator' ); ?>
-            </button>
-            <span id="content-curator-fetch-status" class="content-curator-inline-status"></span>
-
-            <?php
-            // Show next scheduled run.
-            $next = wp_next_scheduled( content_curator_Cron::CRON_HOOK );
-            if ( $next ) {
-                printf(
-                    '<p class="description" style="margin-top: 10px;">%s <strong>%s</strong></p>',
-                    esc_html__( 'Next scheduled fetch:', 'wp-content-curator' ),
-                    esc_html( wp_date( 'Y-m-d H:i:s', $next ) )
-                );
-            }
-            ?>
         </div>
         <?php
     }
@@ -1488,15 +1449,6 @@ class content_curator_Admin {
                         printf( '<strong>%d</strong>&nbsp;%s', $total_posts, esc_html( $count_string ) );
                         ?>
                     </span>
-                    
-                    <div class="actions-bar-lang">
-                        <label for="content-curator-plugin-lang-select"><?php echo esc_html( $d['language_label'] ); ?></label>
-                        <select id="content-curator-plugin-lang-select" name="plugin_lang" class="content-curator-lang-switcher">
-                            <option value="en" <?php selected( $plugin_lang, 'en' ); ?>>English</option>
-                            <option value="es" <?php selected( $plugin_lang, 'es' ); ?>>Español</option>
-                            <option value="fr" <?php selected( $plugin_lang, 'fr' ); ?>>Français</option>
-                        </select>
-                    </div>
                 </div>
                 <div class="actions-bar-right">
                     <span id="content-curator-fetch-status" class="content-curator-inline-status"></span>
@@ -2407,8 +2359,16 @@ class content_curator_Admin {
             wp_send_json_error( array( 'message' => __( 'Insufficient permissions.', 'wp-content-curator' ) ), 403 );
         }
 
-        $page_ids_raw = get_option( 'content_curator_page_ids', '' );
-        $page_ids     = array_filter( array_map( 'trim', explode( ',', $page_ids_raw ) ) );
+        $agenda_defaults = get_option( 'content_curator_agenda_defaults', array() );
+        $page_ids        = array();
+        if ( is_array( $agenda_defaults ) ) {
+            foreach ( $agenda_defaults as $item ) {
+                if ( ! empty( $item['page_id'] ) ) {
+                    $page_ids[] = trim( $item['page_id'] );
+                }
+            }
+        }
+        $page_ids = array_unique( array_filter( $page_ids ) );
 
         wp_send_json_success( array(
             'pages' => array_values( $page_ids ),
@@ -2531,27 +2491,6 @@ class content_curator_Admin {
                 $deleted
             ),
         ) );
-    }
-
-    /**
-     * AJAX: Change the plugin UI language.
-     *
-     * @return void Sends JSON response and dies.
-     */
-    public function ajax_change_plugin_lang() {
-        if ( ! check_ajax_referer( 'content_curator_nonce', 'nonce', false ) ) {
-            wp_send_json_error( array( 'message' => 'Security check failed.' ), 403 );
-        }
-        if ( ! current_user_can( 'edit_posts' ) ) {
-            wp_send_json_error( array( 'message' => 'Insufficient permissions.' ), 403 );
-        }
-        $lang = isset( $_POST['lang'] ) ? sanitize_text_field( wp_unslash( $_POST['lang'] ) ) : 'en';
-        if ( in_array( $lang, array( 'en', 'es', 'fr' ), true ) ) {
-            update_option( 'content_curator_plugin_language', $lang );
-            wp_send_json_success();
-        } else {
-            wp_send_json_error( array( 'message' => 'Invalid language.' ) );
-        }
     }
 
     // =========================================================================

@@ -86,20 +86,33 @@ class content_curator_Cron {
      */
     public static function run_fetch( $timeframe = 'all' ) {
         $apify_token  = get_option( 'content_curator_apify_token', '' );
-        $page_ids_raw = get_option( 'content_curator_page_ids', '' );
 
-        if ( empty( $apify_token ) || empty( $page_ids_raw ) ) {
-            error_log( '[WP FB Curator] Cron skipped: Apify API token or page URLs not configured.' );
+        if ( empty( $apify_token ) ) {
+            error_log( '[WP FB Curator] Cron skipped: Apify API token not configured.' );
             return array(
                 'fetched' => 0,
                 'errors'  => array( 'Configuration incomplete.' ),
             );
         }
 
-        // Parse comma-separated page URLs/names, trimming whitespace.
-        $page_ids = array_filter(
-            array_map( 'trim', explode( ',', $page_ids_raw ) )
-        );
+        $agenda_defaults = get_option( 'content_curator_agenda_defaults', array() );
+        $page_ids        = array();
+        if ( is_array( $agenda_defaults ) ) {
+            foreach ( $agenda_defaults as $item ) {
+                if ( ! empty( $item['page_id'] ) ) {
+                    $page_ids[] = trim( $item['page_id'] );
+                }
+            }
+        }
+        $page_ids = array_unique( array_filter( $page_ids ) );
+
+        if ( empty( $page_ids ) ) {
+            error_log( '[WP FB Curator] Cron skipped: No monitored Facebook Pages configured.' );
+            return array(
+                'fetched' => 0,
+                'errors'  => array( 'No pages configured.' ),
+            );
+        }
 
         $total_fetched = 0;
         $errors        = array();

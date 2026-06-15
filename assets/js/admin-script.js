@@ -764,26 +764,6 @@
         $container.find('.gallery-counter').text((newIndex + 1) + ' / ' + total);
     };
 
-    $(document).on('change', '#content-curator-plugin-lang-select', function (e) {
-        e.preventDefault();
-        var selectedLang = $(this).val();
-
-        $.ajax({
-            url: ajaxUrl,
-            type: 'POST',
-            data: {
-                action: 'content_curator_change_plugin_lang',
-                nonce:  nonce,
-                lang:   selectedLang
-            },
-            success: function (response) {
-                if (response.success) {
-                    window.location.reload();
-                }
-            }
-        });
-    });
-
     // =========================================================================
     // EVENT: SETTINGS TABS SWITCHER
     // =========================================================================

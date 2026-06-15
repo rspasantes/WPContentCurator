@@ -36,10 +36,12 @@ A WordPress plugin that acts as a content curation panel. It connects to the Api
    - Paste this token in WordPress under **FB Curator → Settings → Apify API Token**.
 
 3. **Configure Facebook Pages**:
-   - In the **Facebook Page URLs / Usernames** settings field, enter a comma-separated list of the public Facebook Pages you want to curate.
+   - Navigate to the **Pages & Events** settings tab.
+   - Click **Add Default Config** to add a new row, and enter the Facebook Page URL or username.
    - **Supported formats**:
      - Full URL: `https://www.facebook.com/techcrunch` or `https://www.facebook.com/profile.php?id=12345678`
-     - Username: `techcrunch` (the plugin automatically expands usernames to full Facebook URLs).
+     - Username: `techcrunch`
+   - You can optionally configure event default parameters (Today checkbox, default start/end dates, place) for each page in this table. If a page is not an event source, you can simply leave those event configuration fields empty.
    - The plugin communicates directly with the `apify/facebook-posts-scraper` actor using your token. You do not need to install or configure the actor manually inside Apify.
 
 ### AI Rewriting Setup (Optional)

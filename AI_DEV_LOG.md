@@ -465,3 +465,22 @@
 - Restored the general monitored Page IDs/URLs text field in Settings.
 - Removed the Facebook page connection "Test" buttons from the agenda defaults settings table.
 - Re-established separate page monitoring configuration inputs and restored background cron / manual fetch routines back to version 1.5.5 functionality.
+
+## 2026-06-15 - 17:23 - Cleaned up language switcher, manual actions, and unified monitored pages in version 1.5.6
+
+### Summary of Changes
+- **includes/class-content-curator-admin.php**:
+  - Removed the plugin language switcher dropdown layout from the curation dashboard actions bar.
+  - Removed the `wp_ajax_content_curator_change_plugin_lang` AJAX handler registration and `ajax_change_plugin_lang()` method definition.
+  - Removed the "Manual Actions" section from the bottom of the settings page and relocated the "Next scheduled fetch" status string into the CRON tab content.
+  - Unified monitored Facebook Pages: removed `content_curator_page_ids` basic setting registration, settings field, and rendering method.
+  - Updated `ajax_get_pages_to_fetch()` to extract monitored pages directly from the `content_curator_agenda_defaults` table.
+  - Updated UI dictionaries (English, Spanish, French) to rename "Event Configuration" tab to "Pages & Events" and clarify that this table manages monitored page URLs/usernames.
+- **assets/js/admin-script.js**:
+  - Removed the jQuery change listener for `#content-curator-plugin-lang-select`.
+- **includes/class-content-curator-cron.php**:
+  - Modified background cron fetcher `run_fetch()` to extract monitored page IDs directly from `content_curator_agenda_defaults`.
+- **wp-content-curator.php**:
+  - Bumped version to `1.5.6`.
+- **README.md** & **AGENTS.md**:
+  - Updated configuration setup guides and capability definitions to match the unified "Pages & Events" setting.
