@@ -118,30 +118,7 @@ class content_curator_Cron {
                 continue;
             }
 
-            foreach ( $posts as $post ) {
-                // Convert Facebook ISO 8601 date or Unix timestamp to MySQL datetime format.
-                $fb_created_at = '';
-                if ( ! empty( $post['created_time'] ) ) {
-                    $timestamp = is_numeric( $post['created_time'] ) ? (int) $post['created_time'] : strtotime( $post['created_time'] );
-                    if ( $timestamp ) {
-                        $fb_created_at = gmdate( 'Y-m-d H:i:s', $timestamp );
-                    }
-                }
-
-                $inserted = content_curator_DB::insert_post(
-                    array(
-                        'fb_post_id'    => $post['id'] ?? '',
-                        'page_name'     => $page_id,
-                        'original_text' => $post['message'] ?? '',
-                        'image_url'     => $post['full_picture'] ?? '',
-                        'fb_created_at' => $fb_created_at,
-                    )
-                );
-
-                if ( false !== $inserted ) {
-                    $total_fetched++;
-                }
-            }
+            $total_fetched += self::process_single_page_posts( $page_id, $posts );
         }
 
         if ( $total_fetched > 0 || ! empty( $errors ) ) {
@@ -158,6 +135,47 @@ class content_curator_Cron {
             'fetched' => $total_fetched,
             'errors'  => $errors,
         );
+    }
+
+    /**
+     * Process and insert posts fetched for a single Facebook page.
+     *
+     * @param string $page_id The Facebook Page URL/Username.
+     * @param array  $posts   Array of fetched post data.
+     * @return int Number of successfully inserted new posts.
+     */
+    public static function process_single_page_posts( $page_id, $posts ) {
+        $inserted_count = 0;
+        if ( ! is_array( $posts ) ) {
+            return 0;
+        }
+
+        foreach ( $posts as $post ) {
+            // Convert Facebook ISO 8601 date or Unix timestamp to MySQL datetime format.
+            $fb_created_at = '';
+            if ( ! empty( $post['created_time'] ) ) {
+                $timestamp = is_numeric( $post['created_time'] ) ? (int) $post['created_time'] : strtotime( $post['created_time'] );
+                if ( $timestamp ) {
+                    $fb_created_at = gmdate( 'Y-m-d H:i:s', $timestamp );
+                }
+            }
+
+            $inserted = content_curator_DB::insert_post(
+                array(
+                    'fb_post_id'    => $post['id'] ?? '',
+                    'page_name'     => $page_id,
+                    'original_text' => $post['message'] ?? '',
+                    'image_url'     => $post['full_picture'] ?? '',
+                    'fb_created_at' => $fb_created_at,
+                )
+            );
+
+            if ( false !== $inserted ) {
+                $inserted_count++;
+            }
+        }
+
+        return $inserted_count;
     }
 
     /**

@@ -17,6 +17,8 @@ During publication, the administrator can opt to include or exclude both the cov
 - **Default Post Type & Tag Settings**: General options in settings to configure a default Custom Post Type and default taxonomy Tag for curation card selectors, pre-selecting them automatically upon loading the dashboard.
 - **AI Connection Testing**: Direct connection test button inside Settings to validate the chosen AI provider and API Key combination before saving changes.
 - **CPT Agenda Defaults**: Configurable default event start/end dates (or option to use the current date), and location place on a per-Facebook-Page basis in settings. Prefills the corresponding curation card fields in the dashboard when the post originates from that page.
+- **Progressive Facebook Scraper**: Sequential page-by-page fetching queue in manual fetches to prevent gateway timeouts, displaying progress indicators for each configured site/page.
+- **Future Post Scheduling**: Direct publishing calendar input on curation cards to schedule WordPress master and translated entries for future dates.
 
 ## 🔗 External Dependencies & Integrations
 
@@ -24,9 +26,9 @@ The plugin relies on or integrates with the following external APIs and third-pa
 
 ### 1. External APIs & AI Providers
 - **Apify API (Facebook Posts Scraper)**: Utilized to scrape posts from public Facebook Pages synchronously. Requires an Apify API Token (`content_curator_apify_token`).
-- **OpenAI API**: Used for AI rewriting using `gpt-4o-mini` (requires API Key).
-- **Anthropic API**: Used for AI rewriting using `claude-3-haiku` (requires API Key).
-- **Google Gemini API**: Used for AI rewriting using `gemini-1.5-flash` (requires API Key).
+- **OpenAI API**: Used for AI rewriting using a configurable model (defaults to `gpt-4o-mini`, requires API Key).
+- **Anthropic API**: Used for AI rewriting using a configurable model (defaults to `claude-3-haiku-20240307`, requires API Key).
+- **Google Gemini API**: Used for AI rewriting using a configurable model (defaults to `gemini-1.5-flash`, requires API Key).
 - **WordPress 7.0 Native AI**: Uses the built-in `wp_ai_client_prompt()` function (requires a WordPress 7.0+ core environment with AI client configured).
 
 ### 2. Third-Party Plugin Integrations

@@ -118,6 +118,12 @@ wp-content-curator/
 
 ## Changelog
  
+### 1.5.4
+- Custom AI Models Config: Integrated custom models settings (`content_curator_openai_model`, `content_curator_anthropic_model`, and `content_curator_gemini_model`) directly into the AI connector API calls.
+- Progressive Facebook Scraper: Implemented a sequential AJAX queue loop on manual fetching to scrape pages one-by-one, preventing server timeouts and rendering real-time fetching progress.
+- Future Post Scheduling: Added a scheduled date/time selector to curation cards, passing it to the publishing handler to insert future-dated master and translation posts.
+- UI Layout: Upgraded curation card meta grids to a 3-column layout on desktop to accommodate the new scheduling selectors.
+
 ### 1.5.3
 - AI Settings Connectivity Test: Added a "Test AI Service" button inside the AI Configuration settings tab to immediately test communication and API key validity for the selected provider (OpenAI, Anthropic, Gemini, or WordPress Native AI) without needing to save settings first.
 

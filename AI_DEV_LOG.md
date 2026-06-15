@@ -417,3 +417,24 @@
   - Documented version `1.5.3` changes in the changelog.
 - **AGENTS.md**:
   - Added the AI connection testing capability description.
+
+## 2026-06-15 - 16:10 - Implemented custom AI models config, progressive scraper queue, scheduling, and bumped version to 1.5.4
+
+### Summary of Changes
+- **includes/class-content-curator-api.php**:
+  - Replaced hardcoded AI models `'gpt-4o-mini'`, `'claude-3-haiku-20240307'`, and `'gemini-1.5-flash'` with model names retrieved via `get_option()` settings.
+- **includes/class-content-curator-admin.php**:
+  - Registered translations for progressive page fetch phases (`fetching_pages_list`, `fetching_page_x_of_y`, `fetch_completed_summary`, and `no_pages_configured`) in English, Spanish, and French.
+  - Exposed new translations to the JS client in `wp_localize_script()`.
+  - Modified `ajax_publish()` to extract and process custom `publish_date` input, mapping it to post publishing and WPML translation copies using local and GMT formats.
+- **assets/js/admin-script.js**:
+  - Refactored manual scan click handler (`#content-curator-fetch-now`) to query all active monitor page URLs, sequential AJAX scan pages one by one to avoid timeout errors, and update localized progress messages dynamically.
+  - Passed `publish_date` parameter to `ajax_publish` AJAX payload.
+- **assets/css/admin-style.css**:
+  - Updated `.card-meta-selects` to three columns on desktop.
+- **wp-content-curator.php**:
+  - Bumped version to `1.5.4`.
+- **README.md**:
+  - Updated changelog with version `1.5.4` description.
+- **AGENTS.md**:
+  - Added new capabilities: Progressive Scraper and Future Scheduling, and noted configurable AI models.

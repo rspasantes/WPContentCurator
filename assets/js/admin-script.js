@@ -433,6 +433,7 @@
                 include_gallery: includeGallery,
                 include_cover:   includeCover,
                 publish_status: publishStatus,
+                publish_date:   $card.find('.input-publish-date').val() || '',
                 post_type:      postType,
                 tag:            postTag,
                 event_start_date: eventStartDate,
@@ -572,7 +573,7 @@
         var $status = $('#content-curator-fetch-status');
 
         $button.prop('disabled', true);
-        $status.text(strings.fetching)
+        $status.text(strings.fetching_pages_list || 'Getting page list...')
                .removeClass('status-success status-error')
                .addClass('status-loading');
 
@@ -582,30 +583,92 @@
             url: ajaxUrl,
             type: 'POST',
             data: {
-                action:    'content_curator_fetch_now',
-                nonce:     nonce,
-                timeframe: timeframe
+                action: 'content_curator_get_pages_to_fetch',
+                nonce:  nonce
             },
             success: function (response) {
-                $button.prop('disabled', false);
-
-                if (response.success) {
-                    $status.text(response.data.message)
-                           .removeClass('status-loading status-error')
-                           .addClass('status-success');
-
-                    // If on the curation dashboard, reload the page after 1.5 seconds to show new posts
-                    if ($('.content-curator-grid').length || $('.content-curator-empty').length) {
-                        setTimeout(function () {
-                            window.location.reload();
-                        }, 1500);
-                    }
-                } else {
+                if (!response.success) {
                     var msg = (response.data && response.data.message) ? response.data.message : strings.error_generic;
+                    $button.prop('disabled', false);
                     $status.text(msg)
                            .removeClass('status-loading status-success')
                            .addClass('status-error');
+                    return;
                 }
+
+                var pages = response.data.pages || [];
+                if (pages.length === 0) {
+                    $button.prop('disabled', false);
+                    $status.text(strings.no_pages_configured || 'No pages configured in settings.')
+                           .removeClass('status-loading status-success')
+                           .addClass('status-error');
+                    return;
+                }
+
+                var totalPages = pages.length;
+                var currentCount = 0;
+                var totalFetchedPosts = 0;
+                var errors = [];
+
+                function fetchNextPage() {
+                    if (currentCount < totalPages) {
+                        var page_id = pages[currentCount];
+                        var statusText = (strings.fetching_page_x_of_y || 'Fetching page %1$d of %2$d (%3$s)...')
+                            .replace('%1$d', currentCount + 1)
+                            .replace('%2$d', totalPages)
+                            .replace('%3$s', page_id);
+
+                        $status.text(statusText);
+
+                        $.ajax({
+                            url: ajaxUrl,
+                            type: 'POST',
+                            data: {
+                                action:    'content_curator_fetch_single_page',
+                                nonce:     nonce,
+                                page_id:   page_id,
+                                timeframe: timeframe
+                            },
+                            success: function (singleResponse) {
+                                if (singleResponse.success) {
+                                    totalFetchedPosts += (singleResponse.data.fetched || 0);
+                                } else {
+                                    var errMsg = (singleResponse.data && singleResponse.data.message) ? singleResponse.data.message : strings.error_generic;
+                                    errors.push(page_id + ": " + errMsg);
+                                }
+                                currentCount++;
+                                fetchNextPage();
+                            },
+                            error: function () {
+                                errors.push(page_id + ": " + strings.error_generic);
+                                currentCount++;
+                                fetchNextPage();
+                            }
+                        });
+                    } else {
+                        $button.prop('disabled', false);
+                        
+                        var summaryText = (strings.fetch_completed_summary || 'Fetch completed: %1$d new posts imported across %2$d pages.')
+                            .replace('%1$d', totalFetchedPosts)
+                            .replace('%2$d', totalPages);
+
+                        if (errors.length > 0) {
+                            summaryText += ' (' + errors.length + ' failed)';
+                        }
+
+                        $status.text(summaryText)
+                               .removeClass('status-loading status-error')
+                               .addClass('status-success');
+
+                        if ($('.content-curator-grid').length || $('.content-curator-empty').length) {
+                            setTimeout(function () {
+                                window.location.reload();
+                            }, 1500);
+                        }
+                    }
+                }
+
+                fetchNextPage();
             },
             error: function () {
                 $button.prop('disabled', false);

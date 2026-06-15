@@ -249,9 +249,10 @@ class content_curator_API {
      */
     private static function rewrite_with_openai( $text, $api_key, $target_lang = '' ) {
         $system_prompt = self::get_system_prompt( $target_lang );
+        $model         = get_option( 'content_curator_openai_model', 'gpt-4o-mini' );
 
         $payload = array(
-            'model'       => 'gpt-4o-mini',
+            'model'       => $model,
             'messages'    => array(
                 array(
                     'role'    => 'system',
@@ -311,9 +312,10 @@ class content_curator_API {
      */
     private static function rewrite_with_anthropic( $text, $api_key, $target_lang = '' ) {
         $system_prompt = self::get_system_prompt( $target_lang );
+        $model         = get_option( 'content_curator_anthropic_model', 'claude-3-haiku-20240307' );
 
         $payload = array(
-            'model'      => 'claude-3-haiku-20240307',
+            'model'      => $model,
             'max_tokens' => 2048,
             'system'     => $system_prompt,
             'messages'   => array(
@@ -372,6 +374,7 @@ class content_curator_API {
      */
     private static function rewrite_with_gemini( $text, $api_key, $target_lang = '' ) {
         $system_prompt = self::get_system_prompt( $target_lang );
+        $model         = get_option( 'content_curator_gemini_model', 'gemini-1.5-flash' );
 
         $payload = array(
             'systemInstruction' => array(
@@ -392,7 +395,7 @@ class content_curator_API {
             )
         );
 
-        $url = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=' . $api_key;
+        $url = 'https://generativelanguage.googleapis.com/v1beta/models/' . $model . ':generateContent?key=' . $api_key;
 
         $response = wp_remote_post(
             $url,

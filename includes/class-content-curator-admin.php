@@ -138,6 +138,17 @@ class content_curator_Admin {
                 'testing_ai'            => 'Testing connection...',
                 'test_ai_success'       => 'Connection successful! AI response received.',
                 'test_ai_error'         => 'Connection failed: ',
+                'openai_model_label'    => 'OpenAI Model',
+                'anthropic_model_label' => 'Anthropic Model',
+                'gemini_model_label'    => 'Gemini Model',
+                'openai_model_desc'     => 'Default is gpt-4o-mini.',
+                'anthropic_model_desc'  => 'Default is claude-3-haiku-20240307.',
+                'gemini_model_desc'     => 'Default is gemini-1.5-flash.',
+                'publish_date_label'    => 'Publish Date (Scheduled)',
+                'fetching_pages_list'   => 'Getting page list...',
+                'fetching_page_x_of_y'  => 'Fetching page %1$d of %2$d (%3$s)...',
+                'fetch_completed_summary' => 'Fetch completed: %1$d new posts imported across %2$d pages.',
+                'no_pages_configured'   => 'No pages configured in settings.',
             ),
             'es' => array(
                 'dashboard_title'      => 'Panel de Curación de Contenidos',
@@ -254,6 +265,17 @@ class content_curator_Admin {
                 'testing_ai'            => 'Probando conexión...',
                 'test_ai_success'       => '¡Conexión exitosa! Respuesta de IA recibida.',
                 'test_ai_error'         => 'Error de conexión: ',
+                'openai_model_label'    => 'Modelo de OpenAI',
+                'anthropic_model_label' => 'Modelo de Anthropic',
+                'gemini_model_label'    => 'Modelo de Gemini',
+                'openai_model_desc'     => 'Por defecto es gpt-4o-mini.',
+                'anthropic_model_desc'  => 'Por defecto es claude-3-haiku-20240307.',
+                'gemini_model_desc'     => 'Por defecto es gemini-1.5-flash.',
+                'publish_date_label'    => 'Fecha de Publicación',
+                'fetching_pages_list'   => 'Obteniendo lista de páginas...',
+                'fetching_page_x_of_y'  => 'Escaneando página %1$d de %2$d (%3$s)...',
+                'fetch_completed_summary' => 'Escaneo completado: %1$d nuevas publicaciones importadas en %2$d páginas.',
+                'no_pages_configured'   => 'No hay páginas configuradas en los ajustes.',
             ),
             'fr' => array(
                 'dashboard_title'      => 'Tableau de Curation de Contenu',
@@ -370,6 +392,17 @@ class content_curator_Admin {
                 'testing_ai'            => 'Test de connexion...',
                 'test_ai_success'       => 'Connexion réussie! Réponse de l\'IA reçue.',
                 'test_ai_error'         => 'Échec de connexion: ',
+                'openai_model_label'    => 'Modèle OpenAI',
+                'anthropic_model_label' => 'Modèle Anthropic',
+                'gemini_model_label'    => 'Modèle Gemini',
+                'openai_model_desc'     => 'Par défaut est gpt-4o-mini.',
+                'anthropic_model_desc'  => 'Par défaut est claude-3-haiku-20240307.',
+                'gemini_model_desc'     => 'Par défaut est gemini-1.5-flash.',
+                'publish_date_label'    => 'Date de Publication',
+                'fetching_pages_list'   => 'Obtention de la liste des pages...',
+                'fetching_page_x_of_y'  => 'Récupération de la page %1$d sur %2$d (%3$s)...',
+                'fetch_completed_summary' => 'Récupération terminée : %1$d nouvelles publications importées sur %2$d pages.',
+                'no_pages_configured'   => 'Aucune page configurée dans les paramètres.',
             ),
         );
         $lang = strtolower( $lang );
@@ -420,6 +453,8 @@ class content_curator_Admin {
         add_action( 'wp_ajax_content_curator_delete_all', array( $this, 'ajax_delete_all' ) );
         add_action( 'wp_ajax_content_curator_change_plugin_lang', array( $this, 'ajax_change_plugin_lang' ) );
         add_action( 'wp_ajax_content_curator_test_ai', array( $this, 'ajax_test_ai' ) );
+        add_action( 'wp_ajax_content_curator_get_pages_to_fetch', array( $this, 'ajax_get_pages_to_fetch' ) );
+        add_action( 'wp_ajax_content_curator_fetch_single_page', array( $this, 'ajax_fetch_single_page' ) );
     }
 
     // =========================================================================
@@ -542,6 +577,24 @@ class content_curator_Admin {
             'default'           => '',
         ) );
 
+        register_setting( 'content_curator_settings_group', 'content_curator_openai_model', array(
+            'type'              => 'string',
+            'sanitize_callback' => 'sanitize_text_field',
+            'default'           => 'gpt-4o-mini',
+        ) );
+
+        register_setting( 'content_curator_settings_group', 'content_curator_anthropic_model', array(
+            'type'              => 'string',
+            'sanitize_callback' => 'sanitize_text_field',
+            'default'           => 'claude-3-haiku-20240307',
+        ) );
+
+        register_setting( 'content_curator_settings_group', 'content_curator_gemini_model', array(
+            'type'              => 'string',
+            'sanitize_callback' => 'sanitize_text_field',
+            'default'           => 'gemini-1.5-flash',
+        ) );
+
         // Section: Facebook API.
         add_settings_section(
             'content_curator_fb_section',
@@ -630,6 +683,30 @@ class content_curator_Admin {
             'content_curator_ai_prompt',
             $d['ai_prompt_label'],
             array( $this, 'render_field_ai_prompt' ),
+            'content-curator-settings',
+            'content_curator_ai_section'
+        );
+
+        add_settings_field(
+            'content_curator_openai_model',
+            $d['openai_model_label'],
+            array( $this, 'render_field_openai_model' ),
+            'content-curator-settings',
+            'content_curator_ai_section'
+        );
+
+        add_settings_field(
+            'content_curator_anthropic_model',
+            $d['anthropic_model_label'],
+            array( $this, 'render_field_anthropic_model' ),
+            'content-curator-settings',
+            'content_curator_ai_section'
+        );
+
+        add_settings_field(
+            'content_curator_gemini_model',
+            $d['gemini_model_label'],
+            array( $this, 'render_field_gemini_model' ),
             'content-curator-settings',
             'content_curator_ai_section'
         );
@@ -998,6 +1075,51 @@ class content_curator_Admin {
     }
 
     /**
+     * Render the OpenAI Model field.
+     */
+    public function render_field_openai_model() {
+        $value = get_option( 'content_curator_openai_model', 'gpt-4o-mini' );
+        $plugin_lang = get_option( 'content_curator_plugin_language', 'en' );
+        $d = self::get_dictionary( $plugin_lang );
+        printf(
+            '<input type="text" id="content_curator_openai_model" name="content_curator_openai_model" value="%s" class="regular-text" />
+            <p class="description">%s</p>',
+            esc_attr( $value ),
+            esc_html( $d['openai_model_desc'] )
+        );
+    }
+
+    /**
+     * Render the Anthropic Model field.
+     */
+    public function render_field_anthropic_model() {
+        $value = get_option( 'content_curator_anthropic_model', 'claude-3-haiku-20240307' );
+        $plugin_lang = get_option( 'content_curator_plugin_language', 'en' );
+        $d = self::get_dictionary( $plugin_lang );
+        printf(
+            '<input type="text" id="content_curator_anthropic_model" name="content_curator_anthropic_model" value="%s" class="regular-text" />
+            <p class="description">%s</p>',
+            esc_attr( $value ),
+            esc_html( $d['anthropic_model_desc'] )
+        );
+    }
+
+    /**
+     * Render the Gemini Model field.
+     */
+    public function render_field_gemini_model() {
+        $value = get_option( 'content_curator_gemini_model', 'gemini-1.5-flash' );
+        $plugin_lang = get_option( 'content_curator_plugin_language', 'en' );
+        $d = self::get_dictionary( $plugin_lang );
+        printf(
+            '<input type="text" id="content_curator_gemini_model" name="content_curator_gemini_model" value="%s" class="regular-text" />
+            <p class="description">%s</p>',
+            esc_attr( $value ),
+            esc_html( $d['gemini_model_desc'] )
+        );
+    }
+
+    /**
      * Render the enable external CRON checkbox.
      */
     public function render_field_enable_external_cron() {
@@ -1149,6 +1271,10 @@ class content_curator_Admin {
                     'testing_ai'         => $d['testing_ai'],
                     'test_ai_success'    => $d['test_ai_success'],
                     'test_ai_error'      => $d['test_ai_error'],
+                    'fetching_pages_list' => $d['fetching_pages_list'],
+                    'fetching_page_x_of_y' => $d['fetching_page_x_of_y'],
+                    'fetch_completed_summary' => $d['fetch_completed_summary'],
+                    'no_pages_configured' => $d['no_pages_configured'],
                 ),
             )
         );
@@ -1643,6 +1769,11 @@ class content_curator_Admin {
                                                 <?php endforeach; ?>
                                             </select>
                                         </div>
+
+                                        <div class="meta-select-item">
+                                            <label><?php echo esc_html( $d['publish_date_label'] ); ?></label>
+                                            <input type="datetime-local" class="input-publish-date" data-post-id="<?php echo esc_attr( $post->id ); ?>" style="padding: 6px; border: 1px solid var(--cc-border); border-radius: var(--cc-radius-sm); font-size: 12px; color: var(--cc-text-primary); background: var(--cc-bg-surface); box-sizing: border-box; height: 30px;" />
+                                        </div>
                                     </div>
 
                                     <!-- Event Fields Section (for CPT agenda) -->
@@ -1835,6 +1966,17 @@ class content_curator_Admin {
         $tag_value      = isset( $_POST['tag'] ) ? sanitize_text_field( wp_unslash( $_POST['tag'] ) ) : '';
         $include_gallery = isset( $_POST['include_gallery'] ) ? (bool) $_POST['include_gallery'] : true;
         $include_cover   = isset( $_POST['include_cover'] ) ? (bool) $_POST['include_cover'] : true;
+        $publish_date    = isset( $_POST['publish_date'] ) ? sanitize_text_field( wp_unslash( $_POST['publish_date'] ) ) : '';
+
+        $post_date = '';
+        $post_date_gmt = '';
+        if ( ! empty( $publish_date ) ) {
+            $timestamp = strtotime( $publish_date );
+            if ( $timestamp ) {
+                $post_date = date( 'Y-m-d H:i:s', $timestamp );
+                $post_date_gmt = get_gmt_from_date( $post_date );
+            }
+        }
 
         // Event custom meta fields
         $event_start_date = isset( $_POST['event_start_date'] ) ? sanitize_text_field( wp_unslash( $_POST['event_start_date'] ) ) : '';
@@ -1895,16 +2037,19 @@ class content_curator_Admin {
         $body  = isset( $lines[1] ) ? trim( $lines[1] ) : $master_text;
 
         // Step 1: Insert the master post.
-        $new_post_id = wp_insert_post(
-            array(
-                'post_title'   => $title,
-                'post_content' => $body,
-                'post_status'  => $publish_status,
-                'post_type'    => $post_type,
-                'post_author'  => get_current_user_id(),
-            ),
-            true
+        $master_post_args = array(
+            'post_title'   => $title,
+            'post_content' => $body,
+            'post_status'  => $publish_status,
+            'post_type'    => $post_type,
+            'post_author'  => get_current_user_id(),
         );
+        if ( ! empty( $post_date ) ) {
+            $master_post_args['post_date']     = $post_date;
+            $master_post_args['post_date_gmt'] = $post_date_gmt;
+        }
+
+        $new_post_id = wp_insert_post( $master_post_args, true );
 
         if ( is_wp_error( $new_post_id ) ) {
             wp_send_json_error( array( 'message' => $new_post_id->get_error_message() ) );
@@ -2082,16 +2227,19 @@ class content_curator_Admin {
                 $lang_body .= $image_html;
             }
 
-            $translated_post_id = wp_insert_post(
-                array(
-                    'post_title'   => $lang_title,
-                    'post_content' => $lang_body,
-                    'post_status'  => $publish_status,
-                    'post_type'    => $post_type,
-                    'post_author'  => get_current_user_id(),
-                ),
-                true
+            $translated_post_args = array(
+                'post_title'   => $lang_title,
+                'post_content' => $lang_body,
+                'post_status'  => $publish_status,
+                'post_type'    => $post_type,
+                'post_author'  => get_current_user_id(),
             );
+            if ( ! empty( $post_date ) ) {
+                $translated_post_args['post_date']     = $post_date;
+                $translated_post_args['post_date_gmt'] = $post_date_gmt;
+            }
+
+            $translated_post_id = wp_insert_post( $translated_post_args, true );
 
             if ( ! is_wp_error( $translated_post_id ) ) {
                 // Set tag.
@@ -2234,6 +2382,76 @@ class content_curator_Admin {
 
         wp_send_json_success( array(
             'message' => $d['test_ai_success'],
+        ) );
+    }
+
+    /**
+     * AJAX: Get the list of configured Facebook Pages to fetch.
+     *
+     * @return void Sends JSON response and dies.
+     */
+    public function ajax_get_pages_to_fetch() {
+        if ( ! check_ajax_referer( 'content_curator_nonce', 'nonce', false ) ) {
+            wp_send_json_error( array( 'message' => __( 'Security check failed.', 'wp-content-curator' ) ), 403 );
+        }
+        if ( ! current_user_can( 'manage_options' ) ) {
+            wp_send_json_error( array( 'message' => __( 'Insufficient permissions.', 'wp-content-curator' ) ), 403 );
+        }
+
+        $page_ids_raw = get_option( 'content_curator_page_ids', '' );
+        $page_ids     = array_filter( array_map( 'trim', explode( ',', $page_ids_raw ) ) );
+
+        wp_send_json_success( array(
+            'pages' => array_values( $page_ids ),
+        ) );
+    }
+
+    /**
+     * AJAX: Fetch Facebook posts for a single page.
+     *
+     * @return void Sends JSON response and dies.
+     */
+    public function ajax_fetch_single_page() {
+        if ( ! check_ajax_referer( 'content_curator_nonce', 'nonce', false ) ) {
+            wp_send_json_error( array( 'message' => __( 'Security check failed.', 'wp-content-curator' ) ), 403 );
+        }
+        if ( ! current_user_can( 'manage_options' ) ) {
+            wp_send_json_error( array( 'message' => __( 'Insufficient permissions.', 'wp-content-curator' ) ), 403 );
+        }
+
+        $page_id = isset( $_POST['page_id'] ) ? sanitize_text_field( wp_unslash( $_POST['page_id'] ) ) : '';
+        $timeframe = isset( $_POST['timeframe'] ) ? sanitize_text_field( wp_unslash( $_POST['timeframe'] ) ) : 'all';
+
+        if ( empty( $page_id ) ) {
+            wp_send_json_error( array( 'message' => __( 'Page ID/URL is empty.', 'wp-content-curator' ) ) );
+        }
+
+        $apify_token = get_option( 'content_curator_apify_token', '' );
+        if ( empty( $apify_token ) ) {
+            wp_send_json_error( array( 'message' => __( 'Apify API token is not configured.', 'wp-content-curator' ) ) );
+        }
+
+        // Fetch posts for this single page URL/username
+        $posts = content_curator_API::fetch_page_posts( $page_id, $apify_token, 20, $timeframe );
+
+        if ( is_wp_error( $posts ) ) {
+            wp_send_json_error( array( 'message' => $posts->get_error_message() ) );
+        }
+
+        // Process and insert fetched posts using the extracted method
+        $inserted_count = 0;
+        if ( is_array( $posts ) && ! empty( $posts ) ) {
+            $inserted_count = content_curator_Cron::process_single_page_posts( $page_id, $posts );
+        }
+
+        wp_send_json_success( array(
+            'message' => sprintf(
+                /* translators: 1: Facebook page ID, 2: number of posts fetched */
+                __( 'Successfully fetched %1$s: %2$d new posts.', 'wp-content-curator' ),
+                $page_id,
+                $inserted_count
+            ),
+            'fetched' => $inserted_count,
         ) );
     }
 
