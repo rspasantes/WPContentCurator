@@ -28,7 +28,7 @@ class content_curator_API {
      * @param int    $limit        Number of posts to fetch.
      * @return array|WP_Error Array of mapped post data on success, WP_Error on failure.
      */
-    public static function fetch_page_posts( $page_url, $apify_token, $limit = 20 ) {
+    public static function fetch_page_posts( $page_url, $apify_token, $limit = 20, $timeframe = 'all' ) {
         if ( empty( $page_url ) || empty( $apify_token ) ) {
             return new WP_Error(
                 'missing_params',
@@ -56,6 +56,12 @@ class content_curator_API {
             ),
             'resultsLimit' => absint( $limit ),
         );
+
+        if ( '24h' === $timeframe ) {
+            $payload['oldestPostDateUnified'] = '24 hours';
+        } elseif ( '7d' === $timeframe ) {
+            $payload['oldestPostDateUnified'] = '7 days';
+        }
 
         $response = wp_remote_post(
             $url,

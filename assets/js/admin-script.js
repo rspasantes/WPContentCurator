@@ -26,6 +26,34 @@
     // =========================================================================
 
     /**
+     * Split a raw text block into a clean title and body content.
+     * The first non-empty line becomes the title (with HTML tags stripped).
+     *
+     * @param {string} text Raw text.
+     * @return {object} Object with 'title' and 'body' properties.
+     */
+    function splitTitleAndBody(text) {
+        if (!text) {
+            return { title: '', body: '' };
+        }
+        var lines = text.split(/\r?\n/);
+        var titleIndex = -1;
+        for (var i = 0; i < lines.length; i++) {
+            if (lines[i].trim() !== '') {
+                titleIndex = i;
+                break;
+            }
+        }
+        if (titleIndex === -1) {
+            return { title: '', body: '' };
+        }
+        var title = lines[titleIndex];
+        title = title.replace(/<[^>]*>/g, '').trim();
+        var body = lines.slice(titleIndex + 1).join('\n').trim();
+        return { title: title, body: body };
+    }
+
+    /**
      * Show a notification banner in the notices area.
      *
      * @param {string} message The message to display.
@@ -179,9 +207,13 @@
         $card.find('.editor-tabs[data-post-id="' + postId + '"] .editor-tab-btn').removeClass('active');
         $btn.addClass('active');
 
-        // Show/hide corresponding textarea
-        $card.find('.content-curator-textarea[data-post-id="' + postId + '"]').hide().removeClass('active');
-        $card.find('.content-curator-textarea[data-post-id="' + postId + '"][data-lang="' + lang + '"]').show().addClass('active');
+        // Show/hide corresponding wrapper
+        $card.find('.editor-tab-content-wrapper[data-post-id="' + postId + '"]').hide().removeClass('active');
+        $card.find('.content-curator-textarea[data-post-id="' + postId + '"]').removeClass('active');
+
+        var $activeWrapper = $card.find('.editor-tab-content-wrapper[data-post-id="' + postId + '"][data-lang="' + lang + '"]');
+        $activeWrapper.show().addClass('active');
+        $activeWrapper.find('.content-curator-textarea').addClass('active');
     });
 
     // =========================================================================
@@ -219,7 +251,19 @@
         if ($activeTextarea.length === 0) {
             $activeTextarea = $card.find('.content-curator-textarea').first();
         }
-        var text = $activeTextarea.val();
+        var activeLang = $activeTextarea.data('lang');
+        var $activeTitle = $card.find('.content-curator-title-input[data-lang="' + activeLang + '"]');
+        var titleText = $activeTitle.length ? $activeTitle.val().trim() : '';
+        var bodyText = $activeTextarea.val().trim();
+        
+        var text = '';
+        if (titleText && bodyText) {
+            text = titleText + "\n" + bodyText;
+        } else if (titleText) {
+            text = titleText;
+        } else {
+            text = bodyText;
+        }
 
         if (!text || !text.trim()) {
             alert(strings.error_generic);
@@ -247,7 +291,15 @@
                             var $txt = $(this);
                             var lang = $txt.data('lang');
                             if (translations[lang]) {
-                                $txt.val(translations[lang]);
+                                var split = splitTitleAndBody(translations[lang]);
+                                var $titleInput = $card.find('.content-curator-title-input[data-lang="' + lang + '"]');
+                                if ($titleInput.length) {
+                                    $titleInput.val(split.title).css('background-color', '#e8f5e9');
+                                    setTimeout(function () {
+                                        $titleInput.css('background-color', '');
+                                    }, 1500);
+                                }
+                                $txt.val(split.body);
                                 // Quick highlight animation on the textarea.
                                 $txt.css('background-color', '#e8f5e9');
                                 setTimeout(function () {
@@ -256,8 +308,16 @@
                             }
                         });
                     } else if (response.data.rewritten_text) {
+                        var split = splitTitleAndBody(response.data.rewritten_text);
                         var $txt = $card.find('.content-curator-textarea');
-                        $txt.val(response.data.rewritten_text);
+                        var $titleInput = $card.find('.content-curator-title-input');
+                        if ($titleInput.length) {
+                            $titleInput.val(split.title).css('background-color', '#e8f5e9');
+                            setTimeout(function () {
+                                $titleInput.css('background-color', '');
+                            }, 1500);
+                        }
+                        $txt.val(split.body);
                         $txt.css('background-color', '#e8f5e9');
                         setTimeout(function () {
                             $txt.css('background-color', '');
@@ -289,21 +349,51 @@
         var imageUrl      = $button.data('image-url') || '';
         var publishStatus = $button.data('status');
 
-        // Gather the texts of all language tabs inside this card
+        // Gather the texts and titles of all language tabs inside this card
         var texts = {};
         var hasContent = false;
+        var missingTitle = false;
         $card.find('.content-curator-textarea').each(function () {
             var $txt = $(this);
             var lang = $txt.data('lang');
             var val  = $txt.val();
+            
+            var $titleInput = $card.find('.content-curator-title-input[data-lang="' + lang + '"]');
+            var titleVal = $titleInput.length ? $titleInput.val().trim() : '';
+            
             if (val && val.trim()) {
-                texts[lang] = val;
+                if (!titleVal) {
+                    missingTitle = true;
+                }
+                // Combine title and body with a newline to match the backend expectation
+                texts[lang] = titleVal + "\n" + val.trim();
+                hasContent = true;
+            } else if (titleVal) {
+                // If there's a title but no body, it's also content.
+                texts[lang] = titleVal + "\n";
                 hasContent = true;
             }
         });
 
+        if (missingTitle) {
+            alert(strings.title_empty || 'Post title cannot be empty.');
+            return;
+        }
+
         var postType      = $card.find('.select-post-type').val() || 'post';
         var postTag       = $card.find('.select-post-tag').val() || '';
+
+        var includeGallery = 1;
+        var $galleryCb = $card.find('.include-gallery-checkbox');
+        if ($galleryCb.length) {
+            includeGallery = $galleryCb.is(':checked') ? 1 : 0;
+        }
+
+        var includeCover = 1;
+        var $coverCb = $card.find('.include-cover-checkbox');
+        if ($coverCb.length) {
+            includeCover = $coverCb.is(':checked') ? 1 : 0;
+        }
 
         // Event fields values
         var eventStartDate = $card.find('.event-start-date').val() || '';
@@ -340,6 +430,8 @@
                 texts:          JSON.stringify(texts),
                 text:           texts['en'] || Object.values(texts)[0] || '', // legacy fallback
                 image_url:      imageUrl,
+                include_gallery: includeGallery,
+                include_cover:   includeCover,
                 publish_status: publishStatus,
                 post_type:      postType,
                 tag:            postTag,
@@ -484,12 +576,15 @@
                .removeClass('status-success status-error')
                .addClass('status-loading');
 
+        var timeframe = $('#content-curator-fetch-timeframe').val() || 'all';
+
         $.ajax({
             url: ajaxUrl,
             type: 'POST',
             data: {
-                action: 'content_curator_fetch_now',
-                nonce:  nonce
+                action:    'content_curator_fetch_now',
+                nonce:     nonce,
+                timeframe: timeframe
             },
             success: function (response) {
                 $button.prop('disabled', false);

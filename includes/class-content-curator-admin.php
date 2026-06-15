@@ -32,6 +32,8 @@ class content_curator_Admin {
                 'to'                   => 'To:',
                 'clear_filters'        => 'Clear Filters',
                 'fetch_now'            => 'Fetch Now',
+                'all_time'             => 'All',
+                'last_week'            => 'Last week',
                 'delete_all'           => 'Delete All Pending',
                 'all_pending'          => 'All pending',
                 'last_24'              => 'Last 24 hours',
@@ -127,6 +129,11 @@ class content_curator_Admin {
                 'col_location'          => 'Default Place (Lugar)',
                 'btn_add_row'           => 'Add Default Config',
                 'btn_remove_row'        => 'Remove',
+                'include_gallery_label' => 'Include gallery images',
+                'include_cover_label'   => 'Include cover image (Featured)',
+                'title_label'           => 'Title',
+                'content_label'         => 'Content',
+                'title_empty'           => 'Post title cannot be empty.',
             ),
             'es' => array(
                 'dashboard_title'      => 'Panel de Curación de Contenidos',
@@ -136,7 +143,9 @@ class content_curator_Admin {
                 'from'                 => 'Desde:',
                 'to'                   => 'Hasta:',
                 'clear_filters'        => 'Limpiar Filtros',
-                'fetch_now'            => 'Importar Ahora',
+                'fetch_now'            => 'Escanear ahora',
+                'all_time'             => 'Todos',
+                'last_week'            => 'Última semana',
                 'delete_all'           => 'Eliminar Todos los Pendientes',
                 'all_pending'          => 'Todos los pendientes',
                 'last_24'              => 'Últimas 24 horas',
@@ -232,6 +241,11 @@ class content_curator_Admin {
                 'col_location'          => 'Lugar por Defecto',
                 'btn_add_row'           => 'Añadir Configuración por Defecto',
                 'btn_remove_row'        => 'Eliminar',
+                'include_gallery_label' => 'Incluir galería de imágenes',
+                'include_cover_label'   => 'Incluir imagen de cabecera',
+                'title_label'           => 'Titular',
+                'content_label'         => 'Contenido',
+                'title_empty'           => 'El titular del post no puede estar vacío.',
             ),
             'fr' => array(
                 'dashboard_title'      => 'Tableau de Curation de Contenu',
@@ -242,6 +256,8 @@ class content_curator_Admin {
                 'to'                   => 'À:',
                 'clear_filters'        => 'Effacer les Filtres',
                 'fetch_now'            => 'Importer Maintenant',
+                'all_time'             => 'Tous',
+                'last_week'            => 'La semaine dernière',
                 'delete_all'           => 'Supprimer tous les éléments en attente',
                 'all_pending'          => 'Tous en attente',
                 'last_24'              => 'Dernières 24 heures',
@@ -337,6 +353,11 @@ class content_curator_Admin {
                 'col_location'          => 'Lieu par Défaut',
                 'btn_add_row'           => 'Ajouter Configuration par Défaut',
                 'btn_remove_row'        => 'Supprimer',
+                'include_gallery_label' => 'Inclure la galerie d\'images',
+                'include_cover_label'   => "Inclure l'image de couverture",
+                'title_label'           => 'Titre',
+                'content_label'         => 'Contenu',
+                'title_empty'           => 'Le titre de l\'article ne peut pas être vide.',
             ),
         );
         $lang = strtolower( $lang );
@@ -1108,6 +1129,7 @@ class content_curator_Admin {
                     'success_delete'     => __( 'Post deleted successfully!', 'wp-content-curator' ),
                     'success_delete_all' => __( 'All pending posts deleted successfully!', 'wp-content-curator' ),
                     'error_generic'      => __( 'An error occurred. Please try again.', 'wp-content-curator' ),
+                    'title_empty'        => __( 'Post title cannot be empty.', 'wp-content-curator' ),
                 ),
             )
         );
@@ -1356,6 +1378,11 @@ class content_curator_Admin {
                         <?php endif; ?>
                     </div>
                     <div class="content-curator-toolbar-right" style="display: flex; align-items: center; gap: 10px;">
+                        <select id="content-curator-fetch-timeframe" style="padding: 6px 10px; border: 1px solid var(--cc-border); border-radius: var(--cc-radius-sm); font-size: 13px; cursor: pointer; background: var(--cc-bg-surface); color: var(--cc-text-primary); outline: none;">
+                            <option value="all"><?php echo esc_html( $d['all_time'] ); ?></option>
+                            <option value="24h"><?php echo esc_html( $d['last_24'] ); ?></option>
+                            <option value="7d"><?php echo esc_html( $d['last_week'] ); ?></option>
+                        </select>
                         <button type="button" id="content-curator-fetch-now" class="button button-secondary" style="display: inline-flex; align-items: center; gap: 4px;">
                             <span class="dashicons dashicons-download" style="vertical-align: middle;"></span>
                             <?php echo esc_html( $d['fetch_now'] ); ?>
@@ -1477,6 +1504,18 @@ class content_curator_Admin {
                                                 <button type="button" class="gallery-next" onclick="changeGalleryImage(this, 1);">&rsaquo;</button>
                                             </div>
                                         <?php endif; ?>
+                                        <div class="image-toggles" style="margin-top: 12px; display: flex; flex-direction: column; gap: 8px; padding: 10px; background: var(--cc-bg-surface); border-radius: var(--cc-radius-sm); border: 1px solid var(--cc-border);">
+                                            <div class="cover-toggle" style="display: flex; align-items: center; gap: 8px;">
+                                                <input type="checkbox" id="cover-toggle-<?php echo esc_attr( $post->id ); ?>" class="include-cover-checkbox" checked="checked" value="1" />
+                                                <label for="cover-toggle-<?php echo esc_attr( $post->id ); ?>" style="font-size: 12px; font-weight: 600; color: var(--cc-text-secondary); cursor: pointer;"><?php echo esc_html( $d['include_cover_label'] ); ?></label>
+                                            </div>
+                                            <?php if ( count( $images ) > 1 ) : ?>
+                                                <div class="gallery-toggle" style="display: flex; align-items: center; gap: 8px;">
+                                                    <input type="checkbox" id="gallery-toggle-<?php echo esc_attr( $post->id ); ?>" class="include-gallery-checkbox" checked="checked" value="1" />
+                                                    <label for="gallery-toggle-<?php echo esc_attr( $post->id ); ?>" style="font-size: 12px; font-weight: 600; color: var(--cc-text-secondary); cursor: pointer;"><?php echo esc_html( $d['include_gallery_label'] ); ?></label>
+                                                </div>
+                                            <?php endif; ?>
+                                        </div>
                                     </div>
                                 <?php endif; ?>
 
@@ -1505,14 +1544,39 @@ class content_curator_Admin {
                                         <?php endif; ?>
 
                                         <div class="editor-tab-contents">
-                                            <?php $first = true; foreach ( $curated_langs as $lang_code ) : ?>
-                                                <textarea
-                                                    class="content-curator-textarea <?php echo $first ? 'active' : ''; ?>"
+                                            <?php $first = true; foreach ( $curated_langs as $lang_code ) : 
+                                                $lines = preg_split( '/\r\n|\r|\n/', $post->original_text, 2 );
+                                                $orig_title = wp_strip_all_tags( $lines[0] );
+                                                $orig_title = preg_replace( '/^<h2[^>]*>(.*?)<\/h2>$/i', '$1', $orig_title );
+                                                $orig_title = trim( $orig_title );
+                                                $orig_body  = isset( $lines[1] ) ? trim( $lines[1] ) : '';
+                                            ?>
+                                                <div class="editor-tab-content-wrapper <?php echo $first ? 'active' : ''; ?>"
                                                     data-lang="<?php echo esc_attr( $lang_code ); ?>"
                                                     data-post-id="<?php echo esc_attr( $post->id ); ?>"
-                                                    rows="8"
-                                                    style="<?php echo $first ? '' : 'display: none;'; ?>"
-                                                ><?php echo esc_textarea( $post->original_text ); ?></textarea>
+                                                    style="<?php echo $first ? '' : 'display: none;'; ?>">
+                                                    
+                                                    <div class="editor-field-group">
+                                                        <label><?php echo esc_html( $d['title_label'] ); ?></label>
+                                                        <input type="text"
+                                                            class="content-curator-title-input"
+                                                            data-lang="<?php echo esc_attr( $lang_code ); ?>"
+                                                            data-post-id="<?php echo esc_attr( $post->id ); ?>"
+                                                            value="<?php echo esc_attr( $orig_title ); ?>"
+                                                            placeholder="<?php echo esc_attr( $d['title_label'] ); ?>"
+                                                        />
+                                                    </div>
+                                                    
+                                                    <div class="editor-field-group">
+                                                        <label><?php echo esc_html( $d['content_label'] ); ?></label>
+                                                        <textarea
+                                                            class="content-curator-textarea <?php echo $first ? 'active' : ''; ?>"
+                                                            data-lang="<?php echo esc_attr( $lang_code ); ?>"
+                                                            data-post-id="<?php echo esc_attr( $post->id ); ?>"
+                                                            rows="8"
+                                                        ><?php echo esc_textarea( $orig_body ); ?></textarea>
+                                                    </div>
+                                                </div>
                                             <?php $first = false; endforeach; ?>
                                         </div>
 
@@ -1743,6 +1807,8 @@ class content_curator_Admin {
         $publish_status  = isset( $_POST['publish_status'] ) ? sanitize_text_field( wp_unslash( $_POST['publish_status'] ) ) : 'draft';
         $post_type      = isset( $_POST['post_type'] ) ? sanitize_text_field( wp_unslash( $_POST['post_type'] ) ) : 'post';
         $tag_value      = isset( $_POST['tag'] ) ? sanitize_text_field( wp_unslash( $_POST['tag'] ) ) : '';
+        $include_gallery = isset( $_POST['include_gallery'] ) ? (bool) $_POST['include_gallery'] : true;
+        $include_cover   = isset( $_POST['include_cover'] ) ? (bool) $_POST['include_cover'] : true;
 
         // Event custom meta fields
         $event_start_date = isset( $_POST['event_start_date'] ) ? sanitize_text_field( wp_unslash( $_POST['event_start_date'] ) ) : '';
@@ -1880,44 +1946,90 @@ class content_curator_Admin {
         }
         $image_urls = array_filter( $image_urls );
 
-        // Step 2: Sideload all images to master post.
-        $attachment_ids = array();
-        foreach ( $image_urls as $url ) {
-            $attachment_id = self::sideload_image( $url, $new_post_id );
+        // Determine cover and gallery image availability
+        $sideload_cover   = ( $include_cover && ! empty( $image_urls ) );
+        $sideload_gallery = ( $include_gallery && count( $image_urls ) > 1 );
+
+        $cover_attachment_id = 0;
+        $gallery_attachment_ids = array();
+
+        // Sideload cover image
+        if ( $sideload_cover ) {
+            $cover_url = $image_urls[0];
+            $attachment_id = self::sideload_image( $cover_url, $new_post_id, $title );
             if ( ! is_wp_error( $attachment_id ) && $attachment_id > 0 ) {
-                $attachment_ids[] = $attachment_id;
+                $cover_attachment_id = $attachment_id;
             } else {
                 if ( is_wp_error( $attachment_id ) ) {
-                    error_log( '[WP FB Curator] Image sideload error: ' . $attachment_id->get_error_message() );
+                    error_log( '[WP FB Curator] Cover image sideload error: ' . $attachment_id->get_error_message() );
                 }
             }
         }
 
-        // Step 3: Set featured image & gallery block on master post.
-        if ( ! empty( $attachment_ids ) ) {
-            set_post_thumbnail( $new_post_id, $attachment_ids[0] );
-
-            if ( count( $attachment_ids ) > 1 ) {
-                $gallery_html = "\n\n<!-- wp:gallery {\"linkTo\":\"none\"} -->\n<figure class=\"wp-block-gallery has-nested-images columns-default is-cropped\">";
-                foreach ( $attachment_ids as $att_id ) {
-                    $img_src       = wp_get_attachment_url( $att_id );
-                    $gallery_html .= "\n<!-- wp:image {\"id\":" . $att_id . ",\"sizeSlug\":\"large\",\"linkDestination\":\"none\"} -->\n";
-                    $gallery_html .= "<figure class=\"wp-block-image size-large\"><img src=\"" . esc_url( $img_src ) . "\" alt=\"\" class=\"wp-image-" . $att_id . "\"/></figure>\n";
-                    $gallery_html .= "<!-- /wp:image -->\n";
+        // Sideload gallery images
+        if ( $sideload_gallery ) {
+            $gallery_urls = array_slice( $image_urls, 1 );
+            foreach ( $gallery_urls as $url ) {
+                $attachment_id = self::sideload_image( $url, $new_post_id, '' );
+                if ( ! is_wp_error( $attachment_id ) && $attachment_id > 0 ) {
+                    $gallery_attachment_ids[] = $attachment_id;
+                } else {
+                    if ( is_wp_error( $attachment_id ) ) {
+                        error_log( '[WP FB Curator] Gallery image sideload error: ' . $attachment_id->get_error_message() );
+                    }
                 }
-                $gallery_html .= "</figure>\n<!-- /wp:gallery -->";
-
-                $body .= $gallery_html;
-
-                wp_update_post( array(
-                    'ID'           => $new_post_id,
-                    'post_content' => $body,
-                ) );
             }
         }
 
-        if ( 'agenda' === $post_type && ! empty( $attachment_ids ) ) {
-            update_post_meta( $new_post_id, 'galeria-del-evento', implode( ',', $attachment_ids ) );
+        // Combine all successfully sideloaded attachment IDs
+        $all_gallery_ids = array();
+        if ( $cover_attachment_id > 0 ) {
+            $all_gallery_ids[] = $cover_attachment_id;
+        }
+        if ( ! empty( $gallery_attachment_ids ) ) {
+            $all_gallery_ids = array_merge( $all_gallery_ids, $gallery_attachment_ids );
+        }
+
+        // Set featured image on master post
+        if ( $cover_attachment_id > 0 ) {
+            set_post_thumbnail( $new_post_id, $cover_attachment_id );
+        }
+
+        // Generate block HTML (gallery block or single image block)
+        $gallery_html = '';
+        $image_html   = '';
+        if ( $sideload_gallery && count( $all_gallery_ids ) > 1 ) {
+            $gallery_html = "\n\n<!-- wp:gallery {\"linkTo\":\"none\"} -->\n<figure class=\"wp-block-gallery has-nested-images columns-default is-cropped\">";
+            foreach ( $all_gallery_ids as $att_id ) {
+                $img_src       = wp_get_attachment_url( $att_id );
+                $gallery_html .= "\n<!-- wp:image {\"id\":" . $att_id . ",\"sizeSlug\":\"large\",\"linkDestination\":\"none\"} -->\n";
+                $gallery_html .= "<figure class=\"wp-block-image size-large\"><img src=\"" . esc_url( $img_src ) . "\" alt=\"\" class=\"wp-image-" . $att_id . "\"/></figure>\n";
+                $gallery_html .= "<!-- /wp:image -->\n";
+            }
+            $gallery_html .= "</figure>\n<!-- /wp:gallery -->";
+            
+            $body .= $gallery_html;
+            wp_update_post( array(
+                'ID'           => $new_post_id,
+                'post_content' => $body,
+            ) );
+        } elseif ( $sideload_gallery && count( $all_gallery_ids ) === 1 && ! $include_cover ) {
+            // Exactly 1 image is included, and it was NOT set as the cover image, so we put it in the content body as a single image.
+            $att_id = $all_gallery_ids[0];
+            $img_src = wp_get_attachment_url( $att_id );
+            $image_html = "\n\n<!-- wp:image {\"id\":" . $att_id . ",\"sizeSlug\":\"large\",\"linkDestination\":\"none\"} -->\n";
+            $image_html .= "<figure class=\"wp-block-image size-large\"><img src=\"" . esc_url( $img_src ) . "\" alt=\"\" class=\"wp-image-" . $att_id . "\"/></figure>\n";
+            $image_html .= "<!-- /wp:image -->";
+
+            $body .= $image_html;
+            wp_update_post( array(
+                'ID'           => $new_post_id,
+                'post_content' => $body,
+            ) );
+        }
+
+        if ( 'agenda' === $post_type && ! empty( $all_gallery_ids ) ) {
+            update_post_meta( $new_post_id, 'galeria-del-evento', implode( ',', $all_gallery_ids ) );
         }
 
         // Step 4: Insert translation posts for all other curated languages.
@@ -1937,17 +2049,11 @@ class content_curator_Admin {
             $lang_title = trim( $lang_title );
             $lang_body  = isset( $lang_lines[1] ) ? trim( $lang_lines[1] ) : $lang_text;
 
-            // Append same gallery HTML if multiple images.
-            if ( ! empty( $attachment_ids ) && count( $attachment_ids ) > 1 ) {
-                $gallery_html = "\n\n<!-- wp:gallery {\"linkTo\":\"none\"} -->\n<figure class=\"wp-block-gallery has-nested-images columns-default is-cropped\">";
-                foreach ( $attachment_ids as $att_id ) {
-                    $img_src       = wp_get_attachment_url( $att_id );
-                    $gallery_html .= "\n<!-- wp:image {\"id\":" . $att_id . ",\"sizeSlug\":\"large\",\"linkDestination\":\"none\"} -->\n";
-                    $gallery_html .= "<figure class=\"wp-block-image size-large\"><img src=\"" . esc_url( $img_src ) . "\" alt=\"\" class=\"wp-image-" . $att_id . "\"/></figure>\n";
-                    $gallery_html .= "<!-- /wp:image -->\n";
-                }
-                $gallery_html .= "</figure>\n<!-- /wp:gallery -->";
+            // Append same gallery or image HTML to translation body.
+            if ( ! empty( $gallery_html ) ) {
                 $lang_body .= $gallery_html;
+            } elseif ( ! empty( $image_html ) ) {
+                $lang_body .= $image_html;
             }
 
             $translated_post_id = wp_insert_post(
@@ -1969,8 +2075,8 @@ class content_curator_Admin {
                 }
 
                 // Set thumbnail.
-                if ( ! empty( $attachment_ids ) ) {
-                    set_post_thumbnail( $translated_post_id, $attachment_ids[0] );
+                if ( $cover_attachment_id > 0 ) {
+                    set_post_thumbnail( $translated_post_id, $cover_attachment_id );
                 }
 
                 // Save event taxonomies and meta on translation post
@@ -1995,8 +2101,8 @@ class content_curator_Admin {
                     }
                     update_post_meta( $translated_post_id, 'lugar', $event_location );
                     update_post_meta( $translated_post_id, 'descripcion-del-evento', $lang_text );
-                    if ( ! empty( $attachment_ids ) ) {
-                        update_post_meta( $translated_post_id, 'galeria-del-evento', implode( ',', $attachment_ids ) );
+                    if ( ! empty( $all_gallery_ids ) ) {
+                        update_post_meta( $translated_post_id, 'galeria-del-evento', implode( ',', $all_gallery_ids ) );
                     }
                 }
 
@@ -2047,7 +2153,8 @@ class content_curator_Admin {
             wp_send_json_error( array( 'message' => __( 'Insufficient permissions.', 'wp-content-curator' ) ), 403 );
         }
 
-        $result = content_curator_Cron::run_fetch();
+        $timeframe = isset( $_POST['timeframe'] ) ? sanitize_text_field( wp_unslash( $_POST['timeframe'] ) ) : 'all';
+        $result = content_curator_Cron::run_fetch( $timeframe );
 
         if ( ! empty( $result['errors'] ) ) {
             wp_send_json_error( array(
@@ -2172,9 +2279,10 @@ class content_curator_Admin {
      *
      * @param string $image_url The remote image URL.
      * @param int    $post_id   The WordPress post ID to attach the image to.
+     * @param string $custom_filename Optional custom filename (without extension).
      * @return int|WP_Error The attachment ID on success, WP_Error on failure.
      */
-    public static function sideload_image( $image_url, $post_id ) {
+    public static function sideload_image( $image_url, $post_id, $custom_filename = '' ) {
         // Include required WordPress media handling files.
         require_once ABSPATH . 'wp-admin/includes/image.php';
         require_once ABSPATH . 'wp-admin/includes/file.php';
@@ -2187,12 +2295,20 @@ class content_curator_Admin {
             return $tmp_file;
         }
 
-        // Determine a filename  Facebook URLs may not have a clean extension.
+        // Determine a filename — Facebook URLs may not have a clean extension.
         $filename = basename( wp_parse_url( $image_url, PHP_URL_PATH ) );
-        if ( ! preg_match( '/\.(jpe?g|png|gif|webp)$/i', $filename ) ) {
+        $ext = '';
+        if ( preg_match( '/\.(jpe?g|png|gif|webp)$/i', $filename, $matches ) ) {
+            $ext = strtolower( $matches[1] );
+        } else {
             // Detect MIME type from the downloaded file and assign extension.
             $mime = wp_check_filetype_and_ext( $tmp_file, $filename );
             $ext  = $mime['ext'] ? $mime['ext'] : 'jpg';
+        }
+
+        if ( ! empty( $custom_filename ) ) {
+            $filename = sanitize_title( $custom_filename ) . '.' . $ext;
+        } else if ( ! preg_match( '/\.(jpe?g|png|gif|webp)$/i', $filename ) ) {
             $filename = 'content-curator-' . $post_id . '-' . time() . '.' . $ext;
         }
 

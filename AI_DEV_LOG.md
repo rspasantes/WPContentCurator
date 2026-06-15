@@ -314,3 +314,86 @@
 - **wp-content-curator.php**: Bumped plugin version constant and header metadata to `1.4.0`.
 - **README.md**: Updated version references and changelog history for the `1.4.0` release.
 - **AGENTS.md**: Updated CPT Agenda integration and default values specifications to align with simplified metadata fields.
+
+## 2026-06-12 - 15:45 - Made gallery images optional and implemented automatic cover image renaming
+
+### Summary of Changes
+- **includes/class-content-curator-admin.php**:
+  - Added `'include_gallery_label'` translations to the dictionary in English, Spanish, and French.
+  - Added checkbox toggle inside card UI below gallery controls to choose whether to include gallery images in the post (checked by default, only visible for multi-image posts).
+  - Modified `ajax_publish()` parameter extraction to parse the new `include_gallery` AJAX param.
+  - Added filter logic to `ajax_publish()` to drop all gallery images except the first cover image if `include_gallery` is false.
+  - Modified `sideload_image()` to accept an optional `$custom_filename` parameter, sanitizing it using `sanitize_title()` to build the filename while keeping the correct extension.
+  - Updated calls inside `ajax_publish()` to pass the post `$title` as the custom filename for the cover image (index 0).
+- **includes/class-content-curator-cron.php**:
+  - Updated both automatic multi-language and single-language cron loops to pass the `$title` parameter when calling `sideload_image` for the cover image.
+- **assets/js/admin-script.js**:
+  - Extracted the checked state of `.include-gallery-checkbox` inside cards and passed it as `include_gallery` (1 or 0) in the draft/publish AJAX payload.
+- **wp-content-curator.php**:
+  - Bumped plugin version and constant definitions to `1.4.1`.
+- **README.md**:
+  - Added version `1.4.1` details to the changelog.
+- **AGENTS.md**:
+  - Documented optional gallery toggles and cover image renaming behavior.
+
+## 2026-06-15 - 11:04 - Implemented post title customization in curation card editor and version 1.5.0
+
+### Summary of Changes
+- **includes/class-content-curator-admin.php**:
+  - Added dictionary translations for `'title_label'`, `'content_label'`, and `'title_empty'` in English, Spanish, and French.
+  - Localized `'title_empty'` string for the enqueued JavaScript client under `strings`.
+  - Modified card editor markup inside `render_dashboard_page()`, splitting the original text dynamically into a title (first line) and body (rest).
+  - Wrapped each language tab's editor fields inside an `.editor-tab-content-wrapper` container.
+  - Rendered a custom text input field for the Title alongside the content textarea for each language tab.
+- **assets/js/admin-script.js**:
+  - Added a `splitTitleAndBody(text)` helper function to divide text blocks into title and body content.
+  - Adjusted editor tab switching click handler to support and toggle the new `.editor-tab-content-wrapper` containers.
+  - Updated the AI Optimization trigger to combine title and body before sending, and split the returned translations back into their respective Title and Content fields.
+  - Updated the draft/publish submission handlers to aggregate the customized title and content body fields, validate that title is populated if content exists, and combine them back with a newline so the backend remains fully compatible.
+- **assets/css/admin-style.css**:
+  - Appended premium CSS style definitions for the new `.content-curator-title-input` and `.editor-field-group` container elements.
+- **wp-content-curator.php**:
+  - Bumped plugin version metadata and constant `WP_CONTENT_CURATOR_VERSION` to `1.5.0`.
+- **README.md**:
+  - Documented version `1.5.0` features in the changelog section.
+- **AGENTS.md**:
+  - Updated the key capabilities description for the Tabbed Curation Editor to reflect the new post title capability.
+
+## 2026-06-15 - 15:40 - Renamed manual fetch button and added timeframe filter dropdown next to it in version 1.5.1
+
+### Summary of Changes
+- **includes/class-content-curator-admin.php**:
+  - Renamed Spanish manual fetch button translation `'fetch_now'` from "Importar ahora" to "Escanear ahora".
+  - Added `'all_time'` and `'last_week'` translations for English, Spanish, and French dictionaries.
+  - Added `#content-curator-fetch-timeframe` dropdown filter next to the `#content-curator-fetch-now` scan button inside `render_dashboard_page()`.
+  - Modified `ajax_fetch_now()` to retrieve the POST parameter `timeframe` (defaulting to `'all'`) and forward it to `content_curator_Cron::run_fetch()`.
+- **includes/class-content-curator-cron.php**:
+  - Modified `run_fetch()` to accept an optional `$timeframe = 'all'` parameter and pass it down to `content_curator_API::fetch_page_posts()`.
+- **includes/class-content-curator-api.php**:
+  - Updated `fetch_page_posts()` to accept a `$timeframe = 'all'` parameter.
+  - Added conditional logic to map timeframe values (`24h` and `7d`) to the Apify actor `oldestPostDateUnified` parameter values (`24 hours` and `7 days`) to restrict fetched posts timeframe directly on the Apify synchronous query.
+- **assets/js/admin-script.js**:
+  - Updated `#content-curator-fetch-now` click listener to read the selected option from `#content-curator-fetch-timeframe` and send it inside the AJAX request payload.
+- **wp-content-curator.php**:
+  - Bumped plugin version metadata and constant `WP_CONTENT_CURATOR_VERSION` to `1.5.1`.
+- **README.md**:
+  - Documented version `1.5.1` features in the changelog section.
+
+## 2026-06-15 - 15:50 - Added optional cover image and gallery block selectors in version 1.5.2
+
+### Summary of Changes
+- **includes/class-content-curator-admin.php**:
+  - Added `'include_cover_label'` translations to the dictionary in English, Spanish, and French.
+  - Replaced the single gallery-checkbox template with a modern card-styled checkbox list allowing independent cover and gallery selection.
+  - Extracted the `include_cover` value from AJAX $_POST parameters.
+  - Refactored post attachment and sideloading flow: if cover is enabled, it is set as Featured Image. If gallery is enabled, it creates the Gutenberg gallery block.
+  - Added fallback: if cover is disabled but gallery is enabled and only 1 image exists, that image is embedded in the post content body as a single image block.
+  - Ensured WPML translation posts receive matching gallery/image block layouts and featured image thumbnails depending on selection.
+- **assets/js/admin-script.js**:
+  - Extracted the checked state of `.include-cover-checkbox` and passed it as `include_cover` (1 or 0) in the draft/publish AJAX payload.
+- **wp-content-curator.php**:
+  - Bumped plugin version and constants to `1.5.2`.
+- **README.md**:
+  - Documented version `1.5.2` features in the changelog.
+- **AGENTS.md**:
+  - Documented optional cover selection and fallback behavior in the capabilities summary.

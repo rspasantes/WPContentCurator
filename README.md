@@ -117,6 +117,24 @@ wp-content-curator/
 - Database queries use `$wpdb->prepare()` for SQL injection prevention.
 
 ## Changelog
+ 
+### 1.5.2
+- Optional Cover and Gallery Images: Added a checkbox group to control whether to include the cover image (Featured Image) and/or the gallery block during publication.
+- Image fallbacks: If the cover image is disabled but gallery images are checked, the first gallery image is inserted directly into the post content body.
+
+### 1.5.1
+- Updated Dashboard Scan Button: Renamed the manual trigger button from "Importar ahora" to "Escanear ahora" in Spanish UI.
+- Timeframe Scanning: Added a dropdown selector next to the scan button, allowing editors to scan only for posts from the last 24 hours, the last week, or all posts. Integrates with the Apify Facebook Scraper `oldestPostDateUnified` parameter.
+
+### 1.5.0
+- Added Post Title Customization: Split the tabbed editor cards into dedicated "Title" and "Content" fields, giving editors full manual control over the created post title.
+- Dynamic Title Extraction: Automatically extracts the first line of the post text as the default title, placing the rest in the content body.
+- AI optimization & translation: Integrates with the "Optimize with AI" process to rewrite and translate both fields, splitting returned headers back into the Title input.
+- Localized validation: Warns user if the title field is left blank for tabs containing post content.
+
+### 1.4.1
+- Made gallery images optional on publishing/drafting: added a toggle checkbox inside curation cards to opt-out of gallery embedding. If unchecked, only the cover image is sideloaded.
+- Implemented automatic cover image renaming: cover/featured images are now renamed to match the sanitized post title slug (e.g. `festa-en-camarinas.jpg`) during download/sideload.
 
 ### 1.4.0
 - Reordered settings page tabs to follow: Basic Configuration, AI Configuration, Event Configuration, and CRON.

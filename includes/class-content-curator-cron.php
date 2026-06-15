@@ -84,7 +84,7 @@ class content_curator_Cron {
      *
      * @return array Summary with 'fetched' count and 'errors' array.
      */
-    public static function run_fetch() {
+    public static function run_fetch( $timeframe = 'all' ) {
         $apify_token  = get_option( 'content_curator_apify_token', '' );
         $page_ids_raw = get_option( 'content_curator_page_ids', '' );
 
@@ -105,7 +105,7 @@ class content_curator_Cron {
         $errors        = array();
 
         foreach ( $page_ids as $page_id ) {
-            $posts = content_curator_API::fetch_page_posts( $page_id, $apify_token );
+            $posts = content_curator_API::fetch_page_posts( $page_id, $apify_token, 20, $timeframe );
 
             if ( is_wp_error( $posts ) ) {
                 $error_message = sprintf(
@@ -312,8 +312,9 @@ class content_curator_Cron {
 
                 // Sideload images and attach to master post
                 $attachment_ids = array();
-                foreach ( $image_urls as $url ) {
-                    $attachment_id = content_curator_Admin::sideload_image( $url, $master_post_id );
+                foreach ( $image_urls as $idx => $url ) {
+                    $custom_filename = ( $idx === 0 ) ? $title : '';
+                    $attachment_id = content_curator_Admin::sideload_image( $url, $master_post_id, $custom_filename );
                     if ( ! is_wp_error( $attachment_id ) && $attachment_id > 0 ) {
                         $attachment_ids[] = $attachment_id;
                     }
@@ -450,8 +451,9 @@ class content_curator_Cron {
 
                 // Sideload images and attach
                 $attachment_ids = array();
-                foreach ( $image_urls as $url ) {
-                    $attachment_id = content_curator_Admin::sideload_image( $url, $new_post_id );
+                foreach ( $image_urls as $idx => $url ) {
+                    $custom_filename = ( $idx === 0 ) ? $title : '';
+                    $attachment_id = content_curator_Admin::sideload_image( $url, $new_post_id, $custom_filename );
                     if ( ! is_wp_error( $attachment_id ) && $attachment_id > 0 ) {
                         $attachment_ids[] = $attachment_id;
                     }
