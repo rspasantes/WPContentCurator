@@ -457,3 +457,11 @@
   - Documented version `1.5.5` changes.
 - **AGENTS.md**:
   - Documented the new Segmented Control & Filter Bars capability.
+
+## 2026-06-15 - 17:08 - Reverted version 1.5.6 changes to restore version 1.5.5
+
+### Summary of Changes
+- Reverted all changes introduced in version 1.5.6 by performing a hard reset to the previous stable state (commit `02ff3d550479fdbd456b5c381d96e6813174618d`).
+- Restored the general monitored Page IDs/URLs text field in Settings.
+- Removed the Facebook page connection "Test" buttons from the agenda defaults settings table.
+- Re-established separate page monitoring configuration inputs and restored background cron / manual fetch routines back to version 1.5.5 functionality.
