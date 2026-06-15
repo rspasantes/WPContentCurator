@@ -134,6 +134,10 @@ class content_curator_Admin {
                 'title_label'           => 'Title',
                 'content_label'         => 'Content',
                 'title_empty'           => 'Post title cannot be empty.',
+                'test_ai_btn'           => 'Test AI Service',
+                'testing_ai'            => 'Testing connection...',
+                'test_ai_success'       => 'Connection successful! AI response received.',
+                'test_ai_error'         => 'Connection failed: ',
             ),
             'es' => array(
                 'dashboard_title'      => 'Panel de Curación de Contenidos',
@@ -246,6 +250,10 @@ class content_curator_Admin {
                 'title_label'           => 'Titular',
                 'content_label'         => 'Contenido',
                 'title_empty'           => 'El titular del post no puede estar vacío.',
+                'test_ai_btn'           => 'Probar Servicio de IA',
+                'testing_ai'            => 'Probando conexión...',
+                'test_ai_success'       => '¡Conexión exitosa! Respuesta de IA recibida.',
+                'test_ai_error'         => 'Error de conexión: ',
             ),
             'fr' => array(
                 'dashboard_title'      => 'Tableau de Curation de Contenu',
@@ -358,6 +366,10 @@ class content_curator_Admin {
                 'title_label'           => 'Titre',
                 'content_label'         => 'Contenu',
                 'title_empty'           => 'Le titre de l\'article ne peut pas être vide.',
+                'test_ai_btn'           => 'Tester le Service d\'IA',
+                'testing_ai'            => 'Test de connexion...',
+                'test_ai_success'       => 'Connexion réussie! Réponse de l\'IA reçue.',
+                'test_ai_error'         => 'Échec de connexion: ',
             ),
         );
         $lang = strtolower( $lang );
@@ -407,6 +419,7 @@ class content_curator_Admin {
         add_action( 'wp_ajax_content_curator_delete', array( $this, 'ajax_delete' ) );
         add_action( 'wp_ajax_content_curator_delete_all', array( $this, 'ajax_delete_all' ) );
         add_action( 'wp_ajax_content_curator_change_plugin_lang', array( $this, 'ajax_change_plugin_lang' ) );
+        add_action( 'wp_ajax_content_curator_test_ai', array( $this, 'ajax_test_ai' ) );
     }
 
     // =========================================================================
@@ -1106,6 +1119,9 @@ class content_curator_Admin {
             true
         );
 
+        $plugin_lang = get_option( 'content_curator_plugin_language', 'en' );
+        $d = self::get_dictionary( $plugin_lang );
+
         wp_localize_script(
             'content-curator-admin-js',
             'contentCuratorData',
@@ -1130,6 +1146,9 @@ class content_curator_Admin {
                     'success_delete_all' => __( 'All pending posts deleted successfully!', 'wp-content-curator' ),
                     'error_generic'      => __( 'An error occurred. Please try again.', 'wp-content-curator' ),
                     'title_empty'        => __( 'Post title cannot be empty.', 'wp-content-curator' ),
+                    'testing_ai'         => $d['testing_ai'],
+                    'test_ai_success'    => $d['test_ai_success'],
+                    'test_ai_error'      => $d['test_ai_error'],
                 ),
             )
         );
@@ -1173,6 +1192,13 @@ class content_curator_Admin {
                         <table class="form-table" role="presentation">
                             <?php do_settings_fields( 'content-curator-settings', 'content_curator_ai_section' ); ?>
                         </table>
+                        <div style="margin-top: 15px; display: flex; align-items: center; gap: 10px;">
+                            <button type="button" id="content-curator-test-ai" class="button button-secondary">
+                                <span class="dashicons dashicons-admin-network" style="vertical-align: middle; margin-right: 4px;"></span>
+                                <?php echo esc_html( $d['test_ai_btn'] ); ?>
+                            </button>
+                            <span id="content-curator-test-ai-status" class="content-curator-inline-status"></span>
+                        </div>
                     </div>
 
                     <!-- Tab 3: Event Configuration -->
@@ -2174,6 +2200,40 @@ class content_curator_Admin {
                 $result['fetched']
             ),
             'fetched' => $result['fetched'],
+        ) );
+    }
+
+    /**
+     * AJAX: Test connection to the AI service.
+     *
+     * @return void Sends JSON response and dies.
+     */
+    public function ajax_test_ai() {
+        // Verify nonce.
+        if ( ! check_ajax_referer( 'content_curator_nonce', 'nonce', false ) ) {
+            wp_send_json_error( array( 'message' => __( 'Security check failed.', 'wp-content-curator' ) ), 403 );
+        }
+
+        // Verify capability.
+        if ( ! current_user_can( 'manage_options' ) ) {
+            wp_send_json_error( array( 'message' => __( 'Insufficient permissions.', 'wp-content-curator' ) ), 403 );
+        }
+
+        $provider = isset( $_POST['provider'] ) ? sanitize_text_field( wp_unslash( $_POST['provider'] ) ) : '';
+        $api_key  = isset( $_POST['api_key'] ) ? sanitize_text_field( wp_unslash( $_POST['api_key'] ) ) : '';
+
+        // Call the test connection method
+        $result = content_curator_API::test_ai_connection( $provider, $api_key );
+
+        if ( is_wp_error( $result ) ) {
+            wp_send_json_error( array( 'message' => $result->get_error_message() ) );
+        }
+
+        $plugin_lang = get_option( 'content_curator_plugin_language', 'en' );
+        $d = self::get_dictionary( $plugin_lang );
+
+        wp_send_json_success( array(
+            'message' => $d['test_ai_success'],
         ) );
     }
 

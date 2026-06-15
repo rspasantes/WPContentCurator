@@ -170,6 +170,43 @@ class content_curator_API {
     }
 
     /**
+     * Test the connection to the specified AI provider.
+     *
+     * @param string $provider The AI provider ('openai', 'anthropic', 'gemini', 'wordpress_ai').
+     * @param string $api_key  The API key.
+     * @return bool|WP_Error True on success, WP_Error on failure.
+     */
+    public static function test_ai_connection( $provider, $api_key ) {
+        $test_text = "Respond only with the word 'OK'.";
+        
+        switch ( $provider ) {
+            case 'wordpress_ai':
+                $result = self::rewrite_with_wordpress_ai( $test_text );
+                break;
+            case 'anthropic':
+                $result = self::rewrite_with_anthropic( $test_text, $api_key );
+                break;
+            case 'gemini':
+                $result = self::rewrite_with_gemini( $test_text, $api_key );
+                break;
+            case 'openai':
+            default:
+                $result = self::rewrite_with_openai( $test_text, $api_key );
+                break;
+        }
+
+        if ( is_wp_error( $result ) ) {
+            return $result;
+        }
+
+        if ( empty( $result ) ) {
+            return new WP_Error( 'empty_response', __( 'AI service returned an empty response.', 'wp-content-curator' ) );
+        }
+
+        return true;
+    }
+
+    /**
      * Rewrite text using WordPress 7 Native AI API.
      *
      * @param string $text The original text.

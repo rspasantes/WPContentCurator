@@ -118,6 +118,9 @@ wp-content-curator/
 
 ## Changelog
  
+### 1.5.3
+- AI Settings Connectivity Test: Added a "Test AI Service" button inside the AI Configuration settings tab to immediately test communication and API key validity for the selected provider (OpenAI, Anthropic, Gemini, or WordPress Native AI) without needing to save settings first.
+
 ### 1.5.2
 - Optional Cover and Gallery Images: Added a checkbox group to control whether to include the cover image (Featured Image) and/or the gallery block during publication.
 - Image fallbacks: If the cover image is disabled but gallery images are checked, the first gallery image is inserted directly into the post content body.

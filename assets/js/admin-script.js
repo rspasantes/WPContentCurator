@@ -616,6 +616,64 @@
         });
     });
 
+    // =========================================================================
+    // EVENT: TEST AI CONNECTION (Settings Page)
+    // =========================================================================
+
+    $(document).on('click', '#content-curator-test-ai', function (e) {
+        e.preventDefault();
+
+        var $button  = $(this);
+        var $status  = $('#content-curator-test-ai-status');
+
+        // Gather current input values (not saved in database yet)
+        var provider = $('#content_curator_ai_provider').val();
+        var apiKey   = $('#content_curator_ai_api_key').val();
+
+        if (provider !== 'wordpress_ai' && (!apiKey || apiKey.trim() === '')) {
+            alert(strings.error_generic || 'Please enter an API Key.');
+            return;
+        }
+
+        $button.prop('disabled', true);
+        $status.text(strings.testing_ai)
+               .removeClass('status-success status-error')
+               .addClass('status-loading');
+
+        $.ajax({
+            url: ajaxUrl,
+            type: 'POST',
+            data: {
+                action:   'content_curator_test_ai',
+                nonce:    nonce,
+                provider: provider,
+                api_key:  apiKey
+            },
+            success: function (response) {
+                $button.prop('disabled', false);
+
+                if (response.success) {
+                    $status.text(response.data.message || strings.test_ai_success)
+                           .removeClass('status-loading status-error')
+                           .addClass('status-success');
+                } else {
+                    var msg = (response.data && response.data.message) ? response.data.message : strings.error_generic;
+                    $status.text(strings.test_ai_error + msg)
+                           .removeClass('status-loading status-success')
+                           .addClass('status-error');
+                }
+            },
+            error: function (xhr) {
+                $button.prop('disabled', false);
+                var responseText = xhr.responseText ? JSON.parse(xhr.responseText) : null;
+                var msg = (responseText && responseText.data && responseText.data.message) ? responseText.data.message : strings.error_generic;
+                $status.text(strings.test_ai_error + msg)
+                       .removeClass('status-loading status-success')
+                       .addClass('status-error');
+            }
+        });
+    });
+
     /**
      * Cycle through images in a card's gallery.
      *

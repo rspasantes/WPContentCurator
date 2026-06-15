@@ -397,3 +397,23 @@
   - Documented version `1.5.2` features in the changelog.
 - **AGENTS.md**:
   - Documented optional cover selection and fallback behavior in the capabilities summary.
+
+## 2026-06-15 - 15:58 - Added AI connection test button in settings in version 1.5.3
+
+### Summary of Changes
+- **includes/class-content-curator-api.php**:
+  - Implemented public `test_ai_connection()` method to dispatch a lightweight prompt to the selected provider (OpenAI, Anthropic, Gemini, or WordPress Native AI) with the provided credentials.
+- **includes/class-content-curator-admin.php**:
+  - Added `'test_ai_btn'`, `'testing_ai'`, `'test_ai_success'`, and `'test_ai_error'` translation keys in English, Spanish, and French dictionaries.
+  - Registered `'content_curator_test_ai'` AJAX handler.
+  - Implemented `ajax_test_ai()` method to sanitize provider and API key inputs and invoke `content_curator_API::test_ai_connection()`.
+  - Enqueued the new translation strings into `wp_localize_script()`.
+  - Added the `#content-curator-test-ai` test button and status element in the AI configuration tab layout inside `render_settings_page()`.
+- **assets/js/admin-script.js**:
+  - Implemented click event listener for `#content-curator-test-ai` to gather currently typed form field values (provider selection and API Key) and perform the connection test AJAX call.
+- **wp-content-curator.php**:
+  - Bumped plugin version and constant definitions to `1.5.3`.
+- **README.md**:
+  - Documented version `1.5.3` changes in the changelog.
+- **AGENTS.md**:
+  - Added the AI connection testing capability description.
