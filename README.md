@@ -118,6 +118,10 @@ wp-content-curator/
 
 ## Changelog
  
+### 1.5.5
+- Segregated Dashboard Toolbar: Split the top panel into a separate Actions & Control Bar (for manual page fetching, bulk deleting, and language switches) and a dedicated Filters Bar (for filtering card list by date range, page name, and hours), solving layout wrapping and visual clutter.
+- Premium Accent Styling: Added a styled pill-shaped pending posts badge, primary gradient styling for the manual scraper button, and subtle background shading to separate sections cleanly.
+
 ### 1.5.4
 - Custom AI Models Config: Integrated custom models settings (`content_curator_openai_model`, `content_curator_anthropic_model`, and `content_curator_gemini_model`) directly into the AI connector API calls.
 - Progressive Facebook Scraper: Implemented a sequential AJAX queue loop on manual fetching to scrape pages one-by-one, preventing server timeouts and rendering real-time fetching progress.

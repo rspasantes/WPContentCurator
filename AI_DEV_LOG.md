@@ -438,3 +438,22 @@
   - Updated changelog with version `1.5.4` description.
 - **AGENTS.md**:
   - Added new capabilities: Progressive Scraper and Future Scheduling, and noted configurable AI models.
+
+## 2026-06-15 - 16:30 - Segregated dashboard actions and filter controls in version 1.5.5
+
+### Summary of Changes
+- **includes/class-content-curator-admin.php**:
+  - Segregated the layout of the dashboard toolbar by splitting the combined control panel into a top-level `content-curator-actions-bar` (holding the manual scraping trigger controls, the timeframe dropdown, bulk actions, and the language switcher) and a lower-level `content-curator-filters-bar` (wrapping the view filters for hours, sites, and start/end dates).
+  - Cleaned up form structures, removing fetch components from the grid filters `<form>` so they don't trigger unnecessary submissions.
+- **assets/css/admin-style.css**:
+  - Added dedicated stylesheet rules for `.content-curator-actions-bar` and `.content-curator-filters-bar` to achieve premium visual spacing and visual contrast (with a soft `#fafafb` shading on filters).
+  - Styled the count indicator as a high-contrast pill-shaped badge (`.content-curator-count-badge`) with subtle border shadows and primary brand colors.
+  - Implemented premium CSS gradient styling for the manual scraper button (`.fetch-now-btn`) with slide-up micro-animations on hover.
+  - Included select styling for filter dropdowns within the new filter bar container.
+  - Updated responsive query rules to stack actions and filter elements vertically on mobile viewports.
+- **wp-content-curator.php**:
+  - Bumped version to `1.5.5`.
+- **README.md**:
+  - Documented version `1.5.5` changes.
+- **AGENTS.md**:
+  - Documented the new Segmented Control & Filter Bars capability.

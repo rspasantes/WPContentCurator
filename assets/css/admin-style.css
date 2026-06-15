@@ -119,33 +119,130 @@
 /* ==========================================================================
    Toolbar (Filter Bar)
    ========================================================================== */
-.content-curator-toolbar {
+/* ==========================================================================
+   Control & Actions Bar (Fetch & Status)
+   ========================================================================== */
+.content-curator-actions-bar {
     display: flex;
     align-items: center;
     justify-content: space-between;
     flex-wrap: wrap;
-    gap: 12px;
+    gap: 15px;
     background: var(--cc-bg-card);
+    border: 1px solid var(--cc-border);
+    border-radius: var(--cc-radius);
+    padding: 16px 20px;
+    margin-bottom: 15px;
+    box-shadow: var(--cc-shadow);
+}
+
+.actions-bar-left {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.content-curator-count-badge {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--cc-primary);
+    background: var(--cc-primary-light);
+    padding: 6px 14px;
+    border-radius: 20px;
+    border: 1px solid rgba(24, 119, 242, 0.15);
+    display: inline-flex;
+    align-items: center;
+    box-shadow: 0 1px 2px rgba(24, 119, 242, 0.05);
+}
+
+.actions-bar-lang {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.actions-bar-lang label {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--cc-text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.actions-bar-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.fetch-timeframe-select {
+    height: 32px !important;
+    padding: 4px 10px !important;
+    border: 1px solid var(--cc-border) !important;
+    border-radius: var(--cc-radius-sm) !important;
+    background: var(--cc-bg-surface) !important;
+    color: var(--cc-text-primary) !important;
+    font-size: 13px !important;
+    font-weight: 500 !important;
+    cursor: pointer;
+    outline: none;
+    box-sizing: border-box;
+}
+
+.fetch-timeframe-select:focus {
+    border-color: var(--cc-primary) !important;
+    box-shadow: 0 0 0 1px var(--cc-primary) !important;
+}
+
+.fetch-now-btn {
+    background: linear-gradient(135deg, var(--cc-primary) 0%, #166fe5 100%) !important;
+    color: #ffffff !important;
+    border: none !important;
+    box-shadow: 0 2px 4px rgba(24, 119, 242, 0.2) !important;
+    font-weight: 600 !important;
+    padding: 6px 16px !important;
+    border-radius: var(--cc-radius-sm) !important;
+    cursor: pointer;
+    transition: all var(--cc-transition);
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    height: 32px !important;
+    line-height: 20px !important;
+}
+
+.fetch-now-btn:hover,
+.fetch-now-btn:focus {
+    background: linear-gradient(135deg, #166fe5 0%, #1462cc 100%) !important;
+    box-shadow: 0 4px 8px rgba(24, 119, 242, 0.3) !important;
+    transform: translateY(-1px);
+    color: #ffffff !important;
+}
+
+.fetch-now-btn:disabled {
+    background: #a2aab2 !important;
+    box-shadow: none !important;
+    transform: none !important;
+    cursor: not-allowed;
+}
+
+/* ==========================================================================
+   Filters Bar (Dashboard Grid)
+   ========================================================================== */
+.content-curator-filters-bar {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+    background: #fafafb;
     border: 1px solid var(--cc-border);
     border-radius: var(--cc-radius);
     padding: 14px 20px;
     margin-bottom: var(--cc-gap);
-    box-shadow: var(--cc-shadow);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
 }
 
-.content-curator-toolbar-left {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.content-curator-toolbar-left label {
-    font-weight: 600;
-    color: var(--cc-text-secondary);
-    white-space: nowrap;
-}
-
-.content-curator-toolbar-left select {
+.content-curator-filters-bar select {
     min-width: 180px;
     padding: 6px 12px;
     border: 1px solid var(--cc-border);
@@ -157,19 +254,23 @@
     transition: border-color var(--cc-transition);
 }
 
-.content-curator-toolbar-left select:focus {
+.content-curator-filters-bar select:focus {
     border-color: var(--cc-primary);
     outline: none;
     box-shadow: 0 0 0 1px var(--cc-primary);
 }
 
-.content-curator-count {
+.filters-bar-title {
+    display: flex;
+    align-items: center;
     font-size: 13px;
-    font-weight: 600;
-    color: var(--cc-text-muted);
-    background: var(--cc-bg-muted);
-    padding: 4px 12px;
-    border-radius: 20px;
+    color: var(--cc-text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-right: 1px solid var(--cc-border);
+    padding-right: 16px;
+    margin-right: 4px;
+    height: 28px;
 }
 
 /* ==========================================================================
@@ -646,13 +747,33 @@
         margin: 10px;
     }
 
-    .content-curator-toolbar {
+    .content-curator-actions-bar,
+    .content-curator-filters-bar {
         flex-direction: column;
         align-items: stretch;
+        gap: 12px;
+        padding: 15px;
     }
 
-    .content-curator-toolbar-right {
-        text-align: right;
+    .actions-bar-left,
+    .actions-bar-right {
+        flex-direction: column;
+        align-items: stretch;
+        width: 100%;
+        gap: 10px;
+    }
+
+    .actions-bar-right {
+        text-align: left;
+    }
+
+    .filters-bar-title {
+        border-right: none;
+        border-bottom: 1px solid var(--cc-border);
+        padding-right: 0;
+        padding-bottom: 8px;
+        margin-right: 0;
+        height: auto;
     }
 
     .card-header {
@@ -675,13 +796,6 @@
    ========================================================================== */
 .content-curator-toolbar-form {
     margin: 0;
-}
-
-.content-curator-toolbar-left {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    flex-wrap: wrap;
 }
 
 .toolbar-item {

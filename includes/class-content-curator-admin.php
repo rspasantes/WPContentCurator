@@ -1478,82 +1478,91 @@ class content_curator_Admin {
                 </div>
             </div>
 
-            <!-- Toolbar Form: Filter + Stats -->
+            <!-- Control & Actions Bar (Fetch & Status) -->
+            <div class="content-curator-actions-bar">
+                <div class="actions-bar-left">
+                    <span class="content-curator-count-badge">
+                        <span class="dashicons dashicons-clipboard" style="margin-right: 6px; font-size: 16px; width: 16px; height: 16px; vertical-align: middle; color: var(--cc-primary);"></span>
+                        <?php
+                        $count_string = $total_posts === 1 ? $d['pending_posts'] : $d['pending_posts_plural'];
+                        printf( '<strong>%d</strong>&nbsp;%s', $total_posts, esc_html( $count_string ) );
+                        ?>
+                    </span>
+                    
+                    <div class="actions-bar-lang">
+                        <label for="content-curator-plugin-lang-select"><?php echo esc_html( $d['language_label'] ); ?></label>
+                        <select id="content-curator-plugin-lang-select" name="plugin_lang" class="content-curator-lang-switcher">
+                            <option value="en" <?php selected( $plugin_lang, 'en' ); ?>>English</option>
+                            <option value="es" <?php selected( $plugin_lang, 'es' ); ?>>Español</option>
+                            <option value="fr" <?php selected( $plugin_lang, 'fr' ); ?>>Français</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="actions-bar-right">
+                    <span id="content-curator-fetch-status" class="content-curator-inline-status"></span>
+                    <select id="content-curator-fetch-timeframe" class="fetch-timeframe-select">
+                        <option value="all"><?php echo esc_html( $d['all_time'] ); ?></option>
+                        <option value="24h"><?php echo esc_html( $d['last_24'] ); ?></option>
+                        <option value="7d"><?php echo esc_html( $d['last_week'] ); ?></option>
+                    </select>
+                    <button type="button" id="content-curator-fetch-now" class="button button-primary fetch-now-btn">
+                        <span class="dashicons dashicons-download" style="vertical-align: middle;"></span>
+                        <?php echo esc_html( $d['fetch_now'] ); ?>
+                    </button>
+                    <?php if ( $total_posts > 0 ) : ?>
+                        <button type="button" id="content-curator-delete-all" class="button btn-delete-all">
+                            <span class="dashicons dashicons-trash" style="vertical-align: middle;"></span>
+                            <?php echo esc_html( $d['delete_all'] ); ?>
+                        </button>
+                    <?php endif; ?>
+                </div>
+            </div>
+
+            <!-- Toolbar Form: Filter Curation Cards -->
             <form method="get" action="<?php echo esc_url( admin_url( 'admin.php' ) ); ?>" class="content-curator-toolbar-form">
                 <input type="hidden" name="page" value="content-curator-dashboard" />
 
-                <div class="content-curator-toolbar">
-                    <div class="content-curator-toolbar-left">
-                        <div class="toolbar-item">
-                            <label for="content-curator-filter"><?php echo esc_html( $d['time'] ); ?></label>
-                            <select id="content-curator-filter" name="hours" onchange="this.form.submit();">
-                                <option value="all" <?php selected( $filter, 'all' ); ?>><?php echo esc_html( $d['all_pending'] ); ?></option>
-                                <option value="24h" <?php selected( $filter, '24h' ); ?>><?php echo esc_html( $d['last_24'] ); ?></option>
-                                <option value="48h" <?php selected( $filter, '48h' ); ?>><?php echo esc_html( $d['last_48'] ); ?></option>
-                                <option value="7d"  <?php selected( $filter, '7d' ); ?>><?php echo esc_html( $d['last_7d'] ); ?></option>
-                            </select>
-                        </div>
-
-                        <div class="toolbar-item">
-                            <label for="content-curator-site-filter"><?php echo esc_html( $d['site'] ); ?></label>
-                            <select id="content-curator-site-filter" name="site" onchange="this.form.submit();">
-                                <option value="all" <?php selected( $site_filter, 'all' ); ?>><?php echo esc_html( $d['todos'] ); ?></option>
-                                <?php foreach ( $sites as $site_name ) : ?>
-                                    <option value="<?php echo esc_attr( $site_name ); ?>" <?php selected( $site_filter, $site_name ); ?>><?php echo esc_html( $site_name ); ?></option>
-                                <?php endforeach; ?>
-                            </select>
-                        </div>
-
-                        <div class="toolbar-item">
-                            <label for="content-curator-start-date"><?php echo esc_html( $d['from'] ); ?></label>
-                            <input type="date" id="content-curator-start-date" name="start_date" value="<?php echo esc_attr( $start_date ); ?>" onchange="this.form.submit();" />
-                        </div>
-
-                        <div class="toolbar-item">
-                            <label for="content-curator-end-date"><?php echo esc_html( $d['to'] ); ?></label>
-                            <input type="date" id="content-curator-end-date" name="end_date" value="<?php echo esc_attr( $end_date ); ?>" onchange="this.form.submit();" />
-                        </div>
-
-                        <div class="toolbar-item">
-                            <label for="content-curator-plugin-lang-select"><?php echo esc_html( $d['language_label'] ); ?></label>
-                            <select id="content-curator-plugin-lang-select" name="plugin_lang" class="content-curator-lang-switcher">
-                                <option value="en" <?php selected( $plugin_lang, 'en' ); ?>>English</option>
-                                <option value="es" <?php selected( $plugin_lang, 'es' ); ?>>Español</option>
-                                <option value="fr" <?php selected( $plugin_lang, 'fr' ); ?>>Français</option>
-                            </select>
-                        </div>
-
-                        <?php if ( ! empty( $start_date ) || ! empty( $end_date ) || 'all' !== $filter || 'all' !== $site_filter ) : ?>
-                            <a href="<?php echo esc_url( admin_url( 'admin.php?page=content-curator-dashboard' ) ); ?>" class="button button-secondary clear-filters-btn" style="margin-left: 10px;">
-                                <?php echo esc_html( $d['clear_filters'] ); ?>
-                            </a>
-                        <?php endif; ?>
+                <div class="content-curator-filters-bar">
+                    <div class="filters-bar-title">
+                        <span class="dashicons dashicons-filter" style="font-size: 16px; width: 16px; height: 16px; color: var(--cc-text-secondary); vertical-align: middle; margin-right: 4px;"></span>
+                        <strong><?php echo esc_html__( 'Filters', 'wp-content-curator' ); ?></strong>
                     </div>
-                    <div class="content-curator-toolbar-right" style="display: flex; align-items: center; gap: 10px;">
-                        <select id="content-curator-fetch-timeframe" style="padding: 6px 10px; border: 1px solid var(--cc-border); border-radius: var(--cc-radius-sm); font-size: 13px; cursor: pointer; background: var(--cc-bg-surface); color: var(--cc-text-primary); outline: none;">
-                            <option value="all"><?php echo esc_html( $d['all_time'] ); ?></option>
-                            <option value="24h"><?php echo esc_html( $d['last_24'] ); ?></option>
-                            <option value="7d"><?php echo esc_html( $d['last_week'] ); ?></option>
+
+                    <div class="toolbar-item">
+                        <label for="content-curator-filter"><?php echo esc_html( $d['time'] ); ?></label>
+                        <select id="content-curator-filter" name="hours" onchange="this.form.submit();">
+                            <option value="all" <?php selected( $filter, 'all' ); ?>><?php echo esc_html( $d['all_pending'] ); ?></option>
+                            <option value="24h" <?php selected( $filter, '24h' ); ?>><?php echo esc_html( $d['last_24'] ); ?></option>
+                            <option value="48h" <?php selected( $filter, '48h' ); ?>><?php echo esc_html( $d['last_48'] ); ?></option>
+                            <option value="7d"  <?php selected( $filter, '7d' ); ?>><?php echo esc_html( $d['last_7d'] ); ?></option>
                         </select>
-                        <button type="button" id="content-curator-fetch-now" class="button button-secondary" style="display: inline-flex; align-items: center; gap: 4px;">
-                            <span class="dashicons dashicons-download" style="vertical-align: middle;"></span>
-                            <?php echo esc_html( $d['fetch_now'] ); ?>
-                        </button>
-                        <?php if ( $total_posts > 0 ) : ?>
-                            <button type="button" id="content-curator-delete-all" class="button btn-delete-all">
-                                <span class="dashicons dashicons-trash" style="vertical-align: middle;"></span>
-                                <?php echo esc_html( $d['delete_all'] ); ?>
-                            </button>
-                        <?php endif; ?>
-                        <span id="content-curator-fetch-status" class="content-curator-inline-status"></span>
-
-                        <span class="content-curator-count">
-                            <?php
-                            $count_string = $total_posts === 1 ? $d['pending_posts'] : $d['pending_posts_plural'];
-                            printf( '%d %s', $total_posts, esc_html( $count_string ) );
-                            ?>
-                        </span>
                     </div>
+
+                    <div class="toolbar-item">
+                        <label for="content-curator-site-filter"><?php echo esc_html( $d['site'] ); ?></label>
+                        <select id="content-curator-site-filter" name="site" onchange="this.form.submit();">
+                            <option value="all" <?php selected( $site_filter, 'all' ); ?>><?php echo esc_html( $d['todos'] ); ?></option>
+                            <?php foreach ( $sites as $site_name ) : ?>
+                                <option value="<?php echo esc_attr( $site_name ); ?>" <?php selected( $site_filter, $site_name ); ?>><?php echo esc_html( $site_name ); ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+
+                    <div class="toolbar-item">
+                        <label for="content-curator-start-date"><?php echo esc_html( $d['from'] ); ?></label>
+                        <input type="date" id="content-curator-start-date" name="start_date" value="<?php echo esc_attr( $start_date ); ?>" onchange="this.form.submit();" />
+                    </div>
+
+                    <div class="toolbar-item">
+                        <label for="content-curator-end-date"><?php echo esc_html( $d['to'] ); ?></label>
+                        <input type="date" id="content-curator-end-date" name="end_date" value="<?php echo esc_attr( $end_date ); ?>" onchange="this.form.submit();" />
+                    </div>
+
+                    <?php if ( ! empty( $start_date ) || ! empty( $end_date ) || 'all' !== $filter || 'all' !== $site_filter ) : ?>
+                        <a href="<?php echo esc_url( admin_url( 'admin.php?page=content-curator-dashboard' ) ); ?>" class="button button-secondary clear-filters-btn" style="margin-left: 10px;">
+                            <?php echo esc_html( $d['clear_filters'] ); ?>
+                        </a>
+                    <?php endif; ?>
                 </div>
             </form>
 
