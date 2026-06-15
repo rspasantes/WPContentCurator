@@ -489,3 +489,44 @@
 
 ### Summary of Changes
 - Generated the clean release zip package `wp-content-curator.zip` containing a nested `wp-content-curator/` directory structure with only production-ready files (`wp-content-curator.php`, `assets/`, `includes/`, and `README.md`), ignoring Git files, error logs, and IDE local cache metadata.
+
+## 2026-06-15 - 17:50 - Replaced AI model text inputs with dropdown selects
+
+### Summary of Changes
+- **includes/class-content-curator-admin.php**:
+  - `render_field_openai_model()`: Replaced free-text `<input>` with a grouped `<select>` offering GPT-4o, GPT-4o mini (recommended), GPT-4 Turbo, GPT-3.5 Turbo, o1-mini, and o3-mini.
+  - `render_field_anthropic_model()`: Replaced free-text `<input>` with a grouped `<select>` covering Claude 3.5 Sonnet, Claude 3.5 Haiku (recommended), Claude 3 Opus, Claude 3 Sonnet, and Claude 3 Haiku.
+  - `render_field_gemini_model()`: Replaced free-text `<input>` with a grouped `<select>` covering Gemini 2.0 Flash (recommended), Gemini 2.0 Flash Lite, Gemini 1.5 Pro, Gemini 1.5 Flash, and Gemini 1.5 Flash 8B.
+  - Updated description strings in all three language dictionaries (EN, ES, FR) to reflect the new dropdown UX.
+  - Existing saved values are pre-selected correctly via `selected()` helper; unknown legacy values will fall back gracefully to the default option.
+## 2026-06-15 - 18:00 - Added Image Import Mode setting
+
+### Summary of Changes
+- **includes/class-content-curator-admin.php**:
+  - Added image_mode strings to EN, ES and FR dictionaries.
+  - Registered content_curator_image_mode setting (default: all).
+  - Added add_settings_field in the AI Configuration section.
+  - Added render_field_image_mode(): radio group with three options (none / featured / all).
+- **includes/class-content-curator-cron.php**:
+  - Read content_curator_image_mode once before the pending posts loop.
+  - none: skips image URL parsing, posts created with no images.
+  - featured: trims image_urls to only the first URL, only featured thumbnail set.
+  - all (default): existing behaviour preserved, featured image + wp:gallery block.
+
+## 2026-06-15 - 18:50 - Moved image mode decision to dashboard (per-card checkboxes)
+
+### Summary of Changes
+- Removed the global content_curator_image_mode setting from Settings (register_setting, add_settings_field, render_field_image_mode and all i18n strings in EN/ES/FR dictionaries).
+- Reverted cron image_mode logic (get_option call and featured-only trim removed).
+- The decision of which images to import is already handled per-card in the dashboard via the existing include-cover-checkbox and include-gallery-checkbox controls, which are sent as include_cover and include_gallery params to the ajax_publish handler.
+
+## 2026-06-15 - 19:05 - Fixed gallery checkbox overlap in dashboard cards
+
+### Summary of Changes
+- **includes/class-content-curator-admin.php**: Moved .image-toggles div outside .card-image-gallery-container. The gallery-controls bar uses position:absolute bottom:0 inside a container with overflow:hidden, which caused it to render on top of the checkboxes. Moving the toggles to be a sibling element after the container resolves the overlap.
+
+## 2026-06-15 - 19:10 - Bump to version 1.5.7
+
+### Summary of Changes
+- **wp-content-curator.php**: Version bumped from 1.5.6 to 1.5.7.
+- **AGENTS.md**: Updated with new capabilities introduced in this session: AI model dropdowns for all three providers, per-card image import checkboxes (include cover / include gallery), and gallery controls overlap fix.

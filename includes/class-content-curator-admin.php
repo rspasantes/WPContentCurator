@@ -141,9 +141,9 @@ class content_curator_Admin {
                 'openai_model_label'    => 'OpenAI Model',
                 'anthropic_model_label' => 'Anthropic Model',
                 'gemini_model_label'    => 'Gemini Model',
-                'openai_model_desc'     => 'Default is gpt-4o-mini.',
-                'anthropic_model_desc'  => 'Default is claude-3-haiku-20240307.',
-                'gemini_model_desc'     => 'Default is gemini-1.5-flash.',
+                'openai_model_desc'     => 'Select the OpenAI model to use for AI-assisted content generation.',
+                'anthropic_model_desc'  => 'Select the Anthropic Claude model to use for AI-assisted content generation.',
+                'gemini_model_desc'     => 'Select the Google Gemini model to use for AI-assisted content generation.',
                 'publish_date_label'    => 'Publish Date (Scheduled)',
                 'fetching_pages_list'   => 'Getting page list...',
                 'fetching_page_x_of_y'  => 'Fetching page %1$d of %2$d (%3$s)...',
@@ -268,9 +268,9 @@ class content_curator_Admin {
                 'openai_model_label'    => 'Modelo de OpenAI',
                 'anthropic_model_label' => 'Modelo de Anthropic',
                 'gemini_model_label'    => 'Modelo de Gemini',
-                'openai_model_desc'     => 'Por defecto es gpt-4o-mini.',
-                'anthropic_model_desc'  => 'Por defecto es claude-3-haiku-20240307.',
-                'gemini_model_desc'     => 'Por defecto es gemini-1.5-flash.',
+                'openai_model_desc'     => 'Selecciona el modelo de OpenAI para la generación de contenido asistida por IA.',
+                'anthropic_model_desc'  => 'Selecciona el modelo Claude de Anthropic para la generación de contenido asistida por IA.',
+                'gemini_model_desc'     => 'Selecciona el modelo Google Gemini para la generación de contenido asistida por IA.',
                 'publish_date_label'    => 'Fecha de Publicación',
                 'fetching_pages_list'   => 'Obteniendo lista de páginas...',
                 'fetching_page_x_of_y'  => 'Escaneando página %1$d de %2$d (%3$s)...',
@@ -395,9 +395,9 @@ class content_curator_Admin {
                 'openai_model_label'    => 'Modèle OpenAI',
                 'anthropic_model_label' => 'Modèle Anthropic',
                 'gemini_model_label'    => 'Modèle Gemini',
-                'openai_model_desc'     => 'Par défaut est gpt-4o-mini.',
-                'anthropic_model_desc'  => 'Par défaut est claude-3-haiku-20240307.',
-                'gemini_model_desc'     => 'Par défaut est gemini-1.5-flash.',
+                'openai_model_desc'     => 'Sélectionnez le modèle OpenAI à utiliser pour la génération de contenu assistée par IA.',
+                'anthropic_model_desc'  => 'Sélectionnez le modèle Claude d\'Anthropic pour la génération de contenu assistée par IA.',
+                'gemini_model_desc'     => 'Sélectionnez le modèle Google Gemini pour la génération de contenu assistée par IA.',
                 'publish_date_label'    => 'Date de Publication',
                 'fetching_pages_list'   => 'Obtention de la liste des pages...',
                 'fetching_page_x_of_y'  => 'Récupération de la page %1$d sur %2$d (%3$s)...',
@@ -1050,45 +1050,110 @@ class content_curator_Admin {
      * Render the OpenAI Model field.
      */
     public function render_field_openai_model() {
-        $value = get_option( 'content_curator_openai_model', 'gpt-4o-mini' );
+        $value       = get_option( 'content_curator_openai_model', 'gpt-4o-mini' );
         $plugin_lang = get_option( 'content_curator_plugin_language', 'en' );
-        $d = self::get_dictionary( $plugin_lang );
-        printf(
-            '<input type="text" id="content_curator_openai_model" name="content_curator_openai_model" value="%s" class="regular-text" />
-            <p class="description">%s</p>',
-            esc_attr( $value ),
-            esc_html( $d['openai_model_desc'] )
+        $d           = self::get_dictionary( $plugin_lang );
+        $models      = array(
+            'GPT-4o'              => array(
+                'gpt-4o'          => 'GPT-4o',
+                'gpt-4o-mini'     => 'GPT-4o mini (recommended)',
+            ),
+            'GPT-4 Turbo'         => array(
+                'gpt-4-turbo'     => 'GPT-4 Turbo',
+            ),
+            'GPT-3.5'             => array(
+                'gpt-3.5-turbo'   => 'GPT-3.5 Turbo',
+            ),
+            'o-series'            => array(
+                'o1-mini'         => 'o1-mini',
+                'o3-mini'         => 'o3-mini',
+            ),
         );
+        echo '<select id="content_curator_openai_model" name="content_curator_openai_model">';
+        foreach ( $models as $group_label => $group_models ) {
+            echo '<optgroup label="' . esc_attr( $group_label ) . '">';
+            foreach ( $group_models as $model_id => $model_name ) {
+                printf(
+                    '<option value="%s"%s>%s</option>',
+                    esc_attr( $model_id ),
+                    selected( $value, $model_id, false ),
+                    esc_html( $model_name )
+                );
+            }
+            echo '</optgroup>';
+        }
+        echo '</select>';
+        printf( '<p class="description">%s</p>', esc_html( $d['openai_model_desc'] ) );
     }
 
     /**
      * Render the Anthropic Model field.
      */
     public function render_field_anthropic_model() {
-        $value = get_option( 'content_curator_anthropic_model', 'claude-3-haiku-20240307' );
+        $value       = get_option( 'content_curator_anthropic_model', 'claude-3-haiku-20240307' );
         $plugin_lang = get_option( 'content_curator_plugin_language', 'en' );
-        $d = self::get_dictionary( $plugin_lang );
-        printf(
-            '<input type="text" id="content_curator_anthropic_model" name="content_curator_anthropic_model" value="%s" class="regular-text" />
-            <p class="description">%s</p>',
-            esc_attr( $value ),
-            esc_html( $d['anthropic_model_desc'] )
+        $d           = self::get_dictionary( $plugin_lang );
+        $models      = array(
+            'Claude 3.5'          => array(
+                'claude-3-5-sonnet-20241022' => 'Claude 3.5 Sonnet',
+                'claude-3-5-haiku-20241022'  => 'Claude 3.5 Haiku (recommended)',
+            ),
+            'Claude 3'            => array(
+                'claude-3-opus-20240229'     => 'Claude 3 Opus',
+                'claude-3-sonnet-20240229'   => 'Claude 3 Sonnet',
+                'claude-3-haiku-20240307'    => 'Claude 3 Haiku',
+            ),
         );
+        echo '<select id="content_curator_anthropic_model" name="content_curator_anthropic_model">';
+        foreach ( $models as $group_label => $group_models ) {
+            echo '<optgroup label="' . esc_attr( $group_label ) . '">';
+            foreach ( $group_models as $model_id => $model_name ) {
+                printf(
+                    '<option value="%s"%s>%s</option>',
+                    esc_attr( $model_id ),
+                    selected( $value, $model_id, false ),
+                    esc_html( $model_name )
+                );
+            }
+            echo '</optgroup>';
+        }
+        echo '</select>';
+        printf( '<p class="description">%s</p>', esc_html( $d['anthropic_model_desc'] ) );
     }
 
     /**
      * Render the Gemini Model field.
      */
     public function render_field_gemini_model() {
-        $value = get_option( 'content_curator_gemini_model', 'gemini-1.5-flash' );
+        $value       = get_option( 'content_curator_gemini_model', 'gemini-1.5-flash' );
         $plugin_lang = get_option( 'content_curator_plugin_language', 'en' );
-        $d = self::get_dictionary( $plugin_lang );
-        printf(
-            '<input type="text" id="content_curator_gemini_model" name="content_curator_gemini_model" value="%s" class="regular-text" />
-            <p class="description">%s</p>',
-            esc_attr( $value ),
-            esc_html( $d['gemini_model_desc'] )
+        $d           = self::get_dictionary( $plugin_lang );
+        $models      = array(
+            'Gemini 2.0'          => array(
+                'gemini-2.0-flash'         => 'Gemini 2.0 Flash (recommended)',
+                'gemini-2.0-flash-lite'    => 'Gemini 2.0 Flash Lite',
+            ),
+            'Gemini 1.5'          => array(
+                'gemini-1.5-pro'           => 'Gemini 1.5 Pro',
+                'gemini-1.5-flash'         => 'Gemini 1.5 Flash',
+                'gemini-1.5-flash-8b'      => 'Gemini 1.5 Flash 8B',
+            ),
         );
+        echo '<select id="content_curator_gemini_model" name="content_curator_gemini_model">';
+        foreach ( $models as $group_label => $group_models ) {
+            echo '<optgroup label="' . esc_attr( $group_label ) . '">';
+            foreach ( $group_models as $model_id => $model_name ) {
+                printf(
+                    '<option value="%s"%s>%s</option>',
+                    esc_attr( $model_id ),
+                    selected( $value, $model_id, false ),
+                    esc_html( $model_name )
+                );
+            }
+            echo '</optgroup>';
+        }
+        echo '</select>';
+        printf( '<p class="description">%s</p>', esc_html( $d['gemini_model_desc'] ) );
     }
 
     /**
@@ -1617,20 +1682,21 @@ class content_curator_Admin {
                                                 <button type="button" class="gallery-next" onclick="changeGalleryImage(this, 1);">&rsaquo;</button>
                                             </div>
                                         <?php endif; ?>
-                                        <div class="image-toggles" style="margin-top: 12px; display: flex; flex-direction: column; gap: 8px; padding: 10px; background: var(--cc-bg-surface); border-radius: var(--cc-radius-sm); border: 1px solid var(--cc-border);">
-                                            <div class="cover-toggle" style="display: flex; align-items: center; gap: 8px;">
-                                                <input type="checkbox" id="cover-toggle-<?php echo esc_attr( $post->id ); ?>" class="include-cover-checkbox" checked="checked" value="1" />
-                                                <label for="cover-toggle-<?php echo esc_attr( $post->id ); ?>" style="font-size: 12px; font-weight: 600; color: var(--cc-text-secondary); cursor: pointer;"><?php echo esc_html( $d['include_cover_label'] ); ?></label>
-                                            </div>
-                                            <?php if ( count( $images ) > 1 ) : ?>
-                                                <div class="gallery-toggle" style="display: flex; align-items: center; gap: 8px;">
-                                                    <input type="checkbox" id="gallery-toggle-<?php echo esc_attr( $post->id ); ?>" class="include-gallery-checkbox" checked="checked" value="1" />
-                                                    <label for="gallery-toggle-<?php echo esc_attr( $post->id ); ?>" style="font-size: 12px; font-weight: 600; color: var(--cc-text-secondary); cursor: pointer;"><?php echo esc_html( $d['include_gallery_label'] ); ?></label>
-                                                </div>
-                                            <?php endif; ?>
+                                    </div>
+                                    <div class="image-toggles" style="margin-top: 8px; display: flex; flex-direction: column; gap: 8px; padding: 10px; background: var(--cc-bg-surface); border-radius: var(--cc-radius-sm); border: 1px solid var(--cc-border); margin-bottom: 10px;">
+                                        <div class="cover-toggle" style="display: flex; align-items: center; gap: 8px;">
+                                            <input type="checkbox" id="cover-toggle-<?php echo esc_attr( $post->id ); ?>" class="include-cover-checkbox" checked="checked" value="1" />
+                                            <label for="cover-toggle-<?php echo esc_attr( $post->id ); ?>" style="font-size: 12px; font-weight: 600; color: var(--cc-text-secondary); cursor: pointer;"><?php echo esc_html( $d['include_cover_label'] ); ?></label>
                                         </div>
+                                        <?php if ( count( $images ) > 1 ) : ?>
+                                            <div class="gallery-toggle" style="display: flex; align-items: center; gap: 8px;">
+                                                <input type="checkbox" id="gallery-toggle-<?php echo esc_attr( $post->id ); ?>" class="include-gallery-checkbox" checked="checked" value="1" />
+                                                <label for="gallery-toggle-<?php echo esc_attr( $post->id ); ?>" style="font-size: 12px; font-weight: 600; color: var(--cc-text-secondary); cursor: pointer;"><?php echo esc_html( $d['include_gallery_label'] ); ?></label>
+                                            </div>
+                                        <?php endif; ?>
                                     </div>
                                 <?php endif; ?>
+
 
                                 <div class="card-content">
                                     <!-- Original text (read-only) -->

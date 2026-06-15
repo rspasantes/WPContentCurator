@@ -20,6 +20,8 @@ During publication, the administrator can opt to include or exclude both the cov
 - **Monitored Pages & Events**: A single unified configuration table inside the settings page that maps all monitored Facebook page URLs or usernames. It also supports optional default event start/end dates (or option to use the current date) and location details. This avoids configuration duplication, using a single list of monitored sources.
 - **Progressive Facebook Scraper**: Sequential page-by-page fetching queue in manual fetches to prevent gateway timeouts, displaying progress indicators for each configured site/page.
 - **Future Post Scheduling**: Direct publishing calendar input on curation cards to schedule WordPress master and translated entries for future dates.
+- **AI Model Dropdowns**: All three AI provider model fields (OpenAI, Anthropic, Gemini) render as grouped `<select>` dropdowns with curated, up-to-date model lists (including recommended defaults) instead of free-text inputs. Current options: OpenAI — GPT-4o, GPT-4o mini (recommended), GPT-4 Turbo, GPT-3.5 Turbo, o1-mini, o3-mini; Anthropic — Claude 3.5 Sonnet, Claude 3.5 Haiku (recommended), Claude 3 Opus/Sonnet/Haiku; Gemini — Gemini 2.0 Flash (recommended), 2.0 Flash Lite, 1.5 Pro/Flash/Flash-8B.
+- **Per-Card Image Import Controls**: Each dashboard curation card displays per-post image checkboxes — **Include cover image** (sets the first image as featured thumbnail) and **Include gallery** (appends remaining images as a `wp:gallery` Gutenberg block). The gallery checkbox is only shown when the source post has more than one image. These are correctly positioned below the gallery navigation bar (not inside the clipped container) to avoid overlap.
 
 ## 🔗 External Dependencies & Integrations
 
@@ -27,9 +29,9 @@ The plugin relies on or integrates with the following external APIs and third-pa
 
 ### 1. External APIs & AI Providers
 - **Apify API (Facebook Posts Scraper)**: Utilized to scrape posts from public Facebook Pages synchronously. Requires an Apify API Token (`content_curator_apify_token`).
-- **OpenAI API**: Used for AI rewriting using a configurable model (defaults to `gpt-4o-mini`, requires API Key).
-- **Anthropic API**: Used for AI rewriting using a configurable model (defaults to `claude-3-haiku-20240307`, requires API Key).
-- **Google Gemini API**: Used for AI rewriting using a configurable model (defaults to `gemini-1.5-flash`, requires API Key).
+- **OpenAI API**: Used for AI rewriting using a configurable model selected from dropdown (defaults to `gpt-4o-mini`, requires API Key).
+- **Anthropic API**: Used for AI rewriting using a configurable model selected from dropdown (defaults to `claude-3-haiku-20240307`, requires API Key).
+- **Google Gemini API**: Used for AI rewriting using a configurable model selected from dropdown (defaults to `gemini-2.0-flash`, requires API Key).
 - **WordPress 7.0 Native AI**: Uses the built-in `wp_ai_client_prompt()` function (requires a WordPress 7.0+ core environment with AI client configured).
 
 ### 2. Third-Party Plugin Integrations
