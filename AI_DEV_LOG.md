@@ -484,3 +484,8 @@
   - Bumped version to `1.5.6`.
 - **README.md** & **AGENTS.md**:
   - Updated configuration setup guides and capability definitions to match the unified "Pages & Events" setting.
+
+## 2026-06-15 - 17:28 - Compressed clean production files into wp-content-curator.zip
+
+### Summary of Changes
+- Generated the clean release zip package `wp-content-curator.zip` containing a nested `wp-content-curator/` directory structure with only production-ready files (`wp-content-curator.php`, `assets/`, `includes/`, and `README.md`), ignoring Git files, error logs, and IDE local cache metadata.

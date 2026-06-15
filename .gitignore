@@ -17,3 +17,6 @@ Desktop.ini
 # Error logs
 *.log
 error_log
+
+# Build artifacts
+*.zip
