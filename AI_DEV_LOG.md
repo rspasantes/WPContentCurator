@@ -1,5 +1,52 @@
 # AI Development Log - WP Content Curator
 
+## 2026-06-17 - 18:15 - Detailed Publication Status, WordPress edit/view links and Bumped to 1.6.5
+
+### Summary of Changes
+- **includes/class-content-curator-admin.php**:
+  - Updated `get_history_post_mapped_data()` to query and resolve specific publication statuses (Publish, Draft, Future/Scheduled, Ignored, or Processed fallback) and fetch the corresponding view/edit URLs in WordPress.
+  - Modified `render_history_page()` to render dynamic, specific status labels and CSS badge classes (`cc-badge-publish`, `cc-badge-draft`, `cc-badge-future`, etc.) and append the WP edit/view link in the URL column.
+  - Modified `ajax_export_history()` to export the new dedicated 'URL WordPress' column right after 'URL Original', and the detailed 'Estado' status text at the end of each row.
+- **assets/css/admin-style.css**:
+  - Added CSS rule properties for the new badges (`.cc-badge-publish`, `.cc-badge-draft`, `.cc-badge-future`) and `.cc-url-separator` vertical pipe divider.
+- **wp-content-curator.php**:
+  - Bumped version to `1.6.5`.
+- **README.md**:
+  - Added changelog entry for version `1.6.5`.
+
+## 2026-06-17 - 18:05 - Integrated Dynamic show/hide for AI Settings fields and Bumped to 1.6.4
+
+### Summary of Changes
+- **includes/class-content-curator-admin.php**: Added custom class attributes (`cc-ai-api-key-row`, `cc-ai-model-row cc-ai-model-openai`, etc.) to settings fields (`add_settings_field` args parameter) to allow selective show/hide querying.
+- **assets/js/admin-script.js**: Implemented `toggleAIFields()` show/hide listener function. Changes are triggered dynamically on AI Provider select input `change` events and on DOM initialization.
+- **wp-content-curator.php**: Bumped plugin version and constants to `1.6.4`.
+- **README.md**: Added `1.6.4` entry in the Changelog section detailing the settings field dynamic toggle changes.
+
+## 2026-06-17 - 18:00 - Stripped Emojis from CSV Export, Linked History Mapped Columns and Bumped to 1.6.3
+
+### Summary of Changes
+- **includes/class-content-curator-admin.php**:
+  - Implemented `get_history_post_mapped_data()` to query the linked WordPress post for a given database record and map 11 specific columns: ID, URL Original, Titular (Title), Contenido (Content), Tipo de evento (Post Type), Etiquetas (Tags), Fecha Publicación Original (Original Facebook Created At), Fecha Publicación (WordPress Publish Date), Lugar (Place), Categorías, and Concellos.
+  - Implemented `strip_emojis()` helper method to remove emoji characters and visual symbols from text fields.
+  - Updated `ajax_export_history()` to call `get_history_post_mapped_data( $post, true )` to strip emojis and format the export data with the 11 detailed columns.
+  - Updated `render_history_page()` to render the history list table UI with these 11 detailed columns, retrieving fields from the linked WordPress posts (with fallbacks if no linked post is found).
+  - Stored `_fb_post_id` in WordPress post meta when manually publishing or saving drafts.
+- **includes/class-content-curator-cron.php**: Stored `_fb_post_id` in WordPress post meta when automatically curating posts in CRON tasks.
+- **assets/css/admin-style.css**: Styled the new table columns and updated `.cc-history-table-wrap` to support horizontal scrolling (`overflow-x: auto;`).
+- **wp-content-curator.php**: Bumped plugin version and constants to `1.6.3`.
+- **README.md**: Added `1.6.3` entry in the Changelog section detailing the export emojis stripping and new history columns.
+
+## 2026-06-17 - 17:19 - Changed Delete Curation Action to Ignore and Bumped to 1.6.2
+
+### Summary of Changes
+- **includes/class-content-curator-db.php**: Added static method `ignore_all_pending()` to update status of all pending post records to `'ignored'` instead of deleting them.
+- **includes/class-content-curator-admin.php**:
+  - Updated `ajax_delete()` to update post status to `'ignored'` using `Content_Curator_DB::update_status()` instead of deleting the row.
+  - Updated `ajax_delete_all()` to update all pending posts to `'ignored'` using `Content_Curator_DB::ignore_all_pending()` instead of deleting the rows.
+  - Updated English, Spanish, and French dictionaries (`confirm_delete`, `confirm_delete_all`, `deleting`, `deleting_all`, `success_delete`, and `success_delete_all`) to refer to ignoring/discarding posts and moving them to the History instead of deleting them.
+- **wp-content-curator.php**: Bumped plugin version and constants to `1.6.2`.
+- **README.md**: Added `1.6.2` entry in the Changelog section detailing the ignore changes.
+
 ## 2026-06-17 - 16:50 - Bumped version to 1.6.1
 
 ### Summary of Changes

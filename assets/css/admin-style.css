@@ -1244,7 +1244,7 @@
     border: 1px solid var(--cc-border);
     border-radius: var(--cc-radius);
     box-shadow: var(--cc-shadow);
-    overflow: hidden;
+    overflow-x: auto;
     margin-bottom: var(--cc-gap);
 }
 
@@ -1264,6 +1264,7 @@
     color: var(--cc-text-secondary);
     padding: 12px 14px !important;
     border-bottom: 2px solid var(--cc-border) !important;
+    white-space: nowrap;
 }
 
 .cc-history-table tbody td {
@@ -1283,13 +1284,19 @@
 }
 
 /* Column widths */
-.cc-history-table .col-id      { width: 55px; }
-.cc-history-table .col-page    { width: 160px; }
-.cc-history-table .col-preview { /* flex fill */ }
-.cc-history-table .col-status  { width: 130px; }
-.cc-history-table .col-fb-date { width: 110px; }
-.cc-history-table .col-fetched { width: 110px; }
-.cc-history-table .col-actions { width: 120px; }
+.cc-history-table .col-id            { width: 55px; min-width: 55px; }
+.cc-history-table .col-original-url  { width: 90px; min-width: 90px; }
+.cc-history-table .col-title         { width: 170px; min-width: 170px; }
+.cc-history-table .col-content       { width: 240px; min-width: 240px; }
+.cc-history-table .col-event-type    { width: 110px; min-width: 110px; }
+.cc-history-table .col-tags          { width: 120px; min-width: 120px; }
+.cc-history-table .col-original-date { width: 120px; min-width: 120px; }
+.cc-history-table .col-publish-date  { width: 120px; min-width: 120px; }
+.cc-history-table .col-lugar         { width: 130px; min-width: 130px; }
+.cc-history-table .col-categories    { width: 130px; min-width: 130px; }
+.cc-history-table .col-concellos     { width: 130px; min-width: 130px; }
+.cc-history-table .col-status        { width: 110px; min-width: 110px; }
+.cc-history-table .col-actions       { width: 110px; min-width: 110px; }
 
 /* Status badges */
 .cc-status-badge {
@@ -1305,16 +1312,35 @@
     white-space: nowrap;
 }
 
-.cc-badge-processed {
+.cc-badge-processed,
+.cc-badge-publish {
     background: var(--cc-success-light);
     color: var(--cc-success);
     border: 1px solid rgba(46, 125, 50, 0.2);
+}
+
+.cc-badge-draft {
+    background: var(--cc-primary-light);
+    color: var(--cc-primary);
+    border: 1px solid rgba(24, 119, 242, 0.2);
+}
+
+.cc-badge-future {
+    background: rgba(124, 58, 237, 0.08);
+    color: #7c3aed;
+    border: 1px solid rgba(124, 58, 237, 0.2);
 }
 
 .cc-badge-ignored {
     background: var(--cc-warning-light);
     color: var(--cc-warning);
     border: 1px solid rgba(230, 81, 0, 0.2);
+}
+
+.cc-url-separator {
+    color: var(--cc-border);
+    margin: 0 5px;
+    font-weight: 300;
 }
 
 /* Preview cell */

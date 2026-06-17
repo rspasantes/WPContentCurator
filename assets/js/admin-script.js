@@ -800,8 +800,37 @@
         }
     });
 
+    // =========================================================================
+    // EVENT: DYNAMIC SHOW/HIDE FOR AI SETTINGS FIELDS
+    // =========================================================================
+    function toggleAIFields() {
+        var provider = $('#content_curator_ai_provider').val();
+        
+        // Hide all conditional AI model and API key rows
+        $('.cc-ai-model-row').hide();
+        $('.cc-ai-api-key-row').hide();
+        
+        if (provider === 'openai') {
+            $('.cc-ai-model-openai').show();
+            $('.cc-ai-api-key-row').show();
+        } else if (provider === 'anthropic') {
+            $('.cc-ai-model-anthropic').show();
+            $('.cc-ai-api-key-row').show();
+        } else if (provider === 'gemini') {
+            $('.cc-ai-model-gemini').show();
+            $('.cc-ai-api-key-row').show();
+        } else if (provider === 'wordpress_ai') {
+            // WordPress 7 Native AI requires no API key and has no model configuration row
+        }
+    }
+
+    $(document).on('change', '#content_curator_ai_provider', function () {
+        toggleAIFields();
+    });
+
     // On page load, check URL hash and open correct settings tab
     $(function () {
+        toggleAIFields();
         var hash = window.location.hash;
         if (hash && $('.content-curator-settings-tabs a[href="' + hash + '"]').length) {
             $('.content-curator-settings-tabs a[href="' + hash + '"]').trigger('click');

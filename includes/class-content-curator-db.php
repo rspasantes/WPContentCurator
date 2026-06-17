@@ -319,11 +319,6 @@ class Content_Curator_DB {
         return false !== $result;
     }
 
-    /**
-     * Delete all pending post records from the database.
-     *
-     * @return int|false Number of deleted rows on success, false on failure.
-     */
     public static function delete_all_pending() {
         global $wpdb;
 
@@ -331,6 +326,23 @@ class Content_Curator_DB {
 
         $result = $wpdb->query(
             "DELETE FROM $table_name WHERE status = 'pending'"
+        );
+
+        return $result;
+    }
+
+    /**
+     * Mark all pending post records as ignored in the database.
+     *
+     * @return int|false Number of updated rows on success, false on failure.
+     */
+    public static function ignore_all_pending() {
+        global $wpdb;
+
+        $table_name = self::get_table_name();
+
+        $result = $wpdb->query(
+            "UPDATE $table_name SET status = 'ignored' WHERE status = 'pending'"
         );
 
         return $result;

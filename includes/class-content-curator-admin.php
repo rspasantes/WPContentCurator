@@ -63,19 +63,19 @@ class content_curator_Admin {
                 // AJAX & Notifications
                 'confirm_publish'      => 'Publish this post to your site?',
                 'confirm_draft'        => 'Save this post as a draft?',
-                'confirm_delete'       => 'Are you sure you want to delete this post? It will be removed from the curation panel and can be fetched again in the next scrape.',
-                'confirm_delete_all'   => 'Are you sure you want to delete all pending posts? This will empty your curation queue.',
+                'confirm_delete'       => 'Are you sure you want to ignore this post? It will be moved to the History as ignored and will not be fetched again.',
+                'confirm_delete_all'   => 'Are you sure you want to ignore all pending posts? This will move them all to the History and they will not be fetched again.',
                 'rewriting'            => 'Rewriting with AI...',
                 'publishing'           => 'Publishing...',
                 'saving_draft'         => 'Saving draft...',
-                'deleting'             => 'Deleting...',
-                'deleting_all'         => 'Deleting all posts...',
+                'deleting'             => 'Ignoring...',
+                'deleting_all'         => 'Ignoring all posts...',
                 'fetching'             => 'Fetching posts...',
                 'success_publish'      => 'Post published successfully!',
                 'success_draft'        => 'Post saved as draft!',
                 'success_rewrite'      => 'Text rewritten successfully!',
-                'success_delete'       => 'Post deleted successfully!',
-                'success_delete_all'   => 'All pending posts deleted successfully!',
+                'success_delete'       => 'Post moved to History as ignored successfully!',
+                'success_delete_all'   => 'All pending posts moved to History as ignored successfully!',
                 'error_generic'        => 'An error occurred. Please try again.',
                 'all_processed'        => 'All posts have been processed!',
                 'all_processed_desc'   => 'Great job! Check back later for new content.',
@@ -154,6 +154,11 @@ class content_curator_Admin {
                 'history_title'            => 'Publication History',
                 'history_desc'             => 'Browse all processed and ignored posts from the curation queue.',
                 'status_processed'         => 'Published/Draft',
+                'status_published'         => 'Published',
+                'status_draft'             => 'Draft',
+                'status_ignored_label'     => 'Ignored',
+                'status_scheduled'         => 'Scheduled',
+                'status_processed_fallback'=> 'Processed',
                 'status_ignored'           => 'Ignored',
                 'status_all_history'       => 'All Statuses',
                 'export_excel'             => 'Export to CSV',
@@ -214,19 +219,19 @@ class content_curator_Admin {
                 // AJAX & Notifications
                 'confirm_publish'      => '¿Publicar esta entrada en tu sitio?',
                 'confirm_draft'        => '¿Guardar esta entrada como borrador?',
-                'confirm_delete'       => '¿Estás seguro de que quieres eliminar esta publicación? Se quitará del panel de curación y podrá volver a importarse en la siguiente extracción.',
-                'confirm_delete_all'   => '¿Estás seguro de que quieres eliminar todas las publicaciones pendientes? Esto vaciará tu cola de curación.',
+                'confirm_delete'       => '¿Estás seguro de que quieres descartar esta publicación? Se moverá al Historial como ignorada y no volverá a importarse.',
+                'confirm_delete_all'   => '¿Estás seguro de que quieres descartar todas las publicaciones pendientes? Se moverán al Historial como ignoradas y no volverán a importarse.',
                 'rewriting'            => 'Reescribiendo con IA...',
                 'publishing'           => 'Publicando...',
                 'saving_draft'         => 'Guardando borrador...',
-                'deleting'             => 'Eliminando...',
-                'deleting_all'         => 'Eliminando todas las publicaciones...',
+                'deleting'             => 'Descartando...',
+                'deleting_all'         => 'Descartando todas las publicaciones...',
                 'fetching'             => 'Importando publicaciones...',
                 'success_publish'      => '¡Entrada publicada con éxito!',
                 'success_draft'        => '¡Entrada guardada como borrador!',
                 'success_rewrite'      => '¡Texto reescrito con éxito!',
-                'success_delete'       => '¡Publicación eliminada con éxito!',
-                'success_delete_all'   => '¡Todas las publicaciones pendientes fueron eliminadas!',
+                'success_delete'       => '¡Publicación enviada al Historial como ignorada correctamente!',
+                'success_delete_all'   => '¡Todas las publicaciones pendientes han sido enviadas al Historial como ignoradas!',
                 'error_generic'        => 'Ha ocurrido un error. Por favor, inténtalo de nuevo.',
                 'all_processed'        => '¡Todas las publicaciones han sido procesadas!',
                 'all_processed_desc'   => '¡Buen trabajo! Vuelve más tarde para ver contenido nuevo.',
@@ -305,6 +310,11 @@ class content_curator_Admin {
                 'history_title'            => 'Historial de Publicaciones',
                 'history_desc'             => 'Consulta todas las publicaciones procesadas e ignoradas de la cola de curación.',
                 'status_processed'         => 'Publicado/Borrador',
+                'status_published'         => 'Publicado',
+                'status_draft'             => 'Borrador',
+                'status_ignored_label'     => 'Ignorado',
+                'status_scheduled'         => 'Programado',
+                'status_processed_fallback'=> 'Procesado',
                 'status_ignored'           => 'Ignorado',
                 'status_all_history'       => 'Todos los estados',
                 'export_excel'             => 'Exportar a CSV',
@@ -365,19 +375,19 @@ class content_curator_Admin {
                 // AJAX & Notifications
                 'confirm_publish'      => 'Publier cet article sur votre site ?',
                 'confirm_draft'        => 'Enregistrer cet article comme brouillon ?',
-                'confirm_delete'       => 'Voulez-vous vraiment supprimer cette publication ? Elle sera retirée du panneau de curation et pourra être récupérée lors du prochain scan.',
-                'confirm_delete_all'   => 'Voulez-vous vraiment supprimer toutes les publications en attente ? Cela videra votre file d\'attente.',
+                'confirm_delete'       => 'Voulez-vous vraiment ignorer cette publication ? Elle sera déplacée vers l\'historique comme ignorée et ne sera plus récupérée.',
+                'confirm_delete_all'   => 'Voulez-vous vraiment ignorer toutes les publications en attente ? Elles seront déplacées vers l\'historique comme ignorées.',
                 'rewriting'            => 'Réécriture avec l\'IA...',
                 'publishing'           => 'Publication...',
                 'saving_draft'         => 'Enregistrement du brouillon...',
-                'deleting'             => 'Suppression...',
-                'deleting_all'         => 'Suppression de toutes les publications...',
+                'deleting'             => 'Ignorer...',
+                'deleting_all'         => 'Ignorer toutes les publications...',
                 'fetching'             => 'Récupération des publications...',
                 'success_publish'      => 'Article publié avec succès !',
                 'success_draft'        => 'Article enregistré comme brouillon !',
                 'success_rewrite'      => 'Texte réécrit avec succès !',
-                'success_delete'       => 'Publication supprimée avec succès !',
-                'success_delete_all'   => 'Toutes les publications en attente ont été supprimées !',
+                'success_delete'       => 'Publication ignorée et déplacée vers l\'historique avec succès !',
+                'success_delete_all'   => 'Toutes les publications en attente ont été ignorées et déplacées vers l\'historique !',
                 'error_generic'        => 'Une erreur est survenue. Veuillez réessayer.',
                 'all_processed'        => 'Toutes les publications ont été traitées !',
                 'all_processed_desc'   => 'Excellent travail ! Revenez plus tard pour du nouveau contenu.',
@@ -456,6 +466,11 @@ class content_curator_Admin {
                 'history_title'            => 'Historique des Publications',
                 'history_desc'             => 'Parcourez toutes les publications traitées et ignorées de la file de curation.',
                 'status_processed'         => 'Publié/Brouillon',
+                'status_published'         => 'Publié',
+                'status_draft'             => 'Brouillon',
+                'status_ignored_label'     => 'Ignoré',
+                'status_scheduled'         => 'Planifié',
+                'status_processed_fallback'=> 'Traité',
                 'status_ignored'           => 'Ignoré',
                 'status_all_history'       => 'Tous les statuts',
                 'export_excel'             => 'Exporter en CSV',
@@ -746,7 +761,8 @@ class content_curator_Admin {
             $d['ai_key_label'],
             array( $this, 'render_field_ai_api_key' ),
             'content-curator-settings',
-            'content_curator_ai_section'
+            'content_curator_ai_section',
+            array( 'class' => 'cc-ai-api-key-row' )
         );
 
         add_settings_field(
@@ -762,7 +778,8 @@ class content_curator_Admin {
             $d['openai_model_label'],
             array( $this, 'render_field_openai_model' ),
             'content-curator-settings',
-            'content_curator_ai_section'
+            'content_curator_ai_section',
+            array( 'class' => 'cc-ai-model-row cc-ai-model-openai' )
         );
 
         add_settings_field(
@@ -770,7 +787,8 @@ class content_curator_Admin {
             $d['anthropic_model_label'],
             array( $this, 'render_field_anthropic_model' ),
             'content-curator-settings',
-            'content_curator_ai_section'
+            'content_curator_ai_section',
+            array( 'class' => 'cc-ai-model-row cc-ai-model-anthropic' )
         );
 
         add_settings_field(
@@ -778,7 +796,8 @@ class content_curator_Admin {
             $d['gemini_model_label'],
             array( $this, 'render_field_gemini_model' ),
             'content-curator-settings',
-            'content_curator_ai_section'
+            'content_curator_ai_section',
+            array( 'class' => 'cc-ai-model-row cc-ai-model-gemini' )
         );
 
         // Register CRON options.
@@ -1387,8 +1406,8 @@ class content_curator_Admin {
                     'success_publish'    => __( 'Post published successfully!', 'wp-content-curator' ),
                     'success_draft'      => __( 'Post saved as draft!', 'wp-content-curator' ),
                     'success_rewrite'    => __( 'Text rewritten successfully!', 'wp-content-curator' ),
-                    'success_delete'     => __( 'Post deleted successfully!', 'wp-content-curator' ),
-                    'success_delete_all' => __( 'All pending posts deleted successfully!', 'wp-content-curator' ),
+                    'success_delete'     => __( 'Post moved to History as ignored successfully!', 'wp-content-curator' ),
+                    'success_delete_all' => __( 'All pending posts moved to History as ignored successfully!', 'wp-content-curator' ),
                     'error_generic'      => __( 'An error occurred. Please try again.', 'wp-content-curator' ),
                     'title_empty'        => __( 'Post title cannot be empty.', 'wp-content-curator' ),
                     'testing_ai'         => $d['testing_ai'],
@@ -2176,6 +2195,12 @@ class content_curator_Admin {
             wp_send_json_error( array( 'message' => $new_post_id->get_error_message() ) );
         }
 
+        // Save original FB post ID link in meta
+        $db_post = Content_Curator_DB::get_post_by_id( $db_post_id );
+        if ( $db_post ) {
+            update_post_meta( $new_post_id, '_fb_post_id', $db_post->fb_post_id );
+        }
+
         // Apply event meta and taxonomies to master post
         if ( 'agenda' === $post_type ) {
             if ( ! empty( $event_cats ) ) {
@@ -2363,6 +2388,9 @@ class content_curator_Admin {
             $translated_post_id = wp_insert_post( $translated_post_args, true );
 
             if ( ! is_wp_error( $translated_post_id ) ) {
+                if ( ! empty( $db_post ) ) {
+                    update_post_meta( $translated_post_id, '_fb_post_id', $db_post->fb_post_id );
+                }
                 // Set tag.
                 if ( ! empty( $tag_value ) && strpos( $tag_value, ':' ) !== false ) {
                     list( $taxonomy, $term_id ) = explode( ':', $tag_value, 2 );
@@ -2608,14 +2636,16 @@ class content_curator_Admin {
             wp_send_json_error( array( 'message' => __( 'Invalid post ID.', 'wp-content-curator' ) ) );
         }
 
-        $deleted = content_curator_DB::delete_post( $post_id );
+        // Instead of deleting the post, we update its status to 'ignored' so it is kept in the database
+        // (preventing it from being re-scraped) and shown in the History page under the Ignored filter.
+        $ignored = content_curator_DB::update_status( $post_id, 'ignored' );
 
-        if ( ! $deleted ) {
-            wp_send_json_error( array( 'message' => __( 'Failed to delete the post from database.', 'wp-content-curator' ) ) );
+        if ( ! $ignored ) {
+            wp_send_json_error( array( 'message' => __( 'Failed to ignore the post.', 'wp-content-curator' ) ) );
         }
 
         wp_send_json_success( array(
-            'message' => __( 'Post deleted successfully!', 'wp-content-curator' ),
+            'message' => __( 'Post moved to History as ignored successfully!', 'wp-content-curator' ),
             'post_id' => $post_id,
         ) );
     }
@@ -2638,17 +2668,19 @@ class content_curator_Admin {
             wp_send_json_error( array( 'message' => __( 'Insufficient permissions.', 'wp-content-curator' ) ), 403 );
         }
 
-        $deleted = content_curator_DB::delete_all_pending();
+        // Instead of deleting the pending posts, we update their status to 'ignored' so they are kept in the database
+        // (preventing them from being re-scraped) and shown in the History page under the Ignored filter.
+        $ignored = content_curator_DB::ignore_all_pending();
 
-        if ( false === $deleted ) {
-            wp_send_json_error( array( 'message' => __( 'Failed to delete pending posts.', 'wp-content-curator' ) ) );
+        if ( false === $ignored ) {
+            wp_send_json_error( array( 'message' => __( 'Failed to ignore pending posts.', 'wp-content-curator' ) ) );
         }
 
         wp_send_json_success( array(
             'message' => sprintf(
-                /* translators: %d: number of deleted posts */
-                __( 'Successfully deleted %d pending posts.', 'wp-content-curator' ),
-                $deleted
+                /* translators: %d: number of ignored posts */
+                __( 'All pending posts (%d) have been moved to History as ignored.', 'wp-content-curator' ),
+                $ignored
             ),
         ) );
     }
@@ -2787,37 +2819,56 @@ class content_curator_Admin {
             <?php else : ?>
                 <!-- History Table -->
                 <div class="cc-history-table-wrap">
-                    <table class="wp-list-table widefat fixed striped cc-history-table">
+                    <table class="wp-list-table widefat striped cc-history-table">
                         <thead>
                             <tr>
                                 <th class="col-id"><?php echo esc_html( $d['col_id'] ); ?></th>
-                                <th class="col-page"><?php echo esc_html( $d['col_page'] ); ?></th>
-                                <th class="col-preview"><?php echo esc_html( $d['col_preview'] ); ?></th>
+                                <th class="col-original-url"><?php esc_html_e( 'URL Original', 'wp-content-curator' ); ?></th>
+                                <th class="col-title"><?php esc_html_e( 'Titular', 'wp-content-curator' ); ?></th>
+                                <th class="col-content"><?php esc_html_e( 'Contenido', 'wp-content-curator' ); ?></th>
+                                <th class="col-event-type"><?php esc_html_e( 'Tipo de evento', 'wp-content-curator' ); ?></th>
+                                <th class="col-tags"><?php esc_html_e( 'Etiquetas', 'wp-content-curator' ); ?></th>
+                                <th class="col-original-date"><?php esc_html_e( 'Fecha Publicación Original', 'wp-content-curator' ); ?></th>
+                                <th class="col-publish-date"><?php esc_html_e( 'Fecha Publicación', 'wp-content-curator' ); ?></th>
+                                <th class="col-lugar"><?php esc_html_e( 'Lugar', 'wp-content-curator' ); ?></th>
+                                <th class="col-categories"><?php esc_html_e( 'Categorias', 'wp-content-curator' ); ?></th>
+                                <th class="col-concellos"><?php esc_html_e( 'Concellos', 'wp-content-curator' ); ?></th>
                                 <th class="col-status"><?php echo esc_html( $d['col_status'] ); ?></th>
-                                <th class="col-fb-date"><?php echo esc_html( $d['col_fb_date'] ); ?></th>
-                                <th class="col-fetched"><?php echo esc_html( $d['col_fetched'] ); ?></th>
                                 <th class="col-actions"><?php echo esc_html( $d['col_actions'] ); ?></th>
                             </tr>
                         </thead>
                         <tbody>
                             <?php foreach ( $posts as $post ) :
-                                $preview_text = mb_strimwidth( $post->original_text, 0, 140, '…' );
-                                $status_class = 'processed' === $post->status ? 'cc-badge-processed' : 'cc-badge-ignored';
-                                $status_label = 'processed' === $post->status ? $d['status_processed'] : $d['status_ignored'];
+                                $data = self::get_history_post_mapped_data( $post, false ); // Do not strip emojis in the web UI, only in export
+                                $status_class = 'cc-badge-' . $data['raw_status'];
+                                $status_label = $data['status_text'];
+                                
+                                $preview_title   = mb_strimwidth( $data['title'], 0, 50, '…' );
+                                $preview_content = mb_strimwidth( $data['content'], 0, 100, '…' );
                             ?>
                                 <tr class="cc-history-row" id="cc-history-row-<?php echo absint( $post->id ); ?>" data-post-id="<?php echo absint( $post->id ); ?>">
-                                    <td class="col-id"><?php echo absint( $post->id ); ?></td>
-                                    <td class="col-page">
-                                        <span class="dashicons dashicons-facebook" style="font-size: 13px; width: 13px; height: 13px; vertical-align: middle; color: #1877f2; margin-right: 4px;"></span>
-                                        <?php echo esc_html( $post->page_name ); ?>
+                                    <td class="col-id"><?php echo absint( $data['id'] ); ?></td>
+                                    <td class="col-original-url">
+                                        <a href="<?php echo esc_url( $data['original_url'] ); ?>" target="_blank" title="<?php esc_attr_e( 'Visitar publicación original', 'wp-content-curator' ); ?>">
+                                            <span class="dashicons dashicons-facebook" style="font-size: 14px; width: 14px; height: 14px; vertical-align: middle; color: #1877f2;"></span>
+                                            Link
+                                        </a>
+                                        <?php if ( ! empty( $data['wp_url'] ) ) : ?>
+                                            <span class="cc-url-separator">|</span>
+                                            <a href="<?php echo esc_url( $data['wp_url'] ); ?>" target="_blank" title="<?php esc_attr_e( 'Ver/Editar en WordPress', 'wp-content-curator' ); ?>">
+                                                <span class="dashicons dashicons-wordpress" style="font-size: 14px; width: 14px; height: 14px; vertical-align: middle; color: #21759b;"></span>
+                                                WP
+                                            </a>
+                                        <?php endif; ?>
                                     </td>
-                                    <td class="col-preview">
+                                    <td class="col-title" title="<?php echo esc_attr( $data['title'] ); ?>"><?php echo esc_html( $preview_title ); ?></td>
+                                    <td class="col-content">
                                         <div class="cc-history-preview-cell">
-                                            <span class="cc-preview-short"><?php echo esc_html( $preview_text ); ?></span>
-                                            <?php if ( mb_strlen( $post->original_text ) > 140 ) : ?>
+                                            <span class="cc-preview-short"><?php echo esc_html( $preview_content ); ?></span>
+                                            <?php if ( mb_strlen( $data['content'] ) > 100 ) : ?>
                                                 <button type="button"
                                                     class="button-link cc-preview-expand-btn"
-                                                    data-full-text="<?php echo esc_attr( $post->original_text ); ?>"
+                                                    data-full-text="<?php echo esc_attr( $data['content'] ); ?>"
                                                     data-page="<?php echo esc_attr( $post->page_name ); ?>"
                                                     title="<?php echo esc_attr( $d['history_view_text'] ); ?>">
                                                     <span class="dashicons dashicons-visibility" style="font-size: 14px; width: 14px; height: 14px; vertical-align: middle;"></span>
@@ -2825,13 +2876,18 @@ class content_curator_Admin {
                                             <?php endif; ?>
                                         </div>
                                     </td>
+                                    <td class="col-event-type"><?php echo esc_html( $data['post_type'] ); ?></td>
+                                    <td class="col-tags" title="<?php echo esc_attr( $data['tags'] ); ?>"><?php echo esc_html( mb_strimwidth( $data['tags'], 0, 40, '…' ) ); ?></td>
+                                    <td class="col-original-date"><?php echo esc_html( empty( $data['original_date'] ) ? '' : wp_date( 'M j, Y', strtotime( $data['original_date'] ) ) ); ?></td>
+                                    <td class="col-publish-date"><?php echo esc_html( empty( $data['publish_date'] ) ? '' : wp_date( 'M j, Y', strtotime( $data['publish_date'] ) ) ); ?></td>
+                                    <td class="col-lugar" title="<?php echo esc_attr( $data['lugar'] ); ?>"><?php echo esc_html( mb_strimwidth( $data['lugar'], 0, 40, '…' ) ); ?></td>
+                                    <td class="col-categories" title="<?php echo esc_attr( $data['categories'] ); ?>"><?php echo esc_html( mb_strimwidth( $data['categories'], 0, 40, '…' ) ); ?></td>
+                                    <td class="col-concellos" title="<?php echo esc_attr( $data['concellos'] ); ?>"><?php echo esc_html( mb_strimwidth( $data['concellos'], 0, 40, '…' ) ); ?></td>
                                     <td class="col-status">
                                         <span class="cc-status-badge <?php echo esc_attr( $status_class ); ?>">
                                             <?php echo esc_html( $status_label ); ?>
                                         </span>
                                     </td>
-                                    <td class="col-fb-date"><?php echo esc_html( wp_date( 'M j, Y', strtotime( $post->fb_created_at ) ) ); ?></td>
-                                    <td class="col-fetched"><?php echo esc_html( wp_date( 'M j, Y', strtotime( $post->fetched_at ) ) ); ?></td>
                                     <td class="col-actions">
                                         <button type="button"
                                             class="button button-small cc-history-requeue-btn"
@@ -2943,7 +2999,21 @@ class content_curator_Admin {
         };
 
         // Header row.
-        $headers = array( 'ID', 'FB Post ID', 'Facebook Page', 'Status', 'Original Text', 'FB Created At', 'Fetched At' );
+        $headers = array(
+            'ID',
+            'URL Original',
+            'URL WordPress',
+            'Titular',
+            'Contenido',
+            'Tipo de evento',
+            'Etiquetas',
+            'Fecha Publicación Original',
+            'Fecha Publicación',
+            'Lugar',
+            'Categorias',
+            'Concellos',
+            'Estado'
+        );
         echo implode( $sep, array_map( function( $h ) use ( $sep ) {
             // Quote header if it contains the separator.
             return strpos( $h, $sep ) !== false ? '"' . $h . '"' : $h;
@@ -2951,14 +3021,22 @@ class content_curator_Admin {
 
         // Data rows.
         foreach ( $posts as $post ) {
+            $data = self::get_history_post_mapped_data( $post, true );
+
             $row = array(
-                (int) $post->id,
-                $clean( $post->fb_post_id ),
-                $clean( $post->page_name ),
-                $clean( $post->status ),
-                $clean( $post->original_text ),
-                $clean( $post->fb_created_at ),
-                $clean( $post->fetched_at ),
+                (int) $data['id'],
+                $clean( $data['original_url'] ),
+                $clean( $data['wp_url'] ),
+                $clean( $data['title'] ),
+                $clean( $data['content'] ),
+                $clean( $data['post_type'] ),
+                $clean( $data['tags'] ),
+                $clean( $data['original_date'] ),
+                $clean( $data['publish_date'] ),
+                $clean( $data['lugar'] ),
+                $clean( $data['categories'] ),
+                $clean( $data['concellos'] ),
+                $clean( $data['status_text'] ),
             );
 
             $escaped = array();
@@ -3072,5 +3150,204 @@ class content_curator_Admin {
         }
 
         return $attachment_id;
+    }
+
+    /**
+     * Helper to retrieve and map WordPress post details for a database history record.
+     *
+     * @param object $post          Database post object.
+     * @param bool   $strip_emojis  Whether to remove emoji characters from text fields.
+     * @return array Mapped history data.
+     */
+    public static function get_history_post_mapped_data( $post, $strip_emojis = false ) {
+        $id = $post->id;
+        
+        // Build Original URL
+        $page = trim( $post->page_name );
+        if ( preg_match( '/^https?:\/\//i', $page ) ) {
+            $original_url = $page . '/posts/' . $post->fb_post_id;
+        } else {
+            $original_url = 'https://www.facebook.com/' . $page . '/posts/' . $post->fb_post_id;
+        }
+
+        // Split original text into title (first line) and body as fallback
+        $lines = preg_split( '/\r\n|\r|\n/', $post->original_text, 2 );
+        $fallback_title = wp_strip_all_tags( $lines[0] );
+        $fallback_title = preg_replace( '/^<h2[^>]*>(.*?)<\/h2>$/i', '$1', $fallback_title );
+        $fallback_title = trim( $fallback_title );
+        $fallback_body  = isset( $lines[1] ) ? trim( $lines[1] ) : $post->original_text;
+
+        $title          = $fallback_title;
+        $content        = $fallback_body;
+        $post_type      = '';
+        $tags_str       = '';
+        $publish_date   = '';
+        $lugar          = '';
+        $cats_str       = '';
+        $concellos_str  = '';
+
+        // Try to query the linked WordPress post
+        $wp_post = null;
+        $query = new WP_Query( array(
+            'meta_key'       => '_fb_post_id',
+            'meta_value'     => $post->fb_post_id,
+            'post_type'      => 'any',
+            'post_status'    => 'any',
+            'posts_per_page' => 1,
+            'no_found_rows'  => true,
+        ) );
+
+        if ( $query->have_posts() ) {
+            $wp_post = $query->posts[0];
+        } else {
+            // Fallback: search by slug or title if exact meta match doesn't exist yet
+            $slug = sanitize_title( $fallback_title );
+            if ( ! empty( $slug ) ) {
+                $query_slug = new WP_Query( array(
+                    'name'           => $slug,
+                    'post_type'      => 'any',
+                    'post_status'    => 'any',
+                    'posts_per_page' => 1,
+                    'no_found_rows'  => true,
+                ) );
+                if ( $query_slug->have_posts() ) {
+                    $wp_post = $query_slug->posts[0];
+                }
+            }
+        }
+
+        if ( $wp_post ) {
+            $title        = $wp_post->post_title;
+            $content      = $wp_post->post_content;
+            $post_type    = $wp_post->post_type;
+            $publish_date = $wp_post->post_date;
+
+            // Lugar meta
+            $lugar = get_post_meta( $wp_post->ID, 'lugar', true );
+
+            // Tags (non-hierarchical)
+            $tags = array();
+            $tag_terms = wp_get_object_terms( $wp_post->ID, 'post_tag' );
+            if ( ! is_wp_error( $tag_terms ) && ! empty( $tag_terms ) ) {
+                foreach ( $tag_terms as $t ) {
+                    $tags[] = $t->name;
+                }
+            }
+            $taxonomies = get_object_taxonomies( $wp_post->post_type );
+            foreach ( $taxonomies as $tax_name ) {
+                if ( in_array( $tax_name, array( 'post_tag', 'category', 'categorias-agenda', 'concellos-eventos' ), true ) ) {
+                    continue;
+                }
+                $tax_obj = get_taxonomy( $tax_name );
+                if ( $tax_obj && ! $tax_obj->hierarchical ) {
+                    $terms = wp_get_object_terms( $wp_post->ID, $tax_name );
+                    if ( ! is_wp_error( $terms ) && ! empty( $terms ) ) {
+                        foreach ( $terms as $term ) {
+                            $tags[] = $term->name;
+                        }
+                    }
+                }
+            }
+            $tags_str = implode( ', ', array_unique( $tags ) );
+
+            // Categories (hierarchical)
+            $cats = array();
+            foreach ( array( 'category', 'categorias-agenda' ) as $cat_tax ) {
+                if ( taxonomy_exists( $cat_tax ) ) {
+                    $terms = wp_get_object_terms( $wp_post->ID, $cat_tax );
+                    if ( ! is_wp_error( $terms ) && ! empty( $terms ) ) {
+                        foreach ( $terms as $term ) {
+                            $cats[] = $term->name;
+                        }
+                    }
+                }
+            }
+            $cats_str = implode( ', ', array_unique( $cats ) );
+
+            // Concellos
+            $concellos = array();
+            if ( taxonomy_exists( 'concellos-eventos' ) ) {
+                $terms = wp_get_object_terms( $wp_post->ID, 'concellos-eventos' );
+                if ( ! is_wp_error( $terms ) && ! empty( $terms ) ) {
+                    foreach ( $terms as $term ) {
+                        $concellos[] = $term->name;
+                    }
+                }
+            }
+            $concellos_str = implode( ', ', array_unique( $concellos ) );
+        }
+
+        $plugin_lang = get_option( 'content_curator_plugin_language', 'en' );
+        $d           = self::get_dictionary( $plugin_lang );
+
+        $raw_status  = 'processed';
+        $status_text = $d['status_processed_fallback'] ?? 'Processed';
+        $wp_url      = '';
+
+        if ( 'ignored' === $post->status ) {
+            $raw_status  = 'ignored';
+            $status_text = $d['status_ignored_label'] ?? 'Ignored';
+        } elseif ( $wp_post ) {
+            $raw_status = $wp_post->post_status;
+            switch ( $wp_post->post_status ) {
+                case 'publish':
+                    $status_text = $d['status_published'] ?? 'Published';
+                    $wp_url      = get_permalink( $wp_post->ID );
+                    break;
+                case 'draft':
+                    $status_text = $d['status_draft'] ?? 'Draft';
+                    $wp_url      = get_edit_post_link( $wp_post->ID );
+                    break;
+                case 'future':
+                    $status_text = $d['status_scheduled'] ?? 'Scheduled';
+                    $wp_url      = get_edit_post_link( $wp_post->ID );
+                    break;
+                default:
+                    $status_text = $d['status_processed_fallback'] ?? 'Processed';
+                    $wp_url      = get_edit_post_link( $wp_post->ID );
+                    break;
+            }
+        }
+
+        // Clean content (strip gutenberg comments if any)
+        $content = preg_replace( '/<!-- \/?wp:[^>]* -->/', '', $content );
+        $content = trim( $content );
+
+        if ( $strip_emojis ) {
+            $title   = self::strip_emojis( $title );
+            $content = self::strip_emojis( $content );
+        }
+
+        return array(
+            'id'             => $id,
+            'original_url'   => $original_url,
+            'title'          => $title,
+            'content'        => $content,
+            'post_type'      => $post_type,
+            'tags'           => $tags_str,
+            'original_date'  => $post->fb_created_at,
+            'publish_date'   => $publish_date,
+            'lugar'          => $lugar,
+            'categories'     => $cats_str,
+            'concellos'      => $concellos_str,
+            'raw_status'     => $raw_status,
+            'status_text'    => $status_text,
+            'wp_url'         => $wp_url,
+        );
+    }
+
+    /**
+     * Strip emoji characters and visual symbols from a text string.
+     *
+     * @param string $text The source string.
+     * @return string Cleaned string.
+     */
+    public static function strip_emojis( $text ) {
+        // Match general emoji and pictograph ranges
+        $regex = '/[\x{1F000}-\x{1FAFF}]|[\x{2600}-\x{27BF}]|[\x{1F1E0}-\x{1F1FF}]/u';
+        $text = preg_replace( $regex, '', $text );
+        // Clean up excess white spaces
+        $text = preg_replace( '/\s{2,}/', ' ', $text );
+        return trim( $text );
     }
 }

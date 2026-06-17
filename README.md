@@ -234,6 +234,27 @@ wp-content-curator/
 
 ## Changelog
 
+### 1.6.5
+- **Specific Publication Status**: Updated the History list table and CSV export to display specific publication statuses (Published, Draft, Scheduled, Ignored, or Processed) based on database status and linked WordPress post status.
+- **WordPress Direct Linkage**: Appended a direct link to the published post (permalink) or draft/scheduled post (WordPress editor link) inside the "URL Original" list table column and as a dedicated "URL WordPress" column in the CSV export (if the post was not ignored).
+- **Badge Styling**: Styled new status badges (`cc-badge-draft`, `cc-badge-future`, `cc-badge-publish`) with distinct and harmonious colors.
+- **Version Bump**: Bumped plugin version to 1.6.5.
+
+### 1.6.4
+- **Dynamic AI Settings Fields**: Integrated show/hide toggles for AI setting fields using jQuery on the Settings page. Selecting an AI Provider (OpenAI, Anthropic, Gemini) dynamically displays only its corresponding Model dropdown and the API Key field, while selecting WordPress 7 Native AI hides them all.
+- **Version Bump**: Bumped plugin version to 1.6.4.
+
+### 1.6.3
+- **Export Emojis Stripping**: Modified the CSV history exporter to automatically strip emoji characters and visual symbols from Title and Content fields.
+- **Detailed History Columns**: Expanded both the History list table UI and the CSV export to display 11 detailed columns: ID, URL Original, Titular, Contenido, Tipo de evento, Etiquetas, Fecha Publicación Original, Fecha Publicación, Lugar, Categorias, and Concellos.
+- **WordPress Post Meta Linkage**: Implemented `_fb_post_id` post meta storage during manual and auto-curation publishing to link database records dynamically with created WordPress entries.
+- **Version Bump**: Bumped plugin version to 1.6.3.
+
+### 1.6.2
+- **Ignore Curation Action**: Changed the curation card's 'Eliminar' (Delete) action behavior to update the database post status to 'ignored' instead of deleting the row. This preserves the record in the database, preventing it from being scraped again, and correctly lists it in the History page as 'Ignored'.
+- **Ignore All Curation Action**: Updated the 'Delete All Pending' button to update all pending posts' statuses to 'ignored' instead of deleting them.
+- **Version Bump**: Bumped plugin version to 1.6.2.
+
 ### 1.6.1
 - **Export Filter Fix**: Modified the CSV export action to fetch live selected values from the filter form dropdowns and input fields dynamically via jQuery instead of relying on cached static page-load attributes.
 - **Version Bump**: Bumped plugin version to 1.6.1.

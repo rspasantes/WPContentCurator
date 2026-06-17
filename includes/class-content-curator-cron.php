@@ -320,6 +320,8 @@ class content_curator_Cron {
                     continue;
                 }
 
+                update_post_meta( $master_post_id, '_fb_post_id', $post->fb_post_id );
+
                 $post_details['created_posts'][] = array(
                     'post_id'  => $master_post_id,
                     'language' => $default_lang,
@@ -420,6 +422,8 @@ class content_curator_Cron {
                     );
 
                     if ( ! is_wp_error( $translated_post_id ) ) {
+                        update_post_meta( $translated_post_id, '_fb_post_id', $post->fb_post_id );
+
                         $post_details['created_posts'][] = array(
                             'post_id'  => $translated_post_id,
                             'language' => $lang_code,
@@ -474,6 +478,8 @@ class content_curator_Cron {
                     error_log( '[WP FB Curator] CRON Post insertion error: ' . $new_post_id->get_error_message() );
                     continue;
                 }
+
+                update_post_meta( $new_post_id, '_fb_post_id', $post->fb_post_id );
 
                 $post_details['created_posts'][] = array(
                     'post_id'  => $new_post_id,
