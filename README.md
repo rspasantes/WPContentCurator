@@ -236,6 +236,12 @@ wp-content-curator/
 
 ## Changelog
 
+### 1.6.7
+- **History Table Responsiveness**: Added a minimum width of 1500px to the history list table to ensure it triggers horizontal scrolling and prevents column squeezing, making the Actions column (including the Delete button) fully visible.
+- **Export Button Contrast**: Replaced the green background color of the CSV export button with the primary blue color theme, resolving text contrast and readability issues.
+- **Matched Table and CSV Columns**: Confirmed that the columns in the list table match the order and structure of the exported CSV file.
+- **Version Bump**: Bumped plugin version to 1.6.7.
+
 ### 1.6.6
 - **History Record Deletion**: Added a permanent delete action button to each row in the History list table. Clicking the button triggers a confirmation dialog box warning the user that all stored database record data for the post will be permanently deleted. If confirmed, the row is removed from the database and animated out of the view dynamically via AJAX.
 - **Translation Dictionaries**: Registered translation strings in English, Spanish, and French for the deletion actions and notices.

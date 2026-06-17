@@ -1,5 +1,16 @@
 # AI Development Log - WP Content Curator
 
+## 2026-06-17 - 18:55 - Solved History Table Responsiveness, styled CSV Export Button, and Bumped to 1.6.7
+
+### Summary of Changes
+- **assets/css/admin-style.css**:
+  - Added a `min-width: 1500px !important;` to `.cc-history-table` to prevent the WordPress `.wp-list-table` container width constraints from squeezing columns, resolving the issue where the actions column (and thus the delete button) was hidden/cut-off on the right.
+  - Styled `.cc-export-btn` and its hover state using `var(--cc-primary)` and `var(--cc-primary-hover)` (blue theme), improving text contrast and readability.
+- **wp-content-curator.php**:
+  - Bumped version to `1.6.7`.
+- **README.md**:
+  - Added changelog entry for version `1.6.7`.
+
 ## 2026-06-17 - 18:35 - Added Permanent Deletion from History and Bumped to 1.6.6
 
 ### Summary of Changes

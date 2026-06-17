@@ -1253,6 +1253,7 @@
     border: none !important;
     box-shadow: none !important;
     margin: 0 !important;
+    min-width: 1500px !important;
 }
 
 .cc-history-table thead th {
@@ -1424,10 +1425,10 @@
 
 /* Export button */
 .cc-export-btn {
-    background: linear-gradient(135deg, #217346 0%, #1a5c38 100%) !important;
+    background: var(--cc-primary) !important;
     color: #ffffff !important;
     border: none !important;
-    box-shadow: 0 2px 4px rgba(33, 115, 70, 0.2) !important;
+    box-shadow: 0 2px 4px rgba(24, 119, 242, 0.2) !important;
     font-weight: 600 !important;
     padding: 6px 16px !important;
     border-radius: var(--cc-radius-sm) !important;
@@ -1442,8 +1443,8 @@
 
 .cc-export-btn:hover,
 .cc-export-btn:focus {
-    background: linear-gradient(135deg, #1a5c38 0%, #144d2d 100%) !important;
-    box-shadow: 0 4px 8px rgba(33, 115, 70, 0.3) !important;
+    background: var(--cc-primary-hover) !important;
+    box-shadow: 0 4px 8px rgba(24, 119, 242, 0.3) !important;
     transform: translateY(-1px);
     color: #ffffff !important;
 }

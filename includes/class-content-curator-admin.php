@@ -2849,9 +2849,9 @@ class content_curator_Admin {
                                 <th class="col-content"><?php esc_html_e( 'Contenido', 'wp-content-curator' ); ?></th>
                                 <th class="col-event-type"><?php esc_html_e( 'Tipo de evento', 'wp-content-curator' ); ?></th>
                                 <th class="col-tags"><?php esc_html_e( 'Etiquetas', 'wp-content-curator' ); ?></th>
+                                <th class="col-lugar"><?php esc_html_e( 'Lugar', 'wp-content-curator' ); ?></th>
                                 <th class="col-original-date"><?php esc_html_e( 'Fecha Publicación Original', 'wp-content-curator' ); ?></th>
                                 <th class="col-publish-date"><?php esc_html_e( 'Fecha Publicación', 'wp-content-curator' ); ?></th>
-                                <th class="col-lugar"><?php esc_html_e( 'Lugar', 'wp-content-curator' ); ?></th>
                                 <th class="col-categories"><?php esc_html_e( 'Categorias', 'wp-content-curator' ); ?></th>
                                 <th class="col-concellos"><?php esc_html_e( 'Concellos', 'wp-content-curator' ); ?></th>
                                 <th class="col-status"><?php echo esc_html( $d['col_status'] ); ?></th>
@@ -2899,9 +2899,9 @@ class content_curator_Admin {
                                     </td>
                                     <td class="col-event-type"><?php echo esc_html( $data['post_type'] ); ?></td>
                                     <td class="col-tags" title="<?php echo esc_attr( $data['tags'] ); ?>"><?php echo esc_html( mb_strimwidth( $data['tags'], 0, 40, '…' ) ); ?></td>
+                                    <td class="col-lugar" title="<?php echo esc_attr( $data['lugar'] ); ?>"><?php echo esc_html( mb_strimwidth( $data['lugar'], 0, 40, '…' ) ); ?></td>
                                     <td class="col-original-date"><?php echo esc_html( empty( $data['original_date'] ) ? '' : wp_date( 'M j, Y', strtotime( $data['original_date'] ) ) ); ?></td>
                                     <td class="col-publish-date"><?php echo esc_html( empty( $data['publish_date'] ) ? '' : wp_date( 'M j, Y', strtotime( $data['publish_date'] ) ) ); ?></td>
-                                    <td class="col-lugar" title="<?php echo esc_attr( $data['lugar'] ); ?>"><?php echo esc_html( mb_strimwidth( $data['lugar'], 0, 40, '…' ) ); ?></td>
                                     <td class="col-categories" title="<?php echo esc_attr( $data['categories'] ); ?>"><?php echo esc_html( mb_strimwidth( $data['categories'], 0, 40, '…' ) ); ?></td>
                                     <td class="col-concellos" title="<?php echo esc_attr( $data['concellos'] ); ?>"><?php echo esc_html( mb_strimwidth( $data['concellos'], 0, 40, '…' ) ); ?></td>
                                     <td class="col-status">
@@ -3035,9 +3035,9 @@ class content_curator_Admin {
             'Contenido',
             'Tipo de evento',
             'Etiquetas',
+            'Lugar',
             'Fecha Publicación Original',
             'Fecha Publicación',
-            'Lugar',
             'Categorias',
             'Concellos',
             'Estado'
@@ -3059,9 +3059,9 @@ class content_curator_Admin {
                 $clean( $data['content'] ),
                 $clean( $data['post_type'] ),
                 $clean( $data['tags'] ),
+                $clean( $data['lugar'] ),
                 $clean( $data['original_date'] ),
                 $clean( $data['publish_date'] ),
-                $clean( $data['lugar'] ),
                 $clean( $data['categories'] ),
                 $clean( $data['concellos'] ),
                 $clean( $data['status_text'] ),
