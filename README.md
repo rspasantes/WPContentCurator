@@ -22,6 +22,7 @@ A premium WordPress plugin that acts as an advanced content curation panel. It c
 - **Flexible Image Sideloading**: Per-card checkboxes to toggle cover image (sets Featured Image, automatically renamed using post slug) and Gutenberg gallery blocks.
 - **Scheduling**: Future publishing date/time selector directly on curation cards.
 - **External CRON Endpoint**: Safe webhook endpoint protected by a secret token to automate fetching, AI-rewriting, translating, and publishing.
+- **Publication History & CSV Export**: Dedicated History panel listing processed and ignored posts with dynamic status badges (Published, Draft, Scheduled, Ignored, Processed), direct view/edit WordPress links, permanent database record deletion with confirmation prompt (offering to trash the WP post as well), and unbounded CSV export capabilities.
 
 ## Requirements
 
@@ -135,6 +136,7 @@ Un plugin premium de WordPress que funciona como un panel avanzado de curación 
 - **Importación de Imágenes Flexible**: Selectores en cada tarjeta para activar o desactivar la imagen de portada (se descarga como Imagen Destacada, renombrándose con el slug del título) y bloques de galería Gutenberg.
 - **Planificación**: Selector de fecha y hora directamente en las tarjetas de curación para programar publicaciones a futuro.
 - **Endpoint de CRON Externo**: Endpoint seguro protegido por un token secreto para automatizar la importación, reescritura, traducción y publicación de contenidos.
+- **Historial de Publicaciones y Exportación CSV**: Panel de historial dedicado que enumera las publicaciones procesadas e ignoradas con distintivos de estado dinámicos (Publicado, Borrador, Programado, Ignorado, Procesado), enlaces directos de visualización/edición de WordPress, eliminación permanente de registros de la base de datos con advertencias de confirmación (ofreciendo enviar también la entrada de WP a la papelera) y capacidades de exportación a CSV.
 
 ## Requisitos
 
@@ -233,6 +235,11 @@ wp-content-curator/
 ---
 
 ## Changelog
+
+### 1.6.6
+- **History Record Deletion**: Added a permanent delete action button to each row in the History list table. Clicking the button triggers a confirmation dialog box warning the user that all stored database record data for the post will be permanently deleted. If confirmed, the row is removed from the database and animated out of the view dynamically via AJAX.
+- **Translation Dictionaries**: Registered translation strings in English, Spanish, and French for the deletion actions and notices.
+- **Version Bump**: Bumped plugin version to 1.6.6.
 
 ### 1.6.5
 - **Specific Publication Status**: Updated the History list table and CSV export to display specific publication statuses (Published, Draft, Scheduled, Ignored, or Processed) based on database status and linked WordPress post status.

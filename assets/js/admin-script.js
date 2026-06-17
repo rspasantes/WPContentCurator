@@ -1015,6 +1015,68 @@
     });
 
     // =========================================================================
+    // HISTORY PAGE: PERMANENT DELETE
+    // =========================================================================
+
+    $(document).on('click', '.cc-history-delete-btn', function (e) {
+        e.preventDefault();
+
+        var $btn     = $(this);
+        var postId   = $btn.data('post-id');
+        var $row     = $btn.closest('.cc-history-row');
+        var $status  = $('#cc-history-status');
+        var hasWpLink = $row.find('.cc-wp-post-link').length > 0;
+
+        if (!confirm(strings.history_delete_confirm || 'Are you sure you want to permanently delete this post and all its stored data from the history? This action cannot be undone.')) {
+            return;
+        }
+
+        var deleteWp = false;
+        if (hasWpLink) {
+            deleteWp = confirm(strings.history_delete_wp_confirm || 'This record is linked to a WordPress post/draft. Do you also want to move the WordPress entry to the Trash?');
+        }
+
+        $btn.prop('disabled', true).css('opacity', '0.6');
+
+        $.ajax({
+            url: ajaxUrl,
+            type: 'POST',
+            data: {
+                action:    'content_curator_history_delete',
+                nonce:     nonce,
+                post_id:   postId,
+                delete_wp: deleteWp ? 1 : 0
+            },
+            success: function (response) {
+                if (response.success) {
+                    // Animate row removal.
+                    $row.css({ 'transition': 'opacity 0.4s ease, transform 0.4s ease', 'opacity': '0', 'transform': 'scale(0.95)' });
+                    setTimeout(function () {
+                        $row.remove();
+                        $status.text(strings.history_delete_success || 'Post deleted successfully from history!')
+                               .removeClass('status-error status-loading')
+                               .addClass('status-success');
+                        // Fade status out after 4s
+                        setTimeout(function () {
+                            $status.text('').removeClass('status-success');
+                        }, 4000);
+                    }, 400);
+                } else {
+                    $btn.prop('disabled', false).css('opacity', '1');
+                    var msg = (response.data && response.data.message) ? response.data.message : (strings.history_delete_error || 'Failed to delete the post from history.');
+                    $status.text(msg).removeClass('status-loading status-success').addClass('status-error');
+                }
+            },
+            error: function () {
+                $btn.prop('disabled', false).css('opacity', '1');
+                $status.text(strings.history_delete_error || 'Failed to delete the post from history.')
+                       .removeClass('status-loading status-success')
+                       .addClass('status-error');
+            }
+        });
+    });
+
+    // =========================================================================
     // HISTORY PAGE: EXPORT TO CSV
     // =========================================================================
 

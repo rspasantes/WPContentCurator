@@ -176,6 +176,11 @@ class content_curator_Admin {
                 'history_requeue_confirm'  => 'Move this post back to the pending queue?',
                 'history_requeue_success'  => 'Post re-queued successfully!',
                 'history_requeue_error'    => 'Failed to re-queue the post.',
+                'history_delete'           => 'Delete',
+                'history_delete_confirm'   => 'Are you sure you want to permanently delete this post and all its stored data from the history? This action cannot be undone.',
+                'history_delete_wp_confirm'=> 'This record is linked to a WordPress post/draft. Do you also want to move the WordPress entry to the Trash?',
+                'history_delete_success'   => 'Post deleted successfully from history!',
+                'history_delete_error'     => 'Failed to delete the post from history.',
                 'exporting'                => 'Exporting...',
                 'modal_close'              => 'Close',
             ),
@@ -332,6 +337,11 @@ class content_curator_Admin {
                 'history_requeue_confirm'  => '¿Mover esta publicación de vuelta a la cola de pendientes?',
                 'history_requeue_success'  => '¡Publicación enviada de vuelta a la cola!',
                 'history_requeue_error'    => 'Error al devolver la publicación a la cola.',
+                'history_delete'           => 'Eliminar',
+                'history_delete_confirm'   => '¿Estás seguro de que deseas eliminar permanentemente esta publicación y todos sus datos almacenados del historial? Esta acción no se puede deshacer y borrará la información almacenada con respecto a esa publicación.',
+                'history_delete_wp_confirm'=> 'Esta publicación está vinculada a una entrada o borrador en WordPress. ¿Deseas enviar también la entrada de WordPress a la papelera?',
+                'history_delete_success'   => '¡Publicación eliminada correctamente del historial!',
+                'history_delete_error'     => 'Error al eliminar la publicación del historial.',
                 'exporting'                => 'Exportando...',
                 'modal_close'              => 'Cerrar',
             ),
@@ -488,6 +498,11 @@ class content_curator_Admin {
                 'history_requeue_confirm'  => 'Remettre cette publication dans la file d\'attente ?',
                 'history_requeue_success'  => 'Publication remise en file avec succès !',
                 'history_requeue_error'    => 'Échec de la remise en file de la publication.',
+                'history_delete'           => 'Supprimer',
+                'history_delete_confirm'   => 'Voulez-vous vraiment supprimer définitivement cette publication et toutes ses données stockées de l\'historique ? Cette action est irréversible et effacera les informations stockées concernant cette publication.',
+                'history_delete_wp_confirm'=> 'Cette publication est liée à un article ou brouillon WordPress. Voulez-vous également envoyer l\'article WordPress à la corbeille ?',
+                'history_delete_success'   => 'Publication supprimée avec succès de l\'historique !',
+                'history_delete_error'     => 'Échec de la suppression de la publication de l\'historique.',
                 'exporting'                => 'Exportation...',
                 'modal_close'              => 'Fermer',
             ),
@@ -544,6 +559,7 @@ class content_curator_Admin {
         // History AJAX handlers.
         add_action( 'wp_ajax_content_curator_export_history', array( $this, 'ajax_export_history' ) );
         add_action( 'wp_ajax_content_curator_history_update_status', array( $this, 'ajax_history_update_status' ) );
+        add_action( 'wp_ajax_content_curator_history_delete', array( $this, 'ajax_history_delete' ) );
     }
 
     // =========================================================================
@@ -1421,6 +1437,11 @@ class content_curator_Admin {
                     'history_requeue_confirm' => $d['history_requeue_confirm'],
                     'history_requeue_success' => $d['history_requeue_success'],
                     'history_requeue_error'   => $d['history_requeue_error'],
+                    'history_delete'          => $d['history_delete'],
+                    'history_delete_confirm'  => $d['history_delete_confirm'],
+                    'history_delete_wp_confirm' => $d['history_delete_wp_confirm'],
+                    'history_delete_success'  => $d['history_delete_success'],
+                    'history_delete_error'    => $d['history_delete_error'],
                     'exporting'               => $d['exporting'],
                     'modal_close'             => $d['modal_close'],
                 ),
@@ -2855,7 +2876,7 @@ class content_curator_Admin {
                                         </a>
                                         <?php if ( ! empty( $data['wp_url'] ) ) : ?>
                                             <span class="cc-url-separator">|</span>
-                                            <a href="<?php echo esc_url( $data['wp_url'] ); ?>" target="_blank" title="<?php esc_attr_e( 'Ver/Editar en WordPress', 'wp-content-curator' ); ?>">
+                                            <a href="<?php echo esc_url( $data['wp_url'] ); ?>" target="_blank" class="cc-wp-post-link" title="<?php esc_attr_e( 'Ver/Editar en WordPress', 'wp-content-curator' ); ?>">
                                                 <span class="dashicons dashicons-wordpress" style="font-size: 14px; width: 14px; height: 14px; vertical-align: middle; color: #21759b;"></span>
                                                 WP
                                             </a>
@@ -2895,6 +2916,13 @@ class content_curator_Admin {
                                             title="<?php echo esc_attr( $d['history_mark_pending'] ); ?>">
                                             <span class="dashicons dashicons-undo" style="font-size: 13px; width: 13px; height: 13px; vertical-align: middle;"></span>
                                             <?php echo esc_html( $d['history_mark_pending'] ); ?>
+                                        </button>
+                                        <button type="button"
+                                            class="button button-small cc-history-delete-btn"
+                                            data-post-id="<?php echo absint( $post->id ); ?>"
+                                            title="<?php echo esc_attr( $d['history_delete'] ); ?>">
+                                            <span class="dashicons dashicons-trash" style="font-size: 13px; width: 13px; height: 13px; vertical-align: middle;"></span>
+                                            <?php echo esc_html( $d['history_delete'] ); ?>
                                         </button>
                                     </td>
                                 </tr>
@@ -3086,6 +3114,65 @@ class content_curator_Admin {
 
         wp_send_json_success( array(
             'message' => __( 'Status updated successfully.', 'wp-content-curator' ),
+            'post_id' => $post_id,
+        ) );
+    }
+
+    /**
+     * AJAX: Permanently delete a history record.
+     *
+     * Expected POST params: post_id, nonce.
+     *
+     * @return void Sends JSON response and dies.
+     */
+    public function ajax_history_delete() {
+        if ( ! check_ajax_referer( 'content_curator_nonce', 'nonce', false ) ) {
+            wp_send_json_error( array( 'message' => __( 'Security check failed.', 'wp-content-curator' ) ), 403 );
+        }
+
+        if ( ! current_user_can( 'edit_posts' ) ) {
+            wp_send_json_error( array( 'message' => __( 'Insufficient permissions.', 'wp-content-curator' ) ), 403 );
+        }
+
+        $post_id   = isset( $_POST['post_id'] ) ? absint( $_POST['post_id'] ) : 0;
+        $delete_wp = isset( $_POST['delete_wp'] ) ? absint( $_POST['delete_wp'] ) : 0;
+
+        if ( ! $post_id ) {
+            wp_send_json_error( array( 'message' => __( 'Invalid post ID.', 'wp-content-curator' ) ) );
+        }
+
+        // Fetch database record to retrieve fb_post_id
+        $db_post = Content_Curator_DB::get_post_by_id( $post_id );
+        if ( ! $db_post ) {
+            wp_send_json_error( array( 'message' => __( 'Record not found in history.', 'wp-content-curator' ) ) );
+        }
+
+        // Deleting associated WordPress posts/drafts (and translations) if requested
+        if ( $delete_wp && ! empty( $db_post->fb_post_id ) ) {
+            $query = new WP_Query( array(
+                'meta_key'       => '_fb_post_id',
+                'meta_value'     => $db_post->fb_post_id,
+                'post_type'      => 'any',
+                'post_status'    => 'any',
+                'posts_per_page' => -1,
+                'fields'         => 'ids',
+            ) );
+
+            if ( ! empty( $query->posts ) ) {
+                foreach ( $query->posts as $wp_post_id ) {
+                    wp_delete_post( $wp_post_id, false ); // Move to Trash for safety
+                }
+            }
+        }
+
+        $deleted = Content_Curator_DB::delete_post( $post_id );
+
+        if ( ! $deleted ) {
+            wp_send_json_error( array( 'message' => __( 'Failed to delete post from history.', 'wp-content-curator' ) ) );
+        }
+
+        wp_send_json_success( array(
+            'message' => __( 'Post deleted successfully.', 'wp-content-curator' ),
             'post_id' => $post_id,
         ) );
     }

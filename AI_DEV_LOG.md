@@ -1,5 +1,22 @@
 # AI Development Log - WP Content Curator
 
+## 2026-06-17 - 18:35 - Added Permanent Deletion from History and Bumped to 1.6.6
+
+### Summary of Changes
+- **includes/class-content-curator-admin.php**:
+  - Registered translation strings in English, Spanish, and French for the new history delete action and confirmation dialog notices (`history_delete`, `history_delete_confirm`, `history_delete_success`, and `history_delete_error`).
+  - Added new AJAX handler `wp_ajax_content_curator_history_delete` and the corresponding `ajax_history_delete()` method that calls `Content_Curator_DB::delete_post()` to permanently delete a post by ID.
+  - Localized the new history delete string variables to be passed to javascript.
+  - Appended the Delete button markup inside the Actions column (`col-actions`) in `render_history_page()`.
+- **assets/js/admin-script.js**:
+  - Implemented the jQuery AJAX click event handler for `.cc-history-delete-btn` which shows a confirmation popup to prevent accidental deletion, performs the AJAX request, and scales/removes the deleted row with animation.
+- **assets/css/admin-style.css**:
+  - Added CSS rule definitions for `.cc-history-delete-btn` and its hover state (red border, red hover highlight) matching the general dashboard style guide.
+- **wp-content-curator.php**:
+  - Bumped version to `1.6.6`.
+- **README.md**:
+  - Added changelog entry for version `1.6.6`.
+
 ## 2026-06-17 - 18:15 - Detailed Publication Status, WordPress edit/view links and Bumped to 1.6.5
 
 ### Summary of Changes

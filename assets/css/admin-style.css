@@ -1397,6 +1397,31 @@
     color: var(--cc-primary) !important;
 }
 
+/* Delete button */
+.cc-history-delete-btn {
+    display: inline-flex !important;
+    align-items: center;
+    gap: 4px;
+    font-size: 12px !important;
+    font-weight: 600 !important;
+    padding: 4px 10px !important;
+    height: 28px !important;
+    line-height: 1 !important;
+    background: var(--cc-bg-surface) !important;
+    border: 1px solid var(--cc-border) !important;
+    color: var(--cc-text-primary) !important;
+    border-radius: var(--cc-radius-sm) !important;
+    cursor: pointer;
+    transition: all var(--cc-transition);
+}
+
+.cc-history-delete-btn:hover {
+    background: rgba(198, 40, 40, 0.08) !important;
+    border-color: var(--cc-danger) !important;
+    color: var(--cc-danger) !important;
+}
+
+
 /* Export button */
 .cc-export-btn {
     background: linear-gradient(135deg, #217346 0%, #1a5c38 100%) !important;
