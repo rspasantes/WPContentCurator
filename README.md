@@ -236,6 +236,10 @@ wp-content-curator/
 
 ## Changelog
 
+### 1.6.9
+- **Dashboard View Mode Selector**: Integrated a premium view mode toggle control in the curation dashboard's actions bar. Users can now choose to display pending posts in a grid of 3, 4, or 5 columns, or in a detailed horizontal List layout. Active preferences are automatically persisted via `localStorage`.
+- **Version Bump**: Bumped plugin version to 1.6.9.
+
 ### 1.6.8
 - **Full Width Container**: Removed the 1400px maximum width restriction on the main plugin container `.content-curator-wrap`. This allows the curation dashboard and history pages to naturally expand and fill 100% of the available screen width, which is especially useful on wide and ultrawide monitors to display more details directly.
 - **Version Bump**: Bumped plugin version to 1.6.8.

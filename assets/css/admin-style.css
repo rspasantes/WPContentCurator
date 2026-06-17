@@ -348,13 +348,117 @@
    ========================================================================== */
 .content-curator-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     gap: var(--cc-gap);
 }
 
-@media (max-width: 1200px) {
-    .content-curator-grid {
-        grid-template-columns: 1fr;
+/* View Modes Grid Configuration */
+.content-curator-grid.cc-view-grid-3 {
+    grid-template-columns: repeat(3, 1fr);
+}
+
+.content-curator-grid.cc-view-grid-4 {
+    grid-template-columns: repeat(4, 1fr);
+}
+
+.content-curator-grid.cc-view-grid-5 {
+    grid-template-columns: repeat(5, 1fr);
+}
+
+.content-curator-grid.cc-view-list {
+    grid-template-columns: 1fr;
+}
+
+/* List View Mode Horizontal Layout */
+.content-curator-grid.cc-view-list .card-body {
+    display: flex;
+    gap: 24px;
+}
+
+.content-curator-grid.cc-view-list .card-image-gallery-wrap {
+    width: 320px;
+    min-width: 320px;
+    flex-shrink: 0;
+    margin-bottom: 0;
+}
+
+.content-curator-grid.cc-view-list .card-content {
+    flex-grow: 1;
+}
+
+/* View Mode Selector Button Styling */
+.cc-view-mode-selector {
+    display: inline-flex;
+    align-items: center;
+    background: var(--cc-bg-muted);
+    padding: 2px;
+    border-radius: var(--cc-radius-sm);
+    border: 1px solid var(--cc-border);
+    margin-left: 15px;
+}
+
+.cc-view-btn {
+    border: none !important;
+    background: none !important;
+    padding: 4px 10px !important;
+    font-size: 11px !important;
+    font-weight: 700 !important;
+    color: var(--cc-text-secondary) !important;
+    cursor: pointer;
+    border-radius: 3px;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    height: 24px !important;
+    line-height: 1 !important;
+    transition: all var(--cc-transition);
+}
+
+.cc-view-btn .dashicons {
+    font-size: 14px;
+    width: 14px;
+    height: 14px;
+    line-height: 14px;
+}
+
+.cc-view-btn:hover {
+    color: var(--cc-primary) !important;
+}
+
+.cc-view-btn.active {
+    background: var(--cc-bg-card) !important;
+    color: var(--cc-primary) !important;
+    box-shadow: var(--cc-shadow);
+}
+
+/* Responsive Overrides */
+@media (max-width: 1400px) {
+    .content-curator-grid.cc-view-grid-5 {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+@media (max-width: 1100px) {
+    .content-curator-grid.cc-view-grid-5,
+    .content-curator-grid.cc-view-grid-4,
+    .content-curator-grid.cc-view-grid-3 {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 782px) {
+    .content-curator-grid.cc-view-grid-5,
+    .content-curator-grid.cc-view-grid-4,
+    .content-curator-grid.cc-view-grid-3,
+    .content-curator-grid.cc-view-list {
+        grid-template-columns: 1fr !important;
+    }
+    .content-curator-grid.cc-view-list .card-body {
+        flex-direction: column !important;
+    }
+    .content-curator-grid.cc-view-list .card-image-gallery-wrap {
+        width: 100% !important;
+        min-width: 100% !important;
     }
 }
 

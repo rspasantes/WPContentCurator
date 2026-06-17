@@ -1,5 +1,25 @@
 # AI Development Log - WP Content Curator
 
+## 2026-06-17 - 19:25 - Integrated Dashboard View Mode Selector (Grid 3/4/5 and List Views) and Bumped to 1.6.9
+
+### Summary of Changes
+- **includes/class-content-curator-admin.php**:
+  - Appended the `.cc-view-mode-selector` button HTML options (Grid 3, Grid 4, Grid 5, and List View) next to the pending count badge inside `.actions-bar-left`.
+  - Added default class `cc-view-grid-3` to the main `.content-curator-grid` container.
+- **assets/js/admin-script.js**:
+  - Implemented client-side `.cc-view-btn` click event listener to update active selectors, toggle the grid view layout classes, and persist selection preferences in browser `localStorage`.
+  - Added initialization logic on ready state to load and trigger the user's saved view mode preference.
+- **assets/css/admin-style.css**:
+  - Adjusted default grid template columns to 3-columns (`grid-template-columns: repeat(3, 1fr)`).
+  - Defined view mode configurations for `.cc-view-grid-3`, `.cc-view-grid-4`, `.cc-view-grid-5`, and `.cc-view-list`.
+  - Implemented horizontal flex layouts for cards in List mode (`.cc-view-list .card-body`, `.cc-view-list .card-image-gallery-wrap`, and `.cc-view-list .card-content`).
+  - Added button styles and active highlight states for the selector buttons.
+  - Implemented clean responsive queries to adjust grids gracefully on narrow viewports.
+- **wp-content-curator.php**:
+  - Bumped version to `1.6.9`.
+- **README.md**:
+  - Added changelog entry for version `1.6.9`.
+
 ## 2026-06-17 - 19:15 - Removed Curation Wrap max-width to Support Full Screen and Bumped to 1.6.8
 
 ### Summary of Changes

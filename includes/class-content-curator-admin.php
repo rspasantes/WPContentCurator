@@ -1646,6 +1646,20 @@ class content_curator_Admin {
                         printf( '<strong>%d</strong>&nbsp;%s', $total_posts, esc_html( $count_string ) );
                         ?>
                     </span>
+                    <div class="cc-view-mode-selector">
+                        <button type="button" class="cc-view-btn active" data-view="grid-3" title="<?php esc_attr_e( 'Grid 3 Columns', 'wp-content-curator' ); ?>">
+                            <span class="dashicons dashicons-grid-view"></span> 3 Col
+                        </button>
+                        <button type="button" class="cc-view-btn" data-view="grid-4" title="<?php esc_attr_e( 'Grid 4 Columns', 'wp-content-curator' ); ?>">
+                            <span class="dashicons dashicons-grid-view"></span> 4 Col
+                        </button>
+                        <button type="button" class="cc-view-btn" data-view="grid-5" title="<?php esc_attr_e( 'Grid 5 Columns', 'wp-content-curator' ); ?>">
+                            <span class="dashicons dashicons-grid-view"></span> 5 Col
+                        </button>
+                        <button type="button" class="cc-view-btn" data-view="list" title="<?php esc_attr_e( 'List View', 'wp-content-curator' ); ?>">
+                            <span class="dashicons dashicons-list-view"></span> <?php esc_html_e( 'List', 'wp-content-curator' ); ?>
+                        </button>
+                    </div>
                 </div>
                 <div class="actions-bar-right">
                     <span id="content-curator-fetch-status" class="content-curator-inline-status"></span>
@@ -1726,7 +1740,7 @@ class content_curator_Admin {
                 </div>
             <?php else : ?>
                 <!-- Card Grid -->
-                <div class="content-curator-grid">
+                <div class="content-curator-grid cc-view-grid-3">
                     <?php 
                     $agenda_defaults = get_option( 'content_curator_agenda_defaults', array() );
                     foreach ( $posts as $post ) : 

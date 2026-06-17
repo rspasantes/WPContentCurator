@@ -1129,5 +1129,36 @@
         }, 2500);
     });
 
+    // =========================================================================
+    // EVENT: VIEW MODE SELECTOR (DASHBOARD GRID/LIST VIEWS)
+    // =========================================================================
+    $(document).on('click', '.cc-view-btn', function (e) {
+        e.preventDefault();
+        var $btn = $(this);
+        var viewMode = $btn.data('view');
+
+        $('.cc-view-btn').removeClass('active');
+        $btn.addClass('active');
+
+        var $grid = $('.content-curator-grid');
+        if ($grid.length) {
+            $grid.removeClass('cc-view-grid-3 cc-view-grid-4 cc-view-grid-5 cc-view-list')
+                 .addClass('cc-view-' + viewMode);
+        }
+
+        localStorage.setItem('cc_dashboard_view_mode', viewMode);
+    });
+
+    // Initialize View Mode on Load
+    $(function () {
+        var savedViewMode = localStorage.getItem('cc_dashboard_view_mode') || 'grid-3';
+        var $targetBtn = $('.cc-view-btn[data-view="' + savedViewMode + '"]');
+        if ($targetBtn.length) {
+            $targetBtn.trigger('click');
+        } else {
+            $('.cc-view-btn[data-view="grid-3"]').trigger('click');
+        }
+    });
+
 })(jQuery);
 
