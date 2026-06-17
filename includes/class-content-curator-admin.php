@@ -149,6 +149,30 @@ class content_curator_Admin {
                 'fetching_page_x_of_y'  => 'Fetching page %1$d of %2$d (%3$s)...',
                 'fetch_completed_summary' => 'Fetch completed: %1$d new posts imported across %2$d pages.',
                 'no_pages_configured'   => 'No pages configured in settings.',
+                // History section
+                'tab_history'              => 'History',
+                'history_title'            => 'Publication History',
+                'history_desc'             => 'Browse all processed and ignored posts from the curation queue.',
+                'status_processed'         => 'Published/Draft',
+                'status_ignored'           => 'Ignored',
+                'status_all_history'       => 'All Statuses',
+                'export_excel'             => 'Export to CSV',
+                'no_history'               => 'No history records found',
+                'no_history_desc'          => 'Processed and ignored posts will appear here.',
+                'col_id'                   => 'ID',
+                'col_page'                 => 'Page',
+                'col_preview'              => 'Original Text',
+                'col_status'               => 'Status',
+                'col_fetched'              => 'Fetched At',
+                'col_fb_date'              => 'FB Date',
+                'col_actions'              => 'Actions',
+                'history_mark_pending'     => 'Re-queue',
+                'history_view_text'        => 'View Text',
+                'history_requeue_confirm'  => 'Move this post back to the pending queue?',
+                'history_requeue_success'  => 'Post re-queued successfully!',
+                'history_requeue_error'    => 'Failed to re-queue the post.',
+                'exporting'                => 'Exporting...',
+                'modal_close'              => 'Close',
             ),
             'es' => array(
                 'dashboard_title'      => 'Panel de Curación de Contenidos',
@@ -276,6 +300,30 @@ class content_curator_Admin {
                 'fetching_page_x_of_y'  => 'Escaneando página %1$d de %2$d (%3$s)...',
                 'fetch_completed_summary' => 'Escaneo completado: %1$d nuevas publicaciones importadas en %2$d páginas.',
                 'no_pages_configured'   => 'No hay páginas configuradas en los ajustes.',
+                // Sección historial
+                'tab_history'              => 'Historial',
+                'history_title'            => 'Historial de Publicaciones',
+                'history_desc'             => 'Consulta todas las publicaciones procesadas e ignoradas de la cola de curación.',
+                'status_processed'         => 'Publicado/Borrador',
+                'status_ignored'           => 'Ignorado',
+                'status_all_history'       => 'Todos los estados',
+                'export_excel'             => 'Exportar a CSV',
+                'no_history'               => 'No se encontraron registros en el historial',
+                'no_history_desc'          => 'Aquí aparecerán las publicaciones procesadas e ignoradas.',
+                'col_id'                   => 'ID',
+                'col_page'                 => 'Página',
+                'col_preview'              => 'Texto Original',
+                'col_status'               => 'Estado',
+                'col_fetched'              => 'Importado',
+                'col_fb_date'              => 'Fecha FB',
+                'col_actions'              => 'Acciones',
+                'history_mark_pending'     => 'Volver a cola',
+                'history_view_text'        => 'Ver Texto',
+                'history_requeue_confirm'  => '¿Mover esta publicación de vuelta a la cola de pendientes?',
+                'history_requeue_success'  => '¡Publicación enviada de vuelta a la cola!',
+                'history_requeue_error'    => 'Error al devolver la publicación a la cola.',
+                'exporting'                => 'Exportando...',
+                'modal_close'              => 'Cerrar',
             ),
             'fr' => array(
                 'dashboard_title'      => 'Tableau de Curation de Contenu',
@@ -403,6 +451,30 @@ class content_curator_Admin {
                 'fetching_page_x_of_y'  => 'Récupération de la page %1$d sur %2$d (%3$s)...',
                 'fetch_completed_summary' => 'Récupération terminée : %1$d nouvelles publications importées sur %2$d pages.',
                 'no_pages_configured'   => 'Aucune page configurée dans les paramètres.',
+                // Section historique
+                'tab_history'              => 'Historique',
+                'history_title'            => 'Historique des Publications',
+                'history_desc'             => 'Parcourez toutes les publications traitées et ignorées de la file de curation.',
+                'status_processed'         => 'Publié/Brouillon',
+                'status_ignored'           => 'Ignoré',
+                'status_all_history'       => 'Tous les statuts',
+                'export_excel'             => 'Exporter en CSV',
+                'no_history'               => 'Aucun enregistrement trouvé dans l\'historique',
+                'no_history_desc'          => 'Les publications traitées et ignorées apparaîtront ici.',
+                'col_id'                   => 'ID',
+                'col_page'                 => 'Page',
+                'col_preview'              => 'Texte Original',
+                'col_status'               => 'Statut',
+                'col_fetched'              => 'Importé le',
+                'col_fb_date'              => 'Date FB',
+                'col_actions'              => 'Actions',
+                'history_mark_pending'     => 'Remettre en file',
+                'history_view_text'        => 'Voir le Texte',
+                'history_requeue_confirm'  => 'Remettre cette publication dans la file d\'attente ?',
+                'history_requeue_success'  => 'Publication remise en file avec succès !',
+                'history_requeue_error'    => 'Échec de la remise en file de la publication.',
+                'exporting'                => 'Exportation...',
+                'modal_close'              => 'Fermer',
             ),
         );
         $lang = strtolower( $lang );
@@ -454,6 +526,9 @@ class content_curator_Admin {
         add_action( 'wp_ajax_content_curator_test_ai', array( $this, 'ajax_test_ai' ) );
         add_action( 'wp_ajax_content_curator_get_pages_to_fetch', array( $this, 'ajax_get_pages_to_fetch' ) );
         add_action( 'wp_ajax_content_curator_fetch_single_page', array( $this, 'ajax_fetch_single_page' ) );
+        // History AJAX handlers.
+        add_action( 'wp_ajax_content_curator_export_history', array( $this, 'ajax_export_history' ) );
+        add_action( 'wp_ajax_content_curator_history_update_status', array( $this, 'ajax_history_update_status' ) );
     }
 
     // =========================================================================
@@ -485,6 +560,16 @@ class content_curator_Admin {
             'edit_posts',
             'content-curator-dashboard',
             array( $this, 'render_dashboard_page' )
+        );
+
+        // Submenu: History.
+        add_submenu_page(
+            'content-curator-dashboard',
+            __( 'Publication History', 'wp-content-curator' ),
+            __( 'History', 'wp-content-curator' ),
+            'edit_posts',
+            'content-curator-history',
+            array( $this, 'render_history_page' )
         );
 
         // Submenu: Settings.
@@ -1257,6 +1342,7 @@ class content_curator_Admin {
         $plugin_pages = array(
             'toplevel_page_content-curator-dashboard',
             'content-curator_page_content-curator-settings',
+            'content-curator_page_content-curator-history',
         );
 
         if ( ! in_array( $hook_suffix, $plugin_pages, true ) ) {
@@ -1312,6 +1398,12 @@ class content_curator_Admin {
                     'fetching_page_x_of_y' => $d['fetching_page_x_of_y'],
                     'fetch_completed_summary' => $d['fetch_completed_summary'],
                     'no_pages_configured' => $d['no_pages_configured'],
+                    // History strings.
+                    'history_requeue_confirm' => $d['history_requeue_confirm'],
+                    'history_requeue_success' => $d['history_requeue_success'],
+                    'history_requeue_error'   => $d['history_requeue_error'],
+                    'exporting'               => $d['exporting'],
+                    'modal_close'             => $d['modal_close'],
                 ),
             )
         );
@@ -1667,13 +1759,15 @@ class content_curator_Admin {
                                 $images = array_filter( $images );
                                 ?>
                                 <?php if ( ! empty( $images ) ) : ?>
-                                    <div class="card-image-gallery-container">
-                                        <div class="card-image-gallery">
-                                            <?php foreach ( $images as $idx => $img_url ) : ?>
-                                                <div class="card-gallery-image <?php echo $idx === 0 ? 'active' : ''; ?>">
-                                                    <img src="<?php echo esc_url( $img_url ); ?>" alt="<?php echo esc_attr( $d['facebook_image'] ); ?>" loading="lazy" />
-                                                </div>
-                                            <?php endforeach; ?>
+                                    <div class="card-image-gallery-wrap">
+                                        <div class="card-image-gallery-container">
+                                            <div class="card-image-gallery">
+                                                <?php foreach ( $images as $idx => $img_url ) : ?>
+                                                    <div class="card-gallery-image <?php echo $idx === 0 ? 'active' : ''; ?>">
+                                                        <img src="<?php echo esc_url( $img_url ); ?>" alt="<?php echo esc_attr( $d['facebook_image'] ); ?>" loading="lazy" />
+                                                    </div>
+                                                <?php endforeach; ?>
+                                            </div>
                                         </div>
                                         <?php if ( count( $images ) > 1 ) : ?>
                                             <div class="gallery-controls">
@@ -1682,18 +1776,18 @@ class content_curator_Admin {
                                                 <button type="button" class="gallery-next" onclick="changeGalleryImage(this, 1);">&rsaquo;</button>
                                             </div>
                                         <?php endif; ?>
-                                    </div>
-                                    <div class="image-toggles" style="margin-top: 8px; display: flex; flex-direction: column; gap: 8px; padding: 10px; background: var(--cc-bg-surface); border-radius: var(--cc-radius-sm); border: 1px solid var(--cc-border); margin-bottom: 10px;">
-                                        <div class="cover-toggle" style="display: flex; align-items: center; gap: 8px;">
-                                            <input type="checkbox" id="cover-toggle-<?php echo esc_attr( $post->id ); ?>" class="include-cover-checkbox" checked="checked" value="1" />
-                                            <label for="cover-toggle-<?php echo esc_attr( $post->id ); ?>" style="font-size: 12px; font-weight: 600; color: var(--cc-text-secondary); cursor: pointer;"><?php echo esc_html( $d['include_cover_label'] ); ?></label>
-                                        </div>
-                                        <?php if ( count( $images ) > 1 ) : ?>
-                                            <div class="gallery-toggle" style="display: flex; align-items: center; gap: 8px;">
-                                                <input type="checkbox" id="gallery-toggle-<?php echo esc_attr( $post->id ); ?>" class="include-gallery-checkbox" checked="checked" value="1" />
-                                                <label for="gallery-toggle-<?php echo esc_attr( $post->id ); ?>" style="font-size: 12px; font-weight: 600; color: var(--cc-text-secondary); cursor: pointer;"><?php echo esc_html( $d['include_gallery_label'] ); ?></label>
+                                        <div class="image-toggles">
+                                            <div class="cover-toggle" style="display: flex; align-items: center; gap: 8px;">
+                                                <input type="checkbox" id="cover-toggle-<?php echo esc_attr( $post->id ); ?>" class="include-cover-checkbox" checked="checked" value="1" />
+                                                <label for="cover-toggle-<?php echo esc_attr( $post->id ); ?>" style="font-size: 12px; font-weight: 600; color: var(--cc-text-secondary); cursor: pointer;"><?php echo esc_html( $d['include_cover_label'] ); ?></label>
                                             </div>
-                                        <?php endif; ?>
+                                            <?php if ( count( $images ) > 1 ) : ?>
+                                                <div class="gallery-toggle" style="display: flex; align-items: center; gap: 8px;">
+                                                    <input type="checkbox" id="gallery-toggle-<?php echo esc_attr( $post->id ); ?>" class="include-gallery-checkbox" checked="checked" value="1" />
+                                                    <label for="gallery-toggle-<?php echo esc_attr( $post->id ); ?>" style="font-size: 12px; font-weight: 600; color: var(--cc-text-secondary); cursor: pointer;"><?php echo esc_html( $d['include_gallery_label'] ); ?></label>
+                                                </div>
+                                            <?php endif; ?>
+                                        </div>
                                     </div>
                                 <?php endif; ?>
 
@@ -2560,8 +2654,368 @@ class content_curator_Admin {
     }
 
     // =========================================================================
+    // HISTORY PAGE RENDER
+    // =========================================================================
+
+    /**
+     * Render the Publication History page.
+     *
+     * @return void
+     */
+    public function render_history_page() {
+        if ( ! current_user_can( 'edit_posts' ) ) {
+            wp_die( esc_html__( 'You do not have sufficient permissions to access this page.', 'wp-content-curator' ) );
+        }
+
+        $plugin_lang = get_option( 'content_curator_plugin_language', 'en' );
+        $d           = self::get_dictionary( $plugin_lang );
+
+        // Filters from query params.
+        $status_filter = isset( $_GET['status'] ) ? sanitize_text_field( wp_unslash( $_GET['status'] ) ) : 'all';
+        $allowed_statuses = array( 'all', 'processed', 'ignored' );
+        if ( ! in_array( $status_filter, $allowed_statuses, true ) ) {
+            $status_filter = 'all';
+        }
+
+        $site_filter = isset( $_GET['site'] ) ? sanitize_text_field( wp_unslash( $_GET['site'] ) ) : 'all';
+        $start_date  = isset( $_GET['start_date'] ) ? sanitize_text_field( wp_unslash( $_GET['start_date'] ) ) : '';
+        $end_date    = isset( $_GET['end_date'] ) ? sanitize_text_field( wp_unslash( $_GET['end_date'] ) ) : '';
+
+        // Pagination.
+        $posts_per_page = 20;
+        $paged          = isset( $_GET['paged'] ) ? max( 1, absint( $_GET['paged'] ) ) : 1;
+        $offset         = ( $paged - 1 ) * $posts_per_page;
+
+        // Data fetch.
+        $sites       = Content_Curator_DB::get_unique_sites();
+        $total_posts = Content_Curator_DB::get_history_posts_count( $status_filter, $site_filter, $start_date, $end_date );
+        $posts       = Content_Curator_DB::get_history_posts( $status_filter, $site_filter, $posts_per_page, $offset, $start_date, $end_date );
+
+        $filters_active = ( 'all' !== $status_filter || 'all' !== $site_filter || ! empty( $start_date ) || ! empty( $end_date ) );
+
+        $base_url = admin_url( 'admin.php?page=content-curator-history' );
+        ?>
+        <div class="wrap content-curator-wrap">
+
+            <!-- Page Banner -->
+            <div class="content-curator-dashboard-banner">
+                <div class="banner-overlay"></div>
+                <div class="banner-content">
+                    <img src="<?php echo esc_url( WP_CONTENT_CURATOR_URL . 'assets/images/icon.png' ); ?>" alt="" class="content-curator-banner-icon" />
+                    <h1><?php echo esc_html( $d['history_title'] ); ?></h1>
+                    <p class="banner-desc"><?php echo esc_html( $d['history_desc'] ); ?></p>
+                </div>
+            </div>
+
+            <!-- Actions Bar -->
+            <div class="content-curator-actions-bar">
+                <div class="actions-bar-left">
+                    <span class="content-curator-count-badge">
+                        <span class="dashicons dashicons-backup" style="margin-right: 6px; font-size: 16px; width: 16px; height: 16px; vertical-align: middle; color: var(--cc-primary);"></span>
+                        <strong><?php echo absint( $total_posts ); ?></strong>&nbsp;<?php esc_html_e( 'records', 'wp-content-curator' ); ?>
+                    </span>
+                </div>
+                <div class="actions-bar-right">
+                    <span id="cc-history-status" class="content-curator-inline-status"></span>
+                    <?php if ( $total_posts > 0 ) : ?>
+                        <button type="button"
+                            id="cc-history-export-btn"
+                            class="button cc-export-btn">
+                            <span class="dashicons dashicons-download" style="vertical-align: middle;"></span>
+                            <?php echo esc_html( $d['export_excel'] ); ?>
+                        </button>
+                    <?php endif; ?>
+                </div>
+            </div>
+
+            <!-- Filters Bar -->
+            <form method="get" action="<?php echo esc_url( admin_url( 'admin.php' ) ); ?>" class="content-curator-toolbar-form">
+                <input type="hidden" name="page" value="content-curator-history" />
+
+                <div class="content-curator-filters-bar">
+                    <div class="filters-bar-title">
+                        <span class="dashicons dashicons-filter" style="font-size: 16px; width: 16px; height: 16px; color: var(--cc-text-secondary); vertical-align: middle; margin-right: 4px;"></span>
+                        <strong><?php esc_html_e( 'Filters', 'wp-content-curator' ); ?></strong>
+                    </div>
+
+                    <div class="toolbar-item">
+                        <label for="cc-history-status-filter"><?php echo esc_html( $d['col_status'] ); ?></label>
+                        <select id="cc-history-status-filter" name="status" onchange="this.form.submit();">
+                            <option value="all" <?php selected( $status_filter, 'all' ); ?>><?php echo esc_html( $d['status_all_history'] ); ?></option>
+                            <option value="processed" <?php selected( $status_filter, 'processed' ); ?>><?php echo esc_html( $d['status_processed'] ); ?></option>
+                            <option value="ignored" <?php selected( $status_filter, 'ignored' ); ?>><?php echo esc_html( $d['status_ignored'] ); ?></option>
+                        </select>
+                    </div>
+
+                    <div class="toolbar-item">
+                        <label for="cc-history-site-filter"><?php echo esc_html( $d['site'] ); ?></label>
+                        <select id="cc-history-site-filter" name="site" onchange="this.form.submit();">
+                            <option value="all" <?php selected( $site_filter, 'all' ); ?>><?php echo esc_html( $d['todos'] ); ?></option>
+                            <?php foreach ( $sites as $site_name ) : ?>
+                                <option value="<?php echo esc_attr( $site_name ); ?>" <?php selected( $site_filter, $site_name ); ?>><?php echo esc_html( $site_name ); ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+
+                    <div class="toolbar-item">
+                        <label for="cc-history-start-date"><?php echo esc_html( $d['from'] ); ?></label>
+                        <input type="date" id="cc-history-start-date" name="start_date" value="<?php echo esc_attr( $start_date ); ?>" onchange="this.form.submit();" />
+                    </div>
+
+                    <div class="toolbar-item">
+                        <label for="cc-history-end-date"><?php echo esc_html( $d['to'] ); ?></label>
+                        <input type="date" id="cc-history-end-date" name="end_date" value="<?php echo esc_attr( $end_date ); ?>" onchange="this.form.submit();" />
+                    </div>
+
+                    <?php if ( $filters_active ) : ?>
+                        <a href="<?php echo esc_url( $base_url ); ?>" class="button button-secondary clear-filters-btn" style="margin-left: 10px;">
+                            <?php echo esc_html( $d['clear_filters'] ); ?>
+                        </a>
+                    <?php endif; ?>
+                </div>
+            </form>
+
+            <!-- Notification area -->
+            <div id="cc-history-notices" class="content-curator-notices" style="display: none;"></div>
+
+            <?php if ( empty( $posts ) ) : ?>
+                <div class="content-curator-empty">
+                    <span class="dashicons dashicons-backup" style="font-size: 48px; width: 48px; height: 48px; color: #c3c4c7;"></span>
+                    <h2><?php echo esc_html( $d['no_history'] ); ?></h2>
+                    <p><?php echo esc_html( $d['no_history_desc'] ); ?></p>
+                </div>
+            <?php else : ?>
+                <!-- History Table -->
+                <div class="cc-history-table-wrap">
+                    <table class="wp-list-table widefat fixed striped cc-history-table">
+                        <thead>
+                            <tr>
+                                <th class="col-id"><?php echo esc_html( $d['col_id'] ); ?></th>
+                                <th class="col-page"><?php echo esc_html( $d['col_page'] ); ?></th>
+                                <th class="col-preview"><?php echo esc_html( $d['col_preview'] ); ?></th>
+                                <th class="col-status"><?php echo esc_html( $d['col_status'] ); ?></th>
+                                <th class="col-fb-date"><?php echo esc_html( $d['col_fb_date'] ); ?></th>
+                                <th class="col-fetched"><?php echo esc_html( $d['col_fetched'] ); ?></th>
+                                <th class="col-actions"><?php echo esc_html( $d['col_actions'] ); ?></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php foreach ( $posts as $post ) :
+                                $preview_text = mb_strimwidth( $post->original_text, 0, 140, '…' );
+                                $status_class = 'processed' === $post->status ? 'cc-badge-processed' : 'cc-badge-ignored';
+                                $status_label = 'processed' === $post->status ? $d['status_processed'] : $d['status_ignored'];
+                            ?>
+                                <tr class="cc-history-row" id="cc-history-row-<?php echo absint( $post->id ); ?>" data-post-id="<?php echo absint( $post->id ); ?>">
+                                    <td class="col-id"><?php echo absint( $post->id ); ?></td>
+                                    <td class="col-page">
+                                        <span class="dashicons dashicons-facebook" style="font-size: 13px; width: 13px; height: 13px; vertical-align: middle; color: #1877f2; margin-right: 4px;"></span>
+                                        <?php echo esc_html( $post->page_name ); ?>
+                                    </td>
+                                    <td class="col-preview">
+                                        <div class="cc-history-preview-cell">
+                                            <span class="cc-preview-short"><?php echo esc_html( $preview_text ); ?></span>
+                                            <?php if ( mb_strlen( $post->original_text ) > 140 ) : ?>
+                                                <button type="button"
+                                                    class="button-link cc-preview-expand-btn"
+                                                    data-full-text="<?php echo esc_attr( $post->original_text ); ?>"
+                                                    data-page="<?php echo esc_attr( $post->page_name ); ?>"
+                                                    title="<?php echo esc_attr( $d['history_view_text'] ); ?>">
+                                                    <span class="dashicons dashicons-visibility" style="font-size: 14px; width: 14px; height: 14px; vertical-align: middle;"></span>
+                                                </button>
+                                            <?php endif; ?>
+                                        </div>
+                                    </td>
+                                    <td class="col-status">
+                                        <span class="cc-status-badge <?php echo esc_attr( $status_class ); ?>">
+                                            <?php echo esc_html( $status_label ); ?>
+                                        </span>
+                                    </td>
+                                    <td class="col-fb-date"><?php echo esc_html( wp_date( 'M j, Y', strtotime( $post->fb_created_at ) ) ); ?></td>
+                                    <td class="col-fetched"><?php echo esc_html( wp_date( 'M j, Y', strtotime( $post->fetched_at ) ) ); ?></td>
+                                    <td class="col-actions">
+                                        <button type="button"
+                                            class="button button-small cc-history-requeue-btn"
+                                            data-post-id="<?php echo absint( $post->id ); ?>"
+                                            title="<?php echo esc_attr( $d['history_mark_pending'] ); ?>">
+                                            <span class="dashicons dashicons-undo" style="font-size: 13px; width: 13px; height: 13px; vertical-align: middle;"></span>
+                                            <?php echo esc_html( $d['history_mark_pending'] ); ?>
+                                        </button>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Pagination -->
+                <?php
+                $total_pages = ceil( $total_posts / $posts_per_page );
+                if ( $total_pages > 1 ) :
+                    ?>
+                    <div class="content-curator-pagination">
+                        <?php
+                        echo paginate_links( array(
+                            'base'      => add_query_arg( 'paged', '%#%' ),
+                            'format'    => '',
+                            'prev_text' => $d['prev'],
+                            'next_text' => $d['next'],
+                            'total'     => $total_pages,
+                            'current'   => $paged,
+                        ) );
+                        ?>
+                    </div>
+                <?php endif; ?>
+            <?php endif; ?>
+        </div>
+
+        <!-- Full-text Preview Modal -->
+        <div id="cc-history-modal-overlay" class="cc-modal-overlay" style="display: none;">
+            <div class="cc-modal">
+                <div class="cc-modal-header">
+                    <span class="dashicons dashicons-facebook" style="color: #1877f2; margin-right: 6px; vertical-align: middle;"></span>
+                    <strong id="cc-modal-page-name"></strong>
+                    <button type="button" class="cc-modal-close" id="cc-modal-close-btn" title="<?php echo esc_attr( $d['modal_close'] ); ?>">
+                        <span class="dashicons dashicons-no-alt"></span>
+                    </button>
+                </div>
+                <div class="cc-modal-body">
+                    <pre id="cc-modal-text-content"></pre>
+                </div>
+            </div>
+        </div>
+        <?php
+    }
+
+    // =========================================================================
+    // HISTORY AJAX HANDLERS
+    // =========================================================================
+
+    /**
+     * AJAX: Export history posts as a CSV file.
+     *
+     * @return void Outputs CSV and dies.
+     */
+    public function ajax_export_history() {
+        if ( ! check_ajax_referer( 'content_curator_nonce', 'nonce', false ) ) {
+            wp_send_json_error( array( 'message' => __( 'Security check failed.', 'wp-content-curator' ) ), 403 );
+        }
+
+        if ( ! current_user_can( 'edit_posts' ) ) {
+            wp_send_json_error( array( 'message' => __( 'Insufficient permissions.', 'wp-content-curator' ) ), 403 );
+        }
+
+        $status     = isset( $_POST['status'] ) ? sanitize_text_field( wp_unslash( $_POST['status'] ) ) : 'all';
+        $site       = isset( $_POST['site'] ) ? sanitize_text_field( wp_unslash( $_POST['site'] ) ) : 'all';
+        $start_date = isset( $_POST['start_date'] ) ? sanitize_text_field( wp_unslash( $_POST['start_date'] ) ) : '';
+        $end_date   = isset( $_POST['end_date'] ) ? sanitize_text_field( wp_unslash( $_POST['end_date'] ) ) : '';
+
+        $posts = Content_Curator_DB::get_history_posts_for_export( $status, $site, $start_date, $end_date );
+
+        $filename = 'content-curator-history-' . gmdate( 'Y-m-d' ) . '.csv';
+
+        // Clean any output buffer.
+        if ( ob_get_level() ) {
+            ob_end_clean();
+        }
+
+        header( 'Content-Type: text/csv; charset=UTF-8' );
+        header( 'Content-Disposition: attachment; filename="' . $filename . '"' );
+        header( 'Pragma: no-cache' );
+        header( 'Cache-Control: must-revalidate, post-check=0, pre-check=0' );
+        header( 'Expires: 0' );
+
+        // UTF-8 BOM so Excel recognises encoding correctly.
+        echo "\xEF\xBB\xBF";
+
+        /**
+         * Use semicolon as separator — standard for Excel in Spanish/European locale.
+         * Sanitise each text field: strip HTML tags and collapse internal newlines/tabs
+         * to a single space so they don't create phantom rows inside Excel cells.
+         */
+        $sep = ';';
+
+        $clean = function ( $value ) {
+            // Strip HTML tags, collapse whitespace/newlines to a single space.
+            $value = wp_strip_all_tags( (string) $value );
+            $value = preg_replace( '/[\r\n\t]+/', ' ', $value );
+            $value = preg_replace( '/\s{2,}/', ' ', $value );
+            return trim( $value );
+        };
+
+        // Header row.
+        $headers = array( 'ID', 'FB Post ID', 'Facebook Page', 'Status', 'Original Text', 'FB Created At', 'Fetched At' );
+        echo implode( $sep, array_map( function( $h ) use ( $sep ) {
+            // Quote header if it contains the separator.
+            return strpos( $h, $sep ) !== false ? '"' . $h . '"' : $h;
+        }, $headers ) ) . "\r\n";
+
+        // Data rows.
+        foreach ( $posts as $post ) {
+            $row = array(
+                (int) $post->id,
+                $clean( $post->fb_post_id ),
+                $clean( $post->page_name ),
+                $clean( $post->status ),
+                $clean( $post->original_text ),
+                $clean( $post->fb_created_at ),
+                $clean( $post->fetched_at ),
+            );
+
+            $escaped = array();
+            foreach ( $row as $cell ) {
+                $cell = (string) $cell;
+                // If cell contains separator, double-quotes, or line breaks → wrap in double quotes.
+                if ( strpos( $cell, $sep ) !== false || strpos( $cell, '"' ) !== false ) {
+                    $cell = '"' . str_replace( '"', '""', $cell ) . '"';
+                }
+                $escaped[] = $cell;
+            }
+
+            echo implode( $sep, $escaped ) . "\r\n";
+        }
+
+        exit;
+    }
+
+    /**
+     * AJAX: Update the status of a history record (e.g. re-queue as pending).
+     *
+     * Expected POST params: post_id, new_status, nonce.
+     *
+     * @return void Sends JSON response and dies.
+     */
+    public function ajax_history_update_status() {
+        if ( ! check_ajax_referer( 'content_curator_nonce', 'nonce', false ) ) {
+            wp_send_json_error( array( 'message' => __( 'Security check failed.', 'wp-content-curator' ) ), 403 );
+        }
+
+        if ( ! current_user_can( 'edit_posts' ) ) {
+            wp_send_json_error( array( 'message' => __( 'Insufficient permissions.', 'wp-content-curator' ) ), 403 );
+        }
+
+        $post_id    = isset( $_POST['post_id'] ) ? absint( $_POST['post_id'] ) : 0;
+        $new_status = isset( $_POST['new_status'] ) ? sanitize_text_field( wp_unslash( $_POST['new_status'] ) ) : '';
+
+        if ( ! $post_id ) {
+            wp_send_json_error( array( 'message' => __( 'Invalid post ID.', 'wp-content-curator' ) ) );
+        }
+
+        $updated = Content_Curator_DB::update_status( $post_id, $new_status );
+
+        if ( ! $updated ) {
+            wp_send_json_error( array( 'message' => __( 'Failed to update post status.', 'wp-content-curator' ) ) );
+        }
+
+        wp_send_json_success( array(
+            'message' => __( 'Status updated successfully.', 'wp-content-curator' ),
+            'post_id' => $post_id,
+        ) );
+    }
+
+    // =========================================================================
     // IMAGE SIDELOADING
     // =========================================================================
+
 
     /**
      * Download a remote image and add it to the WordPress media library.

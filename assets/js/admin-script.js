@@ -744,9 +744,9 @@
      * @param {number}      direction -1 for previous, 1 for next.
      */
     window.changeGalleryImage = function (button, direction) {
-        var $container = $(button).closest('.card-image-gallery-container');
-        var $slides    = $container.find('.card-gallery-image');
-        var total      = $slides.length;
+        var $wrap   = $(button).closest('.card-image-gallery-wrap');
+        var $slides = $wrap.find('.card-gallery-image');
+        var total   = $slides.length;
         if (total <= 1) {
             return;
         }
@@ -761,7 +761,7 @@
         }
 
         $slides.removeClass('active').eq(newIndex).addClass('active');
-        $container.find('.gallery-counter').text((newIndex + 1) + ' / ' + total);
+        $wrap.find('.gallery-counter').text((newIndex + 1) + ' / ' + total);
     };
 
     // =========================================================================
@@ -886,4 +886,157 @@
         });
     });
 
+    // =========================================================================
+    // HISTORY PAGE: FULL-TEXT MODAL
+    // =========================================================================
+
+    /**
+     * Show the full-text modal for a history post.
+     */
+    function openHistoryModal(fullText, pageName) {
+        $('#cc-modal-page-name').text(pageName || '');
+        $('#cc-modal-text-content').text(fullText || '');
+        $('#cc-history-modal-overlay').fadeIn(200);
+        $('body').css('overflow', 'hidden');
+    }
+
+    /**
+     * Close the full-text modal.
+     */
+    function closeHistoryModal() {
+        $('#cc-history-modal-overlay').fadeOut(200);
+        $('body').css('overflow', '');
+    }
+
+    // Open modal on expand button click.
+    $(document).on('click', '.cc-preview-expand-btn', function () {
+        var fullText  = $(this).data('full-text');
+        var pageName  = $(this).data('page');
+        openHistoryModal(fullText, pageName);
+    });
+
+    // Close modal on close button or overlay click.
+    $(document).on('click', '#cc-modal-close-btn, #cc-history-modal-overlay', function (e) {
+        if (e.target === this || $(e.target).is('#cc-modal-close-btn') || $(e.target).closest('#cc-modal-close-btn').length) {
+            closeHistoryModal();
+        }
+    });
+
+    // Close modal on Escape key.
+    $(document).on('keydown', function (e) {
+        if (e.key === 'Escape' && $('#cc-history-modal-overlay').is(':visible')) {
+            closeHistoryModal();
+        }
+    });
+
+    // =========================================================================
+    // HISTORY PAGE: RE-QUEUE (MARK AS PENDING)
+    // =========================================================================
+
+    $(document).on('click', '.cc-history-requeue-btn', function (e) {
+        e.preventDefault();
+
+        var $btn     = $(this);
+        var postId   = $btn.data('post-id');
+        var $row     = $btn.closest('.cc-history-row');
+        var $status  = $('#cc-history-status');
+
+        if (!confirm(strings.history_requeue_confirm || 'Move this post back to the pending queue?')) {
+            return;
+        }
+
+        $btn.prop('disabled', true).css('opacity', '0.6');
+
+        $.ajax({
+            url: ajaxUrl,
+            type: 'POST',
+            data: {
+                action:     'content_curator_history_update_status',
+                nonce:      nonce,
+                post_id:    postId,
+                new_status: 'pending'
+            },
+            success: function (response) {
+                if (response.success) {
+                    // Animate row removal.
+                    $row.css({ 'transition': 'opacity 0.4s ease, transform 0.4s ease', 'opacity': '0', 'transform': 'translateX(-20px)' });
+                    setTimeout(function () {
+                        $row.remove();
+                        $status.text(strings.history_requeue_success || 'Post re-queued successfully!')
+                               .removeClass('status-error status-loading')
+                               .addClass('status-success');
+                        // Fade status out after 4s
+                        setTimeout(function () {
+                            $status.text('').removeClass('status-success');
+                        }, 4000);
+                    }, 400);
+                } else {
+                    $btn.prop('disabled', false).css('opacity', '1');
+                    var msg = (response.data && response.data.message) ? response.data.message : (strings.history_requeue_error || 'Failed to re-queue the post.');
+                    $status.text(msg).removeClass('status-loading status-success').addClass('status-error');
+                }
+            },
+            error: function () {
+                $btn.prop('disabled', false).css('opacity', '1');
+                $status.text(strings.history_requeue_error || 'Failed to re-queue the post.')
+                       .removeClass('status-loading status-success')
+                       .addClass('status-error');
+            }
+        });
+    });
+
+    // =========================================================================
+    // HISTORY PAGE: EXPORT TO CSV
+    // =========================================================================
+
+    $(document).on('click', '#cc-history-export-btn', function (e) {
+        e.preventDefault();
+
+        var $btn    = $(this);
+        var $status = $('#cc-history-status');
+
+        // Read the CURRENT filter values from the live form inputs,
+        // not from the static data-* attributes set at page load.
+        var status    = $('#cc-history-status-filter').val() || 'all';
+        var site      = $('#cc-history-site-filter').val()   || 'all';
+        var startDate = $('#cc-history-start-date').val()    || '';
+        var endDate   = $('#cc-history-end-date').val()      || '';
+
+        $btn.prop('disabled', true);
+        $status.text(strings.exporting || 'Exporting...')
+               .removeClass('status-success status-error')
+               .addClass('status-loading');
+
+        // We use a form POST to trigger file download (AJAX cannot trigger a download directly).
+        var $form = $('<form>', {
+            method: 'POST',
+            action: ajaxUrl,
+            style:  'display:none;'
+        });
+
+        var fields = {
+            action:     'content_curator_export_history',
+            nonce:      nonce,
+            status:     status,
+            site:       site,
+            start_date: startDate,
+            end_date:   endDate
+        };
+
+        $.each(fields, function (key, val) {
+            $form.append($('<input>', { type: 'hidden', name: key, value: val }));
+        });
+
+        $('body').append($form);
+        $form.submit();
+        $form.remove();
+
+        // Re-enable button after short delay (download is handled by browser).
+        setTimeout(function () {
+            $btn.prop('disabled', false);
+            $status.text('').removeClass('status-loading status-success status-error');
+        }, 2500);
+    });
+
 })(jQuery);
+

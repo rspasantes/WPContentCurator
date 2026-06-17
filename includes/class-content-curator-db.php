@@ -335,4 +335,107 @@ class Content_Curator_DB {
 
         return $result;
     }
+
+    // =========================================================================
+    // HISTORY QUERIES
+    // =========================================================================
+
+    /**
+     * Build shared WHERE clauses for history queries.
+     *
+     * @param string $status     'processed', 'ignored', or 'all'.
+     * @param string $site       Page name filter, or 'all'.
+     * @param string $start_date Start date (YYYY-MM-DD) for fb_created_at filter.
+     * @param string $end_date   End date (YYYY-MM-DD) for fb_created_at filter.
+     * @return string SQL WHERE clause (without leading WHERE keyword).
+     */
+    private static function build_history_where( $status, $site, $start_date, $end_date ) {
+        global $wpdb;
+
+        // Status filter.
+        $allowed_statuses = array( 'processed', 'ignored' );
+        if ( in_array( $status, $allowed_statuses, true ) ) {
+            $where = $wpdb->prepare( "status = %s", $status );
+        } else {
+            $where = "status IN ('processed', 'ignored')";
+        }
+
+        // Site filter.
+        if ( 'all' !== $site && ! empty( $site ) ) {
+            $where .= $wpdb->prepare( ' AND page_name = %s', $site );
+        }
+
+        // Date range filter on fb_created_at.
+        if ( ! empty( $start_date ) ) {
+            $where .= $wpdb->prepare( ' AND fb_created_at >= %s', $start_date . ' 00:00:00' );
+        }
+        if ( ! empty( $end_date ) ) {
+            $where .= $wpdb->prepare( ' AND fb_created_at <= %s', $end_date . ' 23:59:59' );
+        }
+
+        return $where;
+    }
+
+    /**
+     * Get history posts (processed/ignored) with pagination.
+     *
+     * @param string $status     'processed', 'ignored', or 'all'.
+     * @param string $site       Page name filter, or 'all'.
+     * @param int    $limit      Number of results (0 = no limit).
+     * @param int    $offset     Offset for pagination.
+     * @param string $start_date Start date (YYYY-MM-DD).
+     * @param string $end_date   End date (YYYY-MM-DD).
+     * @return array Array of row objects.
+     */
+    public static function get_history_posts( $status = 'all', $site = 'all', $limit = 0, $offset = 0, $start_date = '', $end_date = '' ) {
+        global $wpdb;
+
+        $table_name   = self::get_table_name();
+        $where        = self::build_history_where( $status, $site, $start_date, $end_date );
+        $limit_clause = '';
+        if ( $limit > 0 ) {
+            $limit_clause = $wpdb->prepare( ' LIMIT %d OFFSET %d', absint( $limit ), absint( $offset ) );
+        }
+
+        // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- where is built via prepare().
+        $results = $wpdb->get_results(
+            "SELECT * FROM $table_name WHERE {$where} ORDER BY fetched_at DESC{$limit_clause}"
+        );
+
+        return $results ? $results : array();
+    }
+
+    /**
+     * Get the total count of history posts matching filters.
+     *
+     * @param string $status     'processed', 'ignored', or 'all'.
+     * @param string $site       Page name filter, or 'all'.
+     * @param string $start_date Start date (YYYY-MM-DD).
+     * @param string $end_date   End date (YYYY-MM-DD).
+     * @return int Total count.
+     */
+    public static function get_history_posts_count( $status = 'all', $site = 'all', $start_date = '', $end_date = '' ) {
+        global $wpdb;
+
+        $table_name = self::get_table_name();
+        $where      = self::build_history_where( $status, $site, $start_date, $end_date );
+
+        // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- where is built via prepare().
+        return (int) $wpdb->get_var(
+            "SELECT COUNT(*) FROM $table_name WHERE {$where}"
+        );
+    }
+
+    /**
+     * Get all history posts for export (no pagination limit).
+     *
+     * @param string $status     'processed', 'ignored', or 'all'.
+     * @param string $site       Page name filter, or 'all'.
+     * @param string $start_date Start date (YYYY-MM-DD).
+     * @param string $end_date   End date (YYYY-MM-DD).
+     * @return array Array of row objects.
+     */
+    public static function get_history_posts_for_export( $status = 'all', $site = 'all', $start_date = '', $end_date = '' ) {
+        return self::get_history_posts( $status, $site, 0, 0, $start_date, $end_date );
+    }
 }

@@ -1,5 +1,67 @@
 # AI Development Log - WP Content Curator
 
+## 2026-06-17 - 16:50 - Bumped version to 1.6.1
+
+### Summary of Changes
+- **wp-content-curator.php**: Bumped plugin version and constants to `1.6.1`.
+- **README.md**: Added `1.6.1` entry in the Changelog section detailing the live filter fix for CSV exports.
+
+## 2026-06-17 - 16:31 - Export CSV now respects live filter selection
+
+### Summary of Changes
+- **assets/js/admin-script.js**: Updated the `#cc-history-export-btn` click handler to read the current filter values directly from the live DOM inputs (`#cc-history-status-filter`, `#cc-history-site-filter`, `#cc-history-start-date`, `#cc-history-end-date`) instead of static `data-*` attributes on the button (which were fixed at page-load time and did not reflect filter changes made client-side).
+- **includes/class-content-curator-admin.php**: Removed the now-unused `data-status`, `data-site`, `data-start`, and `data-end` attributes from the export button markup.
+
+
+### Summary of Changes
+- **includes/class-content-curator-admin.php** (`ajax_export_history`):
+  - Replaced `fputcsv()` (which uses comma as separator and doesn't sanitize newlines) with a manual CSV builder.
+  - Changed field separator from `,` to `;` — standard for Excel in Spanish/European locale.
+  - Added a `$clean()` helper that strips HTML tags and collapses internal `\r`, `\n`, `\t` characters to a single space, preventing each Facebook post text from spawning multiple phantom rows in Excel.
+  - Fields containing the separator or double-quotes are properly escaped by wrapping in quotes and doubling internal quote characters.
+  - Added `Cache-Control: must-revalidate` header for better download reliability.
+
+
+### Summary of Changes
+- **includes/class-content-curator-admin.php**: Introduced a new `.card-image-gallery-wrap` outer `<div>` to group the image container, the gallery navigation bar, and the image toggles. Moved `gallery-controls` out of `.card-image-gallery-container` (where it was `position: absolute` inside an `overflow: hidden` element) to a sibling position in normal document flow, immediately below the image container. Similarly moved `.image-toggles` inside the wrap, after the controls.
+- **assets/css/admin-style.css**:
+  - Added `.card-image-gallery-wrap` as margin-bottom container.
+  - Changed `.card-image-gallery-container` top border-radius only (bottom corners now rounded by the bars below it), removed `margin-bottom`.
+  - Converted `.gallery-controls` from `position: absolute; bottom: 0` to a normal-flow flex bar with bottom rounded corners, attached visually to the image.
+  - Added `.image-toggles` CSS class (previously inline styles): flex row, wraps on small screens, no top border (connected to the controls bar above it), bottom rounded corners.
+- **assets/js/admin-script.js**: Updated `changeGalleryImage()` to traverse to `.card-image-gallery-wrap` instead of `.card-image-gallery-container`, since the navigation buttons and gallery counter are now siblings of the image container rather than children of it.
+
+
+### Summary of Changes
+- **includes/class-content-curator-db.php**:
+  - Added `build_history_where()` private helper to build reusable SQL WHERE clauses for history queries (status, site, date range filters).
+  - Added `get_history_posts()` to retrieve paginated `processed`/`ignored` posts from the custom table.
+  - Added `get_history_posts_count()` to count history posts matching active filters (used for pagination).
+  - Added `get_history_posts_for_export()` to retrieve all matching history posts without limit (for CSV export).
+- **includes/class-content-curator-admin.php**:
+  - Extended `get_dictionary()` in all three languages (EN, ES, FR) with 27 new keys covering History page strings: section title, column headers, status labels, export button, modal strings, and requeue confirmation/feedback.
+  - Registered new AJAX action hooks: `content_curator_export_history` and `content_curator_history_update_status`.
+  - Added History submenu page (`content-curator-history`) with `edit_posts` capability in `register_menus()`.
+  - Added history page to the `$plugin_pages` array in `enqueue_assets()` so CSS/JS are loaded correctly.
+  - Exposed history JS strings (`history_requeue_confirm`, `history_requeue_success`, `history_requeue_error`, `exporting`, `modal_close`) via `wp_localize_script()`.
+  - Implemented `render_history_page()` method: renders premium banner, actions bar with CSV export button and record count badge, filterable form (status, site, date range, clear filters), paginated history table with status badges, text preview cells with expand button, re-queue action per row, and a full-text preview modal overlay.
+  - Implemented `ajax_export_history()`: validates nonce/capability, queries all matching history posts, outputs UTF-8 BOM CSV with 7 columns (ID, FB Post ID, Facebook Page, Status, Original Text, FB Created At, Fetched At), and exits directly.
+  - Implemented `ajax_history_update_status()`: validates nonce/capability, accepts `post_id` and `new_status`, updates the row in the DB, and returns JSON success/error.
+- **assets/css/admin-style.css**:
+  - Added `.cc-history-table-wrap`, `.cc-history-table` table layout with styled column widths, header, row hover effect.
+  - Added `.cc-status-badge`, `.cc-badge-processed` (green), `.cc-badge-ignored` (orange) pill badges.
+  - Added `.cc-history-preview-cell`, `.cc-preview-short`, `.cc-preview-expand-btn` for truncated text preview cells.
+  - Added `.cc-history-requeue-btn` with hover effect for re-queue action button.
+  - Added `.cc-export-btn` with Excel-green gradient, hover lift effect, and disabled state.
+  - Added `.cc-modal-overlay`, `.cc-modal`, `.cc-modal-header`, `.cc-modal-close`, `.cc-modal-body`, `#cc-modal-text-content` with glassmorphic backdrop, slide-up animation, and scrollable body.
+- **assets/js/admin-script.js**:
+  - Added `openHistoryModal()` / `closeHistoryModal()` helpers.
+  - Added click event listener for `.cc-preview-expand-btn` to open the full-text modal.
+  - Added click/Escape handlers to close the modal.
+  - Added click handler for `.cc-history-requeue-btn`: sends AJAX to `content_curator_history_update_status` with `new_status=pending`, animates row removal on success.
+  - Added click handler for `#cc-history-export-btn`: creates a temporary hidden form and submits it as POST to the AJAX endpoint to trigger a native browser CSV download.
+
+
 ## 2026-06-08 - 17:53 - Initial plugin scaffold and full implementation
 
 ### Summary of Changes
@@ -530,3 +592,22 @@
 ### Summary of Changes
 - **wp-content-curator.php**: Version bumped from 1.5.6 to 1.5.7.
 - **AGENTS.md**: Updated with new capabilities introduced in this session: AI model dropdowns for all three providers, per-card image import checkboxes (include cover / include gallery), and gallery controls overlap fix.
+
+## 2026-06-15 - 21:30 - Updated documentation and added Spanish translation of README
+
+### Summary of Changes
+- **README.md**: Updated documentation with comprehensive details on the features up to version 1.5.7, configuration sections, requirements, and full changelog.
+- **README.es.md**: Created the Spanish version of the README documentation.
+
+## 2026-06-15 - 21:40 - Changed image toggles layout to horizontal and bumped version to 1.5.8
+
+### Summary of Changes
+- **includes/class-content-curator-admin.php**: Modified inline styles of the `.image-toggles` div in curation cards from `flex-direction: column` to `flex-direction: row` with wrap behavior, positioning the cover image and gallery checkboxes side-by-side to prevent overlaps.
+- **wp-content-curator.php**: Version bumped from 1.5.7 to 1.5.8.
+- **README.md** & **README.es.md**: Documented layout changes and bumped versions in the changelog section.
+
+## 2026-06-15 - 21:45 - Merged Spanish translation into main README.md
+
+### Summary of Changes
+- **README.md**: Appended the complete Spanish translation of the documentation inside the main `README.md` file, adding a navigation header for easy switching between English and Spanish on GitHub.
+- **README.es.md**: Deleted the separate Spanish translation file to keep the repository unified and clean.
