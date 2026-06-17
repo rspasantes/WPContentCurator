@@ -1,5 +1,15 @@
 # AI Development Log - WP Content Curator
 
+## 2026-06-17 - 19:15 - Removed Curation Wrap max-width to Support Full Screen and Bumped to 1.6.8
+
+### Summary of Changes
+- **assets/css/admin-style.css**:
+  - Removed `max-width: 1400px;` from `.content-curator-wrap` to allow the plugin dashboard and history table page layouts to naturally expand to 100% width on wide and ultrawide screens.
+- **wp-content-curator.php**:
+  - Bumped version to `1.6.8`.
+- **README.md**:
+  - Added changelog entry for version `1.6.8`.
+
 ## 2026-06-17 - 18:55 - Solved History Table Responsiveness, styled CSV Export Button, and Bumped to 1.6.7
 
 ### Summary of Changes

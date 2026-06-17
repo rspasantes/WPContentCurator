@@ -236,6 +236,10 @@ wp-content-curator/
 
 ## Changelog
 
+### 1.6.8
+- **Full Width Container**: Removed the 1400px maximum width restriction on the main plugin container `.content-curator-wrap`. This allows the curation dashboard and history pages to naturally expand and fill 100% of the available screen width, which is especially useful on wide and ultrawide monitors to display more details directly.
+- **Version Bump**: Bumped plugin version to 1.6.8.
+
 ### 1.6.7
 - **History Table Responsiveness**: Added a minimum width of 1500px to the history list table to ensure it triggers horizontal scrolling and prevents column squeezing, making the Actions column (including the Delete button) fully visible.
 - **Export Button Contrast**: Replaced the green background color of the CSV export button with the primary blue color theme, resolving text contrast and readability issues.
